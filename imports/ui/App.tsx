@@ -1,33 +1,21 @@
 import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 
-import {
-  AppBar,
-  Avatar,
-  createTheme,
-  IconButton,
-  ThemeProvider,
-  Toolbar,
-  Typography,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { Box } from "@mui/material";
+import { NavigationBar } from "/imports/ui/components/NavigationBar";
+import { Dashboard, Login, Register, Map } from "/imports/ui/pages";
 
-export const App = () => (
-  <AppBar position="sticky">
-    <Toolbar>
-      <IconButton size="large" edge="start" color="inherit" aria-label="menu">
-        <MenuIcon />
-      </IconButton>
-      <LocationOnIcon fontSize="large" />
-      <Typography
-        textAlign="center"
-        variant="h6"
-        component="div"
-        sx={{ flexGrow: 1 }}
-      >
-        Login
-      </Typography>
-      <Avatar />
-    </Toolbar>
-  </AppBar>
-);
+export const App = () => {
+  return (
+    <Box>
+      <NavigationBar />
+      <Routes>
+        <Route index element={<Dashboard />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+        <Route path="map/:routeId" element={<Map />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Box>
+  );
+};
