@@ -5,6 +5,7 @@ import { Meteor } from "meteor/meteor";
 import { BrowserRouter } from "react-router-dom";
 
 import { App } from "/imports/ui/App";
+import { AuthProvider } from "/imports/ui/providers/Auth";
 
 Meteor.startup(() => {
   const container = document.getElementById("react-target");
@@ -16,10 +17,12 @@ Meteor.startup(() => {
 
   root.render(
     <BrowserRouter>
-      <ThemeProvider theme={DARK_THEME}>
-        <CssBaseline />
-        <App />
-      </ThemeProvider>
+      <AuthProvider>
+        <ThemeProvider theme={DARK_THEME}>
+          <CssBaseline />
+          <App />
+        </ThemeProvider>
+      </AuthProvider>
     </BrowserRouter>
   );
 });
