@@ -1,11 +1,19 @@
 import React from "react";
-import { Toolbar, IconButton, Typography, Avatar, AppBar } from "@mui/material";
+import {
+  Toolbar,
+  IconButton,
+  Typography,
+  Avatar,
+  AppBar,
+  Button,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { Meteor } from "meteor/meteor";
 
 export const NavigationBar = () => {
   return (
-    <AppBar position="sticky">
+    <AppBar position="static">
       <Toolbar>
         <IconButton size="large" edge="start" color="inherit" aria-label="menu">
           <MenuIcon />
@@ -19,7 +27,9 @@ export const NavigationBar = () => {
         >
           Login
         </Typography>
-        <Avatar />
+        <Button onClick={() => Meteor.logout()}>
+          <Avatar />
+        </Button>
       </Toolbar>
     </AppBar>
   );

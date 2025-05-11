@@ -1,21 +1,56 @@
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
 import { Box } from "@mui/material";
 import { NavigationBar } from "/imports/ui/components/NavigationBar";
 import { Dashboard, Login, Register, Map } from "/imports/ui/pages";
+import { RequireAuth, RequireNotAuth } from "/imports/ui/providers/Auth";
 
 export const App = () => {
+  const location = useLocation();
+
   return (
     <Box>
       <NavigationBar />
-      <Routes>
-        <Route index element={<Dashboard />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-        <Route path="map/:routeId" element={<Map />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <Box paddingTop={2} paddingBottom={2} width="100%">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/">
+            <Route
+              index
+              element={
+                <RequireAuth>
+                  <Dashboard />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="map/:routeId"
+              element={
+                <RequireAuth>
+                  <Map />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="login"
+              element={
+                <RequireNotAuth>
+                  <Login />
+                </RequireNotAuth>
+              }
+            />
+            <Route
+              path="register"
+              element={
+                <RequireNotAuth>
+                  <Register />
+                </RequireNotAuth>
+              }
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Route>
+        </Routes>
+      </Box>
     </Box>
   );
 };
