@@ -1,5 +1,6 @@
 import React, { useState, CSSProperties } from "react";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import { SECRETS } from "/imports/constants";
 
 const MAP_CONTAINER_STYLE: CSSProperties = {
   width: "100%",
@@ -10,8 +11,8 @@ export const Map = () => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
 
   const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: "YOUR_API_KEY",
+    id: "google-map",
+    googleMapsApiKey: SECRETS.public.oauth.googleMapsApiKey,
   });
 
   const onLoad = (map: google.maps.Map) => {
