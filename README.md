@@ -8,3 +8,4 @@ Adventure routes is a web application that provides an easy way for users to pla
 4. Navigate to the root of the repo and run ```npm i -g meteor``` and ```npm i```
 5. Create a file `settings.json` in the .deploy folder and follow the example file with the given Google API key.
 6. Run ```npm start```
+7. Google Maps can be accessed in the app by navigating to http://localhost:3000/map/1
