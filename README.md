@@ -4,6 +4,7 @@ Adventure routes is a web application that provides an easy way for users to pla
 # Running the App
 1. Download the repo.
 2. Download and install nodejs: https://nodejs.org/en/download.
-3. Go to command prompt / terminal and run ```npm i -g meteor``` and ```npm i```
-4. Create a file `settings.json` in the .deploy folder and follow the example file with the given Google API key.
-5. Run ```npm start```.
+3. Go to command prompt / terminal.
+4. Navigate to the root of the repo and run ```npm i -g meteor``` and ```npm i```
+5. Create a file `settings.json` in the .deploy folder and follow the example file with the given Google API key.
+6. Run ```npm start```
