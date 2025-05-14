@@ -4,6 +4,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useNavigate } from "react-router-dom";
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
+import { useAlertSnackbar } from "/imports/providers/AlertSnackbarProvider";
 
 export const Register = () => {
   const [username, setUsername] = useState("");
@@ -11,18 +12,68 @@ export const Register = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
+  const { setSnackbar } = useAlertSnackbar();
+
   const navigate = useNavigate();
 
   const handleRegister = (event: React.FormEvent) => {
     event.preventDefault();
+
+    if (!username || !email || !password || !passwordConfirm) {
+      setSnackbar({
+        isOpen: true,
+        severity: "error",
+        message: "Please fill in all fields",
+      });
+      return;
+    }
+    if (password.length < 6) {
+      setSnackbar({
+        isOpen: true,
+        severity: "error",
+        message: "Password must be at least 6 characters long",
+      });
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setSnackbar({
+        isOpen: true,
+        severity: "error",
+        message: "Please enter a valid email address",
+      });
+      return;
+    }
+    if (!/^[a-zA-Z0-9]+$/.test(username)) {
+      setSnackbar({
+        isOpen: true,
+        severity: "error",
+        message: "Username can only contain letters and numbers",
+      });
+      return;
+    }
     if (password !== passwordConfirm) {
       alert("Passwords do not match");
       return;
     }
+
     Accounts.createUser(
       { username, email, password },
       (error: Error | Meteor.Error | TypeError | undefined) => {
-        if (error) console.error(error);
+        if (error) {
+          console.error("Registration failed", error);
+          setSnackbar({
+            isOpen: true,
+            severity: "error",
+            message: error.message || "Registration failed",
+          });
+        } else {
+          console.log("Registration successful");
+          setSnackbar({
+            isOpen: true,
+            severity: "success",
+            message: "Registration successful. Welcome, " + username,
+          });
+        }
       }
     );
   };

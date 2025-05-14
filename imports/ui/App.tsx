@@ -1,10 +1,11 @@
 import React from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-
 import { Box } from "@mui/material";
+
 import { NavigationBar } from "/imports/ui/components/NavigationBar";
+import { AlertSnackbar } from "/imports/ui/components/AlertSnackbar";
 import { Dashboard, Login, Register, Map } from "/imports/ui/pages";
-import { RequireAuth, RequireNotAuth } from "/imports/ui/providers/Auth";
+import { RequireAuth, RequireNotAuth } from "../providers/Auth";
 
 export const App = () => {
   const location = useLocation();
@@ -12,6 +13,7 @@ export const App = () => {
   return (
     <Box>
       <NavigationBar />
+      <AlertSnackbar />
       <Box paddingTop={2} paddingBottom={2} width="100%">
         <Routes location={location} key={location.pathname}>
           <Route path="/">

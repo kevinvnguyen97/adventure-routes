@@ -4,16 +4,45 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Meteor } from "meteor/meteor";
 import { useNavigate } from "react-router-dom";
 
+import { useAlertSnackbar } from "/imports/providers/AlertSnackbarProvider";
+
 export const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+  const { setSnackbar } = useAlertSnackbar();
 
   const handleLogin = (event: React.FormEvent) => {
     event.preventDefault();
 
-    Meteor.loginWithPassword({ username }, password);
+    if (!username || !password) {
+      setSnackbar({
+        isOpen: true,
+        severity: "error",
+        message: "Please enter both username and password",
+      });
+      return;
+    }
+
+    Meteor.loginWithPassword({ username }, password, (error) => {
+      if (error) {
+        console.error("Login failed", error);
+        setSnackbar({
+          isOpen: true,
+          severity: "error",
+          message: error.message || "Login failed",
+        });
+      } else {
+        console.log("Login successful");
+        const { username = "" } = Meteor.user() || {};
+        setSnackbar({
+          isOpen: true,
+          severity: "success",
+          message: "Login successful. Welcome back, " + username,
+        });
+      }
+    });
   };
 
   return (
