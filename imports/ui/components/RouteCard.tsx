@@ -4,6 +4,7 @@ import {
   Card,
   CardActions,
   CardContent,
+  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -21,6 +22,7 @@ import {
   AddLocation,
   LocationCity,
   Close,
+  AttachMoney,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { AddOrEditRouteModal } from "./AddOrEditRouteModal";
@@ -101,7 +103,14 @@ export const RouteCard = (props: RouteCardProps) => {
         onClose={handleDeleteRouteDialogClose}
         deleteAdventureRoute={deleteAdventureRoute}
       />
-      <CardContent>
+      <CardContent
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "stretch",
+          height: "100%",
+        }}
+      >
         <Typography variant="h5" component="div">
           {adventureRoute.name}
         </Typography>
@@ -127,6 +136,14 @@ export const RouteCard = (props: RouteCardProps) => {
           <LocationCity />
           <Box>{adventureRoute.route.destination}</Box>
         </Typography>
+        <Typography justifySelf="end">
+          {[...Array(adventureRoute.priceCategory)].map((_, i) => (
+            <AttachMoney key={i} />
+          ))}
+        </Typography>
+        {adventureRoute.activities?.map((activity) => (
+          <Chip key={activity} label={activity} />
+        ))}
       </CardContent>
       <CardActions
         sx={{

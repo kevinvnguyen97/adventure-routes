@@ -262,11 +262,12 @@ export const AddOrEditRouteModal = (props: AddOrEditRouteModalProps) => {
             }}
             multiline
           >
-            <MenuItem value="music">Music</MenuItem>
-            <MenuItem value="food_drink">Food/Drink</MenuItem>
-            <MenuItem value="sports">Sports</MenuItem>
-            <MenuItem value="comedy">Comedy</MenuItem>
-            <MenuItem value="movies">Movies</MenuItem>
+            <MenuItem value="Music">Music</MenuItem>
+            <MenuItem value="Food/Drink">Food/Drink</MenuItem>
+            <MenuItem value="Sports">Sports</MenuItem>
+            <MenuItem value="Comedy">Comedy</MenuItem>
+            <MenuItem value="Movies">Movies</MenuItem>
+            <MenuItem value="Visit">Visit</MenuItem>
           </Select>
         </FormControl>
         <FormControl variant="filled" fullWidth margin="normal">

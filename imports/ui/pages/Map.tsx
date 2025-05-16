@@ -19,7 +19,8 @@ export const Map = () => {
   const [directions, setDirections] = useState<google.maps.DirectionsResult>();
 
   const { setSnackbar } = useAlertSnackbar();
-  const { data: adventureRoute } = useAdventureRoute(routeId);
+  const { data: adventureRoute, isLoading: isAdventureRouteLoading } =
+    useAdventureRoute(routeId);
   const { route } = adventureRoute || {};
   const { origin = "", waypoints = [], destination = "" } = route || {};
 
@@ -60,7 +61,7 @@ export const Map = () => {
     [isRouteRendered]
   );
 
-  if (!routeId) {
+  if (!routeId || isAdventureRouteLoading) {
     return <div>Loading...</div>;
   }
   return (

@@ -65,7 +65,11 @@ export const Dashboard = () => {
         container
         spacing={2}
         direction="row"
-        sx={{ justifyContent: "center", alignItems: "center" }}
+        sx={{
+          justifyContent: "center",
+          alignItems: "stretch",
+          display: "flex",
+        }}
       >
         {adventureRoutes.map((adventureRoute) => (
           <Grid
