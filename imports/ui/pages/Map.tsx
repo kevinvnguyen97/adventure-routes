@@ -1,6 +1,12 @@
-import React, { useState, CSSProperties } from "react";
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
-import { SECRETS } from "/imports/constants";
+import React, { useState, CSSProperties, useCallback } from "react";
+import {
+  DirectionsRenderer,
+  DirectionsService,
+  GoogleMap,
+} from "@react-google-maps/api";
+import { useParams } from "react-router-dom";
+import { useAdventureRoute } from "/imports/providers/adventureRoutes";
+import { useAlertSnackbar } from "/imports/providers/AlertSnackbarProvider";
 
 const MAP_CONTAINER_STYLE: CSSProperties = {
   width: "100%",
@@ -8,13 +14,67 @@ const MAP_CONTAINER_STYLE: CSSProperties = {
 };
 
 export const Map = () => {
-  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const { routeId = "" } = useParams();
+  const [isRouteRendered, setIsRouteRendered] = useState(false);
+  const [directions, setDirections] = useState<google.maps.DirectionsResult>();
 
+  const { setSnackbar } = useAlertSnackbar();
+  const { data: adventureRoute } = useAdventureRoute(routeId);
+  const { route } = adventureRoute || {};
+  const { origin = "", waypoints = [], destination = "" } = route || {};
+
+  const formattedWaypoints = waypoints.map((waypoint) => ({
+    location: waypoint,
+    stopover: true,
+  }));
   const onLoad = (map: google.maps.Map) => {
     const bounds = new google.maps.LatLngBounds();
     map.fitBounds(bounds);
-    setMap(map);
   };
+  const directionsCallback = useCallback(
+    (
+      result: google.maps.DirectionsResult | null,
+      status: google.maps.DirectionsStatus
+    ) => {
+      if (isRouteRendered) {
+        return;
+      }
+      if (result && status === google.maps.DirectionsStatus.OK) {
+        setDirections(result);
+      } else {
+        console.error("Error fetching directions: ", result);
+        setSnackbar({
+          isOpen: true,
+          message: "Error fetching directions",
+          severity: "error",
+        });
+      }
+      setIsRouteRendered(true);
+    },
+    [isRouteRendered]
+  );
 
-  return <GoogleMap mapContainerStyle={MAP_CONTAINER_STYLE} onLoad={onLoad} />;
+  if (!routeId) {
+    return <div>Loading...</div>;
+  }
+  return (
+    <GoogleMap mapContainerStyle={MAP_CONTAINER_STYLE} onLoad={onLoad}>
+      {origin && destination && (
+        <DirectionsService
+          callback={directionsCallback}
+          options={{
+            origin,
+            destination,
+            waypoints: formattedWaypoints,
+            travelMode: google.maps.TravelMode.DRIVING,
+            drivingOptions: {
+              departureTime: new Date(),
+              trafficModel: google.maps.TrafficModel.BEST_GUESS,
+            },
+          }}
+        />
+      )}
+      {directions && <DirectionsRenderer options={{ directions }} />}
+    </GoogleMap>
+  );
 };

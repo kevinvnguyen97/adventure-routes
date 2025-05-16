@@ -16,9 +16,9 @@ export const useAdventureRoute = (id: string) => {
   const userId = Meteor.userId();
   return useTracker(() => {
     const subscription = Meteor.subscribe("adventureRouteById", id);
-    const adventureRoute = userId
-      ? AdventureRoutesCollection.find({ _id: id }).fetch()
-      : [];
-    return { data: adventureRoute[0], isLoading: !subscription.ready() };
+    const adventureRoute = AdventureRoutesCollection.findOne({
+      _id: id,
+    });
+    return { data: adventureRoute, isLoading: !subscription.ready() };
   }, [userId, id]);
 };

@@ -100,10 +100,10 @@ export const AddOrEditRouteModal = (props: AddOrEditRouteModalProps) => {
   const removeWaypoint = (index: number) => {
     const updatedWaypoints = waypoints.filter((_, i) => i !== index);
     setWaypoints(updatedWaypoints);
-    const newRefs = waypointsAutoComplete.filter(
+    const updatedWaypointsAutoComplete = waypointsAutoComplete.filter(
       (_, waypointIndexToRemove) => index !== waypointIndexToRemove
     );
-    setWaypointsAutoComplete(newRefs);
+    setWaypointsAutoComplete(updatedWaypointsAutoComplete);
   };
   const toggleIsPublic = () => {
     setIsPublic((prev) => !prev);
@@ -120,7 +120,7 @@ export const AddOrEditRouteModal = (props: AddOrEditRouteModalProps) => {
       activities,
       route: {
         origin,
-        waypoints,
+        waypoints: waypoints.length > 0 ? waypoints : undefined,
         destination,
       },
     };

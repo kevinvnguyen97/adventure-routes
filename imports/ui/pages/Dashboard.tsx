@@ -3,14 +3,16 @@ import { Box, Button, IconButton } from "@mui/material";
 import { useMeteorAuth } from "/imports/providers/Auth";
 import { useAdventureRoutesForUser } from "/imports/providers/adventureRoutes";
 import { AddOrEditRouteModal } from "/imports/ui/components/AddOrEditRouteModal";
-import { Edit, Remove } from "@mui/icons-material";
+import { Edit, Map, Remove } from "@mui/icons-material";
 import { meteorMethodPromise } from "/imports/util";
 import { Meteor } from "meteor/meteor";
 import { useAlertSnackbar } from "/imports/providers/AlertSnackbarProvider";
+import { useNavigate } from "react-router-dom";
 
 export const Dashboard = () => {
   const [isRouteModalOpen, setIsRouteModalOpen] = useState(false);
 
+  const navigate = useNavigate();
   const { userId = "" } = useMeteorAuth();
   const { data: adventureRoutes } = useAdventureRoutesForUser(userId ?? "");
   const { setSnackbar } = useAlertSnackbar();
@@ -50,9 +52,16 @@ export const Dashboard = () => {
       <Box>
         {adventureRoutes.map((adventureRoute) => (
           <Box display="flex">
-            <Box key={adventureRoute._id}>{adventureRoute.name}</Box>
+            <Box key={adventureRoute._id}>
+              {adventureRoute._id}
+              {adventureRoute.name}: {adventureRoute.route.origin} -{" "}
+              {adventureRoute.route.destination}
+            </Box>
             <IconButton>
               <Edit />
+            </IconButton>
+            <IconButton onClick={() => navigate(`/map/${adventureRoute._id}`)}>
+              <Map />
             </IconButton>
             <IconButton>
               <Remove
