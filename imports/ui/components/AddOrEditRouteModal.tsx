@@ -110,7 +110,7 @@ export const AddOrEditRouteModal = (props: AddOrEditRouteModalProps) => {
   };
   const onRouteSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("Submitting route data...");
+    const filteredWaypoints = waypoints.filter((waypoint) => !!waypoint);
     const routeData: AdventureRoute = {
       userId,
       name,
@@ -120,7 +120,7 @@ export const AddOrEditRouteModal = (props: AddOrEditRouteModalProps) => {
       activities,
       route: {
         origin,
-        waypoints: waypoints.length > 0 ? waypoints : undefined,
+        waypoints: filteredWaypoints,
         destination,
       },
     };
