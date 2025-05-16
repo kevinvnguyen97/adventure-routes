@@ -1,24 +1,68 @@
-import React from "react";
-import { Box, Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Box, Button, IconButton } from "@mui/material";
 import { useMeteorAuth } from "/imports/providers/Auth";
 import { useAdventureRoutesForUser } from "/imports/providers/adventureRoutes";
+import { AddOrEditRouteModal } from "/imports/ui/components/AddOrEditRouteModal";
+import { Edit, Remove } from "@mui/icons-material";
+import { meteorMethodPromise } from "/imports/util";
+import { Meteor } from "meteor/meteor";
+import { useAlertSnackbar } from "/imports/providers/AlertSnackbarProvider";
 
 export const Dashboard = () => {
-  const navigate = useNavigate();
-  const { user, userId = "" } = useMeteorAuth();
-  const { data: adventureRoutes, isLoading } = useAdventureRoutesForUser(
-    userId ?? ""
-  );
+  const [isRouteModalOpen, setIsRouteModalOpen] = useState(false);
+
+  const { userId = "" } = useMeteorAuth();
+  const { data: adventureRoutes } = useAdventureRoutesForUser(userId ?? "");
+  const { setSnackbar } = useAlertSnackbar();
+
+  const handleRouteModalOpen = () => {
+    setIsRouteModalOpen(true);
+  };
+  const handleRouteModalClose = () => {
+    setIsRouteModalOpen(false);
+  };
+  const removeAdventureRoute = async (adventureRouteId: string) => {
+    try {
+      await meteorMethodPromise("deleteAdventureRoute", adventureRouteId);
+      setSnackbar({
+        isOpen: true,
+        message: "Adventure route deleted successfully",
+        severity: "success",
+      });
+    } catch (error) {
+      if (error instanceof Meteor.Error) {
+        console.error("Error deleting adventure route:", error.message);
+        setSnackbar({
+          isOpen: true,
+          message: error.message,
+          severity: "error",
+        });
+      }
+    }
+  };
   return (
     <Box>
       <Box>Dashboard</Box>
+      <AddOrEditRouteModal
+        isOpen={isRouteModalOpen}
+        onClose={handleRouteModalClose}
+      />
       <Box>
         {adventureRoutes.map((adventureRoute) => (
-          <Box key={adventureRoute._id}>{adventureRoute.name}</Box>
+          <Box display="flex">
+            <Box key={adventureRoute._id}>{adventureRoute.name}</Box>
+            <IconButton>
+              <Edit />
+            </IconButton>
+            <IconButton>
+              <Remove
+                onClick={() => removeAdventureRoute(adventureRoute._id!)}
+              />
+            </IconButton>
+          </Box>
         ))}
       </Box>
-      <Button>Create Adventure Route</Button>
+      <Button onClick={handleRouteModalOpen}>Create Adventure Route</Button>
     </Box>
   );
 };
