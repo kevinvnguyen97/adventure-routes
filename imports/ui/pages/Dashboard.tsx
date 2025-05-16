@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Meteor } from "meteor/meteor";
 import { Box, Button, Grid } from "@mui/material";
 
@@ -15,6 +15,10 @@ export const Dashboard = () => {
   const { userId = "" } = useMeteorAuth();
   const { data: adventureRoutes } = useAdventureRoutesForUser(userId ?? "");
   const { setSnackbar } = useAlertSnackbar();
+
+  useEffect(() => {
+    window.document.title = "Dashboard";
+  }, []);
 
   const handleRouteModalOpen = () => {
     setIsRouteModalOpen(true);

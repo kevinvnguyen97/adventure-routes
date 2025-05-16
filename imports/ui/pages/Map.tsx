@@ -1,4 +1,4 @@
-import React, { useState, CSSProperties, useCallback } from "react";
+import React, { useState, CSSProperties, useCallback, useEffect } from "react";
 import {
   DirectionsRenderer,
   DirectionsService,
@@ -22,6 +22,12 @@ export const Map = () => {
   const { data: adventureRoute } = useAdventureRoute(routeId);
   const { route } = adventureRoute || {};
   const { origin = "", waypoints = [], destination = "" } = route || {};
+
+  useEffect(() => {
+    if (adventureRoute) {
+      window.document.title = adventureRoute.name;
+    }
+  }, [adventureRoute]);
 
   const formattedWaypoints = waypoints.map((waypoint) => ({
     location: waypoint,

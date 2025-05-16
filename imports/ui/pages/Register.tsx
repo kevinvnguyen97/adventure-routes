@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useNavigate } from "react-router-dom";
@@ -12,8 +12,11 @@ export const Register = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
-  const { setSnackbar } = useAlertSnackbar();
+  useEffect(() => {
+    window.document.title = "Register";
+  }, []);
 
+  const { setSnackbar } = useAlertSnackbar();
   const navigate = useNavigate();
 
   const handleRegister = (event: React.FormEvent) => {

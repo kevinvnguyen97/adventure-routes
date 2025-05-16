@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Meteor } from "meteor/meteor";
@@ -9,6 +9,10 @@ import { useAlertSnackbar } from "/imports/providers/AlertSnackbarProvider";
 export const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    window.document.title = "Login";
+  }, []);
 
   const navigate = useNavigate();
   const { setSnackbar } = useAlertSnackbar();

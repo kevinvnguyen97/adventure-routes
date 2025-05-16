@@ -17,20 +17,12 @@ export const NavigationBar = () => {
 
   return (
     <AppBar position="static">
-      <Toolbar>
+      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         <IconButton size="large" edge="start" color="inherit" aria-label="menu">
           <MenuIcon />
         </IconButton>
         <LocationOnIcon fontSize="large" />
-        <Typography
-          textAlign="center"
-          variant="h6"
-          component="div"
-          sx={{ flexGrow: 1 }}
-        >
-          Login
-        </Typography>
-        <Button
+        <IconButton
           onClick={() =>
             Meteor.logout((error) => {
               if (error) {
@@ -52,7 +44,7 @@ export const NavigationBar = () => {
           }
         >
           <Avatar />
-        </Button>
+        </IconButton>
       </Toolbar>
     </AppBar>
   );
