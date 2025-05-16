@@ -1,0 +1,151 @@
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  Typography,
+} from "@mui/material";
+import React, { useState } from "react";
+import { AdventureRoute } from "/imports/api/adventureRoutes";
+import {
+  Edit,
+  Map,
+  LocationPin,
+  AddLocation,
+  LocationCity,
+  Close,
+} from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import { AddOrEditRouteModal } from "./AddOrEditRouteModal";
+
+type DeleteRouteDialogProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  deleteAdventureRoute: () => void;
+};
+const DeleteRouteDialog = (props: DeleteRouteDialogProps) => {
+  const { isOpen, onClose, deleteAdventureRoute } = props;
+  return (
+    <Dialog open={isOpen} onClose={onClose}>
+      <DialogTitle>Delete Adventure Route?</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Deleting this route is irreversible.
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={() => {
+            deleteAdventureRoute();
+            onClose();
+          }}
+        >
+          Delete Route
+        </Button>
+        <Button onClick={onClose}>Cancel</Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+type RouteCardProps = {
+  adventureRoute: AdventureRoute;
+  deleteAdventureRoute: () => void;
+};
+export const RouteCard = (props: RouteCardProps) => {
+  const { adventureRoute, deleteAdventureRoute } = props;
+
+  const [isRouteModalOpen, setIsRouteModalOpen] = useState(false);
+  const [isDeleteRouteDialogOpen, setIsDeleteRouteDialogOpen] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleRouteModalOpen = () => {
+    setIsRouteModalOpen(true);
+  };
+  const handleRouteModalClose = () => {
+    setIsRouteModalOpen(false);
+  };
+  const handleDeleteRouteDialogOpen = () => {
+    setIsDeleteRouteDialogOpen(true);
+  };
+  const handleDeleteRouteDialogClose = () => {
+    setIsDeleteRouteDialogOpen(false);
+  };
+  const openMap = () => {
+    navigate(`/map/${adventureRoute._id}`);
+  };
+  return (
+    <Card
+      variant="elevation"
+      sx={{
+        height: "100%",
+        display: "flex",
+        justifyContent: "space-between",
+      }}
+    >
+      <AddOrEditRouteModal
+        adventureRoute={adventureRoute}
+        isOpen={isRouteModalOpen}
+        onClose={handleRouteModalClose}
+      />
+      <DeleteRouteDialog
+        isOpen={isDeleteRouteDialogOpen}
+        onClose={handleDeleteRouteDialogClose}
+        deleteAdventureRoute={deleteAdventureRoute}
+      />
+      <CardContent>
+        <Typography variant="h5" component="div">
+          {adventureRoute.name}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {adventureRoute.description}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" display="flex">
+          <LocationPin />
+          <Box>{adventureRoute.route.origin}</Box>
+        </Typography>
+        {adventureRoute.route.waypoints?.map((waypoint) => (
+          <Typography
+            key={waypoint}
+            variant="body2"
+            color="text.secondary"
+            display="flex"
+          >
+            <AddLocation />
+            <Box>{waypoint}</Box>
+          </Typography>
+        ))}
+        <Typography variant="body2" color="text.secondary" display="flex">
+          <LocationCity />
+          <Box>{adventureRoute.route.destination}</Box>
+        </Typography>
+      </CardContent>
+      <CardActions
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+        disableSpacing
+      >
+        <IconButton onClick={handleDeleteRouteDialogOpen}>
+          <Close />
+        </IconButton>
+        <IconButton onClick={handleRouteModalOpen}>
+          <Edit />
+        </IconButton>
+        <IconButton onClick={openMap}>
+          <Map />
+        </IconButton>
+      </CardActions>
+    </Card>
+  );
+};

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -23,11 +23,12 @@ import { meteorMethodPromise } from "/imports/util";
 import { AdventureRoute } from "/imports/api/adventureRoutes";
 
 type AddOrEditRouteModalProps = {
+  adventureRoute?: AdventureRoute;
   isOpen: boolean;
   onClose: () => void;
 };
 export const AddOrEditRouteModal = (props: AddOrEditRouteModalProps) => {
-  const { isOpen, onClose } = props;
+  const { adventureRoute, isOpen, onClose } = props;
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -49,6 +50,41 @@ export const AddOrEditRouteModal = (props: AddOrEditRouteModalProps) => {
   const { setSnackbar } = useAlertSnackbar();
   const userId = Meteor.userId() || "";
 
+  useEffect(() => {
+    if (adventureRoute) {
+      const {
+        name,
+        description = "",
+        isPublic,
+        priceCategory = 0,
+        activities = [],
+      } = adventureRoute;
+      const {
+        origin,
+        waypoints = [""],
+        destination,
+      } = adventureRoute?.route || {};
+      setName(name);
+      setDescription(description);
+      setIsPublic(isPublic);
+      setPriceCategory(priceCategory);
+      setActivities(activities);
+      setOrigin(origin);
+      setWaypoints(waypoints.length > 0 ? waypoints : [""]);
+      setDestination(destination);
+    }
+  }, [adventureRoute]);
+
+  const clearForm = () => {
+    setName("");
+    setDescription("");
+    setIsPublic(false);
+    setPriceCategory(0);
+    setActivities([]);
+    setOrigin("");
+    setWaypoints([""]);
+    setDestination("");
+  };
   const onAutoCompleteLoad = (
     autocomplete: google.maps.places.Autocomplete,
     placeType: string
@@ -112,6 +148,7 @@ export const AddOrEditRouteModal = (props: AddOrEditRouteModalProps) => {
     event.preventDefault();
     const filteredWaypoints = waypoints.filter((waypoint) => !!waypoint);
     const routeData: AdventureRoute = {
+      _id: adventureRoute ? adventureRoute._id : undefined,
       userId,
       name,
       isPublic,
@@ -141,6 +178,8 @@ export const AddOrEditRouteModal = (props: AddOrEditRouteModalProps) => {
         });
       }
     }
+    clearForm();
+    onClose();
   };
 
   return (
@@ -154,7 +193,7 @@ export const AddOrEditRouteModal = (props: AddOrEditRouteModalProps) => {
         },
       }}
     >
-      <DialogTitle>Add Or Edit Modal</DialogTitle>
+      <DialogTitle>{adventureRoute ? "Edit" : "Add"} Route</DialogTitle>
       <IconButton
         onClick={onClose}
         style={{ position: "absolute", right: 8, top: 8 }}

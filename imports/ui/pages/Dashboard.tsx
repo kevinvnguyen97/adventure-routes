@@ -1,18 +1,17 @@
 import React, { useState } from "react";
-import { Box, Button, IconButton } from "@mui/material";
+import { Meteor } from "meteor/meteor";
+import { Box, Button, Grid } from "@mui/material";
+
 import { useMeteorAuth } from "/imports/providers/Auth";
 import { useAdventureRoutesForUser } from "/imports/providers/adventureRoutes";
 import { AddOrEditRouteModal } from "/imports/ui/components/AddOrEditRouteModal";
-import { Edit, Map, Remove } from "@mui/icons-material";
 import { meteorMethodPromise } from "/imports/util";
-import { Meteor } from "meteor/meteor";
 import { useAlertSnackbar } from "/imports/providers/AlertSnackbarProvider";
-import { useNavigate } from "react-router-dom";
+import { RouteCard } from "/imports/ui/components/RouteCard";
 
 export const Dashboard = () => {
   const [isRouteModalOpen, setIsRouteModalOpen] = useState(false);
 
-  const navigate = useNavigate();
   const { userId = "" } = useMeteorAuth();
   const { data: adventureRoutes } = useAdventureRoutesForUser(userId ?? "");
   const { setSnackbar } = useAlertSnackbar();
@@ -44,33 +43,26 @@ export const Dashboard = () => {
   };
   return (
     <Box>
-      <Box>Dashboard</Box>
       <AddOrEditRouteModal
         isOpen={isRouteModalOpen}
         onClose={handleRouteModalClose}
       />
-      <Box>
+      <Grid container spacing={2}>
         {adventureRoutes.map((adventureRoute) => (
-          <Box display="flex">
-            <Box key={adventureRoute._id}>
-              {adventureRoute._id}
-              {adventureRoute.name}: {adventureRoute.route.origin} -{" "}
-              {adventureRoute.route.destination}
-            </Box>
-            <IconButton>
-              <Edit />
-            </IconButton>
-            <IconButton onClick={() => navigate(`/map/${adventureRoute._id}`)}>
-              <Map />
-            </IconButton>
-            <IconButton>
-              <Remove
-                onClick={() => removeAdventureRoute(adventureRoute._id!)}
-              />
-            </IconButton>
-          </Box>
+          <Grid
+            key={adventureRoute._id}
+            size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}
+            sx={{ alignItems: "stretch" }}
+          >
+            <RouteCard
+              adventureRoute={adventureRoute}
+              deleteAdventureRoute={() =>
+                removeAdventureRoute(adventureRoute._id ?? "")
+              }
+            />
+          </Grid>
         ))}
-      </Box>
+      </Grid>
       <Button onClick={handleRouteModalOpen}>Create Adventure Route</Button>
     </Box>
   );
