@@ -209,6 +209,7 @@ export const AddOrEditRouteModal = (props: AddOrEditRouteModalProps) => {
           label="Route Name"
           margin="normal"
           fullWidth
+          required
         />
         <TextField
           value={description}
@@ -232,7 +233,7 @@ export const AddOrEditRouteModal = (props: AddOrEditRouteModalProps) => {
             <ToggleButton value={true}>Public</ToggleButton>
           </ToggleButtonGroup>
         </FormControl>
-        <FormControl variant="filled" fullWidth margin="normal">
+        <FormControl variant="filled" fullWidth margin="normal" required>
           <InputLabel id="price-category">Price Category</InputLabel>
           <Select
             labelId="price-category"
@@ -247,7 +248,7 @@ export const AddOrEditRouteModal = (props: AddOrEditRouteModalProps) => {
             <MenuItem value={3}>$$$</MenuItem>
           </Select>
         </FormControl>
-        <FormControl variant="filled" fullWidth margin="normal">
+        <FormControl variant="filled" fullWidth margin="normal" required>
           <InputLabel id="activities">Activities</InputLabel>
           <Select
             labelId="activities"
@@ -282,6 +283,7 @@ export const AddOrEditRouteModal = (props: AddOrEditRouteModalProps) => {
               type="text"
               label="Origin"
               fullWidth
+              required
             />
           </Autocomplete>
         </FormControl>
@@ -334,6 +336,7 @@ export const AddOrEditRouteModal = (props: AddOrEditRouteModalProps) => {
               type="text"
               label="Destination"
               fullWidth
+              required
             />
           </Autocomplete>
         </FormControl>

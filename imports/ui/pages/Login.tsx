@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControl, TextField, Typography } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Meteor } from "meteor/meteor";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import { useAlertSnackbar } from "/imports/providers/AlertSnackbarProvider";
 export const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     window.document.title = "Login";
@@ -19,6 +20,7 @@ export const Login = () => {
 
   const handleLogin = (event: React.FormEvent) => {
     event.preventDefault();
+    setIsSubmitted(true);
 
     if (!username || !password) {
       setSnackbar({
@@ -57,11 +59,9 @@ export const Login = () => {
       <Box
         component="form"
         onSubmit={handleLogin}
-        flexDirection="column"
-        display="flex"
         width={400}
-        justifyContent="center"
-        gap={2}
+        display="flex"
+        flexDirection="column"
       >
         <TextField
           value={username}
@@ -69,6 +69,9 @@ export const Login = () => {
           variant="filled"
           label="Username or Email"
           type="text"
+          margin="normal"
+          fullWidth
+          required
         />
         <TextField
           value={password}
@@ -76,8 +79,11 @@ export const Login = () => {
           variant="filled"
           label="Password"
           type="password"
+          margin="normal"
+          fullWidth
+          required
         />
-        <Button type="submit" variant="contained">
+        <Button sx={{ alignSelf: "center" }} type="submit" variant="contained">
           Login
         </Button>
       </Box>

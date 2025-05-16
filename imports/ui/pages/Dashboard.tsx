@@ -46,12 +46,27 @@ export const Dashboard = () => {
     }
   };
   return (
-    <Box>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        gap: 2,
+      }}
+    >
       <AddOrEditRouteModal
         isOpen={isRouteModalOpen}
         onClose={handleRouteModalClose}
       />
-      <Grid container spacing={2}>
+      <Button onClick={handleRouteModalOpen} sx={{ alignSelf: "center" }}>
+        Create Adventure Route
+      </Button>
+      <Grid
+        container
+        spacing={2}
+        direction="row"
+        sx={{ justifyContent: "center", alignItems: "center" }}
+      >
         {adventureRoutes.map((adventureRoute) => (
           <Grid
             key={adventureRoute._id}
@@ -67,7 +82,6 @@ export const Dashboard = () => {
           </Grid>
         ))}
       </Grid>
-      <Button onClick={handleRouteModalOpen}>Create Adventure Route</Button>
     </Box>
   );
 };

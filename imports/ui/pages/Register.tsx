@@ -92,12 +92,24 @@ export const Register = () => {
         flexDirection="column"
         display="flex"
         width={400}
-        justifyContent="center"
-        gap={2}
       >
         <Box display="flex" gap={2}>
-          <TextField variant="filled" label="First Name" type="text" />
-          <TextField variant="filled" label="Last Name" type="text" />
+          <TextField
+            variant="filled"
+            label="First Name"
+            type="text"
+            margin="normal"
+            fullWidth
+            required
+          />
+          <TextField
+            variant="filled"
+            label="Last Name"
+            type="text"
+            margin="normal"
+            fullWidth
+            required
+          />
         </Box>
         <TextField
           value={email}
@@ -105,6 +117,9 @@ export const Register = () => {
           variant="filled"
           label="Email"
           type="email"
+          margin="normal"
+          fullWidth
+          required
         />
         <TextField
           value={username}
@@ -112,6 +127,9 @@ export const Register = () => {
           variant="filled"
           label="Username"
           type="text"
+          margin="normal"
+          fullWidth
+          required
         />
         <TextField
           value={password}
@@ -119,6 +137,9 @@ export const Register = () => {
           variant="filled"
           label="Password"
           type="password"
+          margin="normal"
+          fullWidth
+          required
         />
         <TextField
           value={passwordConfirm}
@@ -126,8 +147,11 @@ export const Register = () => {
           variant="filled"
           label="Confirm Password"
           type="password"
+          margin="normal"
+          fullWidth
+          required
         />
-        <Button type="submit" variant="contained">
+        <Button sx={{ alignSelf: "center" }} type="submit" variant="contained">
           Register
         </Button>
       </Box>
