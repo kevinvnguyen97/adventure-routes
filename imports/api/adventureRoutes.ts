@@ -23,8 +23,8 @@ export const AdventureRoutesCollection = new Mongo.Collection<AdventureRoute>(
 
 Meteor.methods({
   upsertAdventureRoute: async (adventureRoute: AdventureRoute) => {
-    const userId = Meteor.userId();
-    if (userId !== adventureRoute.userId) {
+    const user = await Meteor.userAsync();
+    if (!user || user._id !== adventureRoute.userId) {
       throw new Meteor.Error("not-authorized");
     }
     const { _id, ...adventureRouteFields } = adventureRoute;
@@ -34,11 +34,11 @@ Meteor.methods({
     );
   },
   deleteAdventureRoute: async (adventureRouteId: string) => {
-    const userId = Meteor.userId();
+    const user = await Meteor.userAsync();
     const adventureRoute = await AdventureRoutesCollection.findOneAsync({
       _id: adventureRouteId,
     });
-    if (userId !== adventureRoute?.userId) {
+    if (!user || user._id !== adventureRoute?.userId) {
       throw new Meteor.Error("not-authorized");
     }
     await AdventureRoutesCollection.removeAsync({ _id: adventureRouteId });
