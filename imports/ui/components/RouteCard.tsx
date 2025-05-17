@@ -59,10 +59,11 @@ const DeleteRouteDialog = (props: DeleteRouteDialogProps) => {
 
 type RouteCardProps = {
   adventureRoute: AdventureRoute;
-  deleteAdventureRoute: () => void;
+  deleteAdventureRoute?: () => void;
+  isInMap?: boolean;
 };
 export const RouteCard = (props: RouteCardProps) => {
-  const { adventureRoute, deleteAdventureRoute } = props;
+  const { adventureRoute, deleteAdventureRoute, isInMap } = props;
 
   const [isRouteModalOpen, setIsRouteModalOpen] = useState(false);
   const [isDeleteRouteDialogOpen, setIsDeleteRouteDialogOpen] = useState(false);
@@ -88,7 +89,8 @@ export const RouteCard = (props: RouteCardProps) => {
     <Card
       variant="elevation"
       sx={{
-        height: "100%",
+        height: isInMap ? undefined : "100%",
+        maxWidth: isInMap ? 400 : undefined,
         display: "flex",
         justifyContent: "space-between",
       }}
@@ -98,11 +100,13 @@ export const RouteCard = (props: RouteCardProps) => {
         isOpen={isRouteModalOpen}
         onClose={handleRouteModalClose}
       />
-      <DeleteRouteDialog
-        isOpen={isDeleteRouteDialogOpen}
-        onClose={handleDeleteRouteDialogClose}
-        deleteAdventureRoute={deleteAdventureRoute}
-      />
+      {!isInMap && deleteAdventureRoute && (
+        <DeleteRouteDialog
+          isOpen={isDeleteRouteDialogOpen}
+          onClose={handleDeleteRouteDialogClose}
+          deleteAdventureRoute={deleteAdventureRoute}
+        />
+      )}
       <CardContent
         sx={{
           display: "flex",
@@ -143,24 +147,26 @@ export const RouteCard = (props: RouteCardProps) => {
           <Chip key={activity} label={activity} />
         ))}
       </CardContent>
-      <CardActions
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-        }}
-        disableSpacing
-      >
-        <IconButton size="large" onClick={handleDeleteRouteDialogOpen}>
-          <Close />
-        </IconButton>
-        <IconButton size="large" onClick={handleRouteModalOpen}>
-          <Edit />
-        </IconButton>
-        <IconButton size="large" onClick={openMap}>
-          <Map />
-        </IconButton>
-      </CardActions>
+      {!isInMap && (
+        <CardActions
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+          disableSpacing
+        >
+          <IconButton size="large" onClick={handleDeleteRouteDialogOpen}>
+            <Close />
+          </IconButton>
+          <IconButton size="large" onClick={handleRouteModalOpen}>
+            <Edit />
+          </IconButton>
+          <IconButton size="large" onClick={openMap}>
+            <Map />
+          </IconButton>
+        </CardActions>
+      )}
     </Card>
   );
 };

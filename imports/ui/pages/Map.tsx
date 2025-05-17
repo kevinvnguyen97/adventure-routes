@@ -3,15 +3,14 @@ import {
   DirectionsRenderer,
   DirectionsService,
   GoogleMap,
-  useJsApiLoader,
 } from "@react-google-maps/api";
 import { useParams } from "react-router-dom";
+import { Box } from "@mui/material";
 
 import { useAdventureRoute } from "/imports/providers/adventureRoutes";
 import { useAlertSnackbar } from "/imports/providers/AlertSnackbarProvider";
 import { Loading } from "/imports/ui/pages/Loading";
-import { GOOGLE_MAPS_LIBRARIES, SECRETS } from "/imports/constants";
-import { Box, Button } from "@mui/material";
+import { CustomMapInfo } from "/imports/ui/components/CustomMapInfo";
 
 const MAP_CONTAINER_STYLE: CSSProperties = {
   width: "100%",
@@ -20,17 +19,17 @@ const MAP_CONTAINER_STYLE: CSSProperties = {
 export const Map = () => {
   const { routeId = "" } = useParams();
   const [isRouteRendered, setIsRouteRendered] = useState(false);
+
   const [directions, setDirections] = useState<google.maps.DirectionsResult>();
+  const [travelMode, setTravelMode] = useState<google.maps.TravelMode>(
+    google.maps.TravelMode.DRIVING
+  );
 
   const { setSnackbar } = useAlertSnackbar();
   const { data: adventureRoute, isLoading: isAdventureRouteLoading } =
     useAdventureRoute(routeId);
   const { route } = adventureRoute || {};
   const { origin = "", waypoints = [], destination = "" } = route || {};
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: SECRETS.public.oauth.googleMapsApiKey,
-    libraries: GOOGLE_MAPS_LIBRARIES,
-  });
 
   useEffect(() => {
     if (adventureRoute) {
@@ -42,6 +41,11 @@ export const Map = () => {
     location: waypoint,
     stopover: true,
   }));
+
+  const onTravelModeChange = (travelMode: google.maps.TravelMode) => {
+    setTravelMode(travelMode);
+    setIsRouteRendered(false);
+  };
   const onLoad = (map: google.maps.Map) => {
     const bounds = new google.maps.LatLngBounds();
     map.fitBounds(bounds);
@@ -66,36 +70,23 @@ export const Map = () => {
       }
       setIsRouteRendered(true);
     },
-    [isRouteRendered]
+    [isRouteRendered, travelMode]
   );
 
-  if (!routeId || isAdventureRouteLoading || !isLoaded) {
+  if (!routeId || isAdventureRouteLoading) {
     return <Loading />;
   }
+  if (!adventureRoute) {
+    return <div>Error</div>;
+  }
   return (
-    <Box position="relative" height="calc(100vh - 100px)">
-      <Button
-        variant="contained"
-        color="info"
-        sx={{
-          position: "absolute",
-          zIndex: 1,
-          top: 10,
-          left: 178,
-          textTransform: "none",
-          bgcolor: "white",
-          "&:hover": {
-            bgcolor: "whitesmoke",
-          },
-          borderRadius: "2px",
-          padding: "4px 17px",
-          fontSize: "18px",
-          fontFamily: "Roboto, Arial, sans-serif",
-          fontWeight: "normal",
-        }}
-      >
-        Route Info
-      </Button>
+    <Box position="relative" height="calc(100vh - 64px)">
+      <CustomMapInfo
+        adventureRoute={adventureRoute!}
+        directions={directions!}
+        travelMode={travelMode}
+        setTravelMode={onTravelModeChange}
+      />
       <GoogleMap mapContainerStyle={MAP_CONTAINER_STYLE} onLoad={onLoad}>
         {origin && destination && (
           <DirectionsService
@@ -104,7 +95,7 @@ export const Map = () => {
               origin,
               destination,
               waypoints: formattedWaypoints,
-              travelMode: google.maps.TravelMode.DRIVING,
+              travelMode,
               drivingOptions: {
                 departureTime: new Date(),
                 trafficModel: google.maps.TrafficModel.BEST_GUESS,

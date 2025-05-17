@@ -16,13 +16,11 @@ import {
   ToggleButtonGroup,
 } from "@mui/material";
 import { Close, Add, Remove } from "@mui/icons-material";
-import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
+import { Autocomplete } from "@react-google-maps/api";
 import { Meteor } from "meteor/meteor";
 import { useAlertSnackbar } from "/imports/providers/AlertSnackbarProvider";
 import { meteorMethodPromise } from "/imports/util";
 import { AdventureRoute } from "/imports/api/adventureRoutes";
-import { GOOGLE_MAPS_LIBRARIES, SECRETS } from "/imports/constants";
-import { Loading } from "/imports/ui/pages";
 
 type AddOrEditRouteModalProps = {
   adventureRoute?: AdventureRoute;
@@ -49,10 +47,6 @@ export const AddOrEditRouteModal = (props: AddOrEditRouteModalProps) => {
     google.maps.places.Autocomplete[]
   >([]);
 
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: SECRETS.public.oauth.googleMapsApiKey,
-    libraries: GOOGLE_MAPS_LIBRARIES,
-  });
   const { setSnackbar } = useAlertSnackbar();
   const userId = Meteor.userId() || "";
 
@@ -188,9 +182,6 @@ export const AddOrEditRouteModal = (props: AddOrEditRouteModalProps) => {
     onClose();
   };
 
-  if (!isLoaded) {
-    return <Loading />;
-  }
   return (
     <Dialog
       open={isOpen}

@@ -7,6 +7,8 @@ import { BrowserRouter } from "react-router-dom";
 import { App } from "/imports/ui/App";
 import { AuthProvider } from "/imports/providers/Auth";
 import { AlertSnackbarProvider } from "/imports/providers/AlertSnackbarProvider";
+import { LoadScript } from "@react-google-maps/api";
+import { GOOGLE_MAPS_LIBRARIES, SECRETS } from "/imports/constants";
 
 Meteor.startup(() => {
   const container = document.getElementById("react-target");
@@ -41,7 +43,12 @@ Meteor.startup(() => {
         <AlertSnackbarProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <App />
+            <LoadScript
+              googleMapsApiKey={SECRETS.public.oauth.googleMapsApiKey}
+              libraries={GOOGLE_MAPS_LIBRARIES}
+            >
+              <App />
+            </LoadScript>
           </ThemeProvider>
         </AlertSnackbarProvider>
       </AuthProvider>
