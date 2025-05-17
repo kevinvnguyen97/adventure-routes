@@ -9,6 +9,10 @@ export async function meteorMethodPromise(
   name: "upsertAdventureRoute",
   adventureRoute: AdventureRoute
 ): Promise<void>;
+export async function meteorMethodPromise(
+  name: "changeProfilePicture",
+  newProfilePictureUrl: string
+): Promise<void>;
 export async function meteorMethodPromise<TReturn, TArgs extends any[]>(
   name: string,
   ...args: TArgs

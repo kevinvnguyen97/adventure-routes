@@ -5,6 +5,7 @@ interface Secret {
   public: {
     oauth: {
       googleMapsApiKey: string;
+      imgBBApiKey: string;
     };
   };
 }

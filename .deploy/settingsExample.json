@@ -1,7 +1,8 @@
 {
   "public": {
     "oauth": {
-      "googleMapsApiKey": "api key"
+      "googleMapsApiKey": "api key",
+      "imgBBApiKey": "api key"
     }
   }
 }

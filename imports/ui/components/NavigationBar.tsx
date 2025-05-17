@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent } from "react";
+import React, { useState, MouseEvent, ChangeEvent } from "react";
 import {
   Toolbar,
   IconButton,
@@ -13,14 +13,17 @@ import {
   Typography,
   Box,
   Button,
+  TextField,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Meteor } from "meteor/meteor";
 import { useAlertSnackbar } from "/imports/providers/AlertSnackbarProvider";
-import { Logout, Settings } from "@mui/icons-material";
+import { Logout, Settings, PhotoCamera } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useMeteorAuth } from "/imports/providers/Auth";
+import { meteorMethodPromise } from "/imports/util";
+import { uploadToImgBB } from "/imports/api/imgbb";
 
 const PROFILE_MENU_ID = "profile-menu";
 const MENU_STYLE: SxProps<Theme> = {
@@ -119,8 +122,12 @@ export const NavigationBar = () => {
     useState<HTMLButtonElement | null>(null);
 
   const { loggedIn, user } = useMeteorAuth();
-  const { profile } = user || {};
-  const { firstName = "", lastName = "" } = profile || {};
+  const { profile, _id } = user || {};
+  const {
+    firstName = "",
+    lastName = "",
+    profilePictureUrl = "",
+  } = profile || {};
   const { setSnackbar } = useAlertSnackbar();
   const isUserMenuOpen = Boolean(anchorUserElement);
 
@@ -149,9 +156,44 @@ export const NavigationBar = () => {
       }
     });
   };
+  const uploadProfilePicture = async (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files || [];
+    console.log("UPLOADING...");
+    if (files.length > 0) {
+      const file = files[0];
+
+      try {
+        const response = await uploadToImgBB(file, _id ?? "");
+        if (response.data) {
+          await meteorMethodPromise("changeProfilePicture", response.data?.url);
+          setSnackbar({
+            isOpen: true,
+            message: "Profile picture uploaded successfully",
+            severity: "success",
+          });
+        }
+      } catch (error) {
+        const meteorError = error as Meteor.Error;
+        console.error(meteorError);
+        setSnackbar({
+          isOpen: true,
+          message: meteorError.message,
+          severity: "error",
+        });
+      }
+    }
+  };
 
   return (
     <Box>
+      <input
+        type="file"
+        accept="image/*"
+        style={{ display: "none" }}
+        id="photo-upload"
+        onChange={uploadProfilePicture}
+        name="profile-picture"
+      />
       <AppBar position="fixed">
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <DesktopNavFormat />
@@ -161,7 +203,9 @@ export const NavigationBar = () => {
             aria-controls={isUserMenuOpen ? PROFILE_MENU_ID : undefined}
             disabled={!loggedIn}
           >
-            <Avatar>{user ? firstName?.[0] + lastName?.[0] : ""}</Avatar>
+            <Avatar src={profilePictureUrl}>
+              {user ? firstName?.[0] + lastName?.[0] : ""}
+            </Avatar>
           </IconButton>
           <Menu
             id="profile-menu"
@@ -180,7 +224,9 @@ export const NavigationBar = () => {
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
             <ListItem>
-              <Avatar>{user ? firstName?.[0] + lastName?.[0] : ""}</Avatar>
+              <Avatar src={profilePictureUrl}>
+                {user ? firstName?.[0] + lastName?.[0] : ""}
+              </Avatar>
               {user?.username}
             </ListItem>
             <MenuItem disabled>
@@ -188,6 +234,14 @@ export const NavigationBar = () => {
                 <Settings />
               </ListItemIcon>
               Settings
+            </MenuItem>
+            <MenuItem>
+              <label htmlFor="photo-upload">
+                <ListItemIcon sx={{ cursor: "pointer" }}>
+                  <PhotoCamera />
+                </ListItemIcon>
+                Upload Profile Picture
+              </label>
             </MenuItem>
             <MenuItem onClick={logout}>
               <ListItemIcon>

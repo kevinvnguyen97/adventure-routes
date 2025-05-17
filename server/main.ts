@@ -18,3 +18,15 @@ Meteor.startup(async () => {
     return AdventureRoutesCollection.find({ _id: id }, { limit: 1 });
   });
 });
+
+Meteor.methods({
+  changeProfilePicture: async (newProfilePictureUrl: string) => {
+    const user = await Meteor.userAsync();
+    if (user && user._id) {
+      await Meteor.users.updateAsync(
+        { _id: user._id },
+        { $set: { "profile.profilePictureUrl": newProfilePictureUrl } }
+      );
+    }
+  },
+});
