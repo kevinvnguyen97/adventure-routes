@@ -8,12 +8,14 @@ import { AddOrEditRouteModal } from "/imports/ui/components/AddOrEditRouteModal"
 import { meteorMethodPromise } from "/imports/util";
 import { useAlertSnackbar } from "/imports/providers/AlertSnackbarProvider";
 import { RouteCard } from "/imports/ui/components/RouteCard";
+import { Loading } from "/imports/ui/pages/Loading";
 
 export const Dashboard = () => {
   const [isRouteModalOpen, setIsRouteModalOpen] = useState(false);
 
   const { userId = "" } = useMeteorAuth();
-  const { data: adventureRoutes } = useAdventureRoutesForUser(userId ?? "");
+  const { data: adventureRoutes, isLoading: isAdventureRoutesLoading } =
+    useAdventureRoutesForUser(userId ?? "");
   const { setSnackbar } = useAlertSnackbar();
 
   useEffect(() => {
@@ -45,6 +47,10 @@ export const Dashboard = () => {
       }
     }
   };
+
+  if (isAdventureRoutesLoading) {
+    return <Loading />;
+  }
   return (
     <Box
       sx={{

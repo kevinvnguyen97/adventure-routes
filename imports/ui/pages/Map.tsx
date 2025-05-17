@@ -7,6 +7,7 @@ import {
 import { useParams } from "react-router-dom";
 import { useAdventureRoute } from "/imports/providers/adventureRoutes";
 import { useAlertSnackbar } from "/imports/providers/AlertSnackbarProvider";
+import { Loading } from "/imports/ui/pages/Loading";
 
 const MAP_CONTAINER_STYLE: CSSProperties = {
   width: "100%",
@@ -62,7 +63,7 @@ export const Map = () => {
   );
 
   if (!routeId || isAdventureRouteLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   return (
     <GoogleMap mapContainerStyle={MAP_CONTAINER_STYLE} onLoad={onLoad}>
