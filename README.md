@@ -11,6 +11,7 @@ Adventure routes is a web application that provides an easy way for users to pla
 7. Google Maps can be accessed in the app by navigating to http://localhost:3000/map/1
 
 ## Screenshots
+<img width="1512" alt="Screenshot 2025-05-17 at 8 57 36 AM" src="https://github.com/user-attachments/assets/83b69ce3-b3ad-4002-974a-82d41d20efe1" />
 <img width="1512" alt="Screenshot 2025-05-12 at 9 59 29 AM" src="https://github.com/user-attachments/assets/0f4578c1-f288-478a-b0f7-774a20fd59e9" />
 <img width="1512" alt="Screenshot 2025-05-12 at 10 30 44 AM" src="https://github.com/user-attachments/assets/8b567cc9-3137-4066-a71f-ef7f06efd083" />
 <img width="1512" alt="Screenshot 2025-05-12 at 10 30 56 AM" src="https://github.com/user-attachments/assets/e00ac03f-0529-44a3-977b-b4b54545f381" />
