@@ -7,6 +7,8 @@ import { Meteor } from "meteor/meteor";
 import { useAlertSnackbar } from "/imports/providers/AlertSnackbarProvider";
 
 export const Register = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,7 +24,14 @@ export const Register = () => {
   const handleRegister = (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!username || !email || !password || !passwordConfirm) {
+    if (
+      !username ||
+      !email ||
+      !password ||
+      !passwordConfirm ||
+      !firstName ||
+      !lastName
+    ) {
       setSnackbar({
         isOpen: true,
         severity: "error",
@@ -60,7 +69,7 @@ export const Register = () => {
     }
 
     Accounts.createUser(
-      { username, email, password },
+      { username, email, password, profile: { firstName, lastName } },
       (error: Error | Meteor.Error | TypeError | undefined) => {
         if (error) {
           console.error("Registration failed", error);
@@ -101,6 +110,8 @@ export const Register = () => {
       >
         <Box display="flex" gap={2}>
           <TextField
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
             variant="filled"
             label="First Name"
             type="text"
@@ -109,6 +120,8 @@ export const Register = () => {
             required
           />
           <TextField
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
             variant="filled"
             label="Last Name"
             type="text"
