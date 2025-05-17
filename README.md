@@ -16,3 +16,7 @@ Adventure routes is a web application that provides an easy way for users to pla
 <img width="1512" alt="Screenshot 2025-05-12 at 10 30 56 AM" src="https://github.com/user-attachments/assets/e00ac03f-0529-44a3-977b-b4b54545f381" />
 <img width="1512" alt="Screenshot 2025-05-17 at 4 08 23 AM" src="https://github.com/user-attachments/assets/5b7a5f5f-f0be-4e25-91d9-25746fc833b4" />
 <img width="1512" alt="Screenshot 2025-05-16 at 12 56 02 PM" src="https://github.com/user-attachments/assets/b0ca7a9a-f3f7-478c-8a96-0f0eaa07bde8" />
+<img width="1512" alt="Screenshot 2025-05-17 at 8 54 00 AM" src="https://github.com/user-attachments/assets/88daaf13-945b-4f29-9d14-228165b8f414" />
+<img width="1512" alt="Screenshot 2025-05-17 at 8 54 10 AM" src="https://github.com/user-attachments/assets/a306e969-8dc6-4c67-a97a-c1e3c437004d" />
+<img width="1512" alt="Screenshot 2025-05-17 at 8 54 26 AM" src="https://github.com/user-attachments/assets/7682a1bd-f8b8-41ef-b6a3-02b919928180" />
+<img width="1512" alt="Screenshot 2025-05-17 at 8 54 47 AM" src="https://github.com/user-attachments/assets/5e98fb52-96df-43a6-a7d2-8c073d2bed1d" />
