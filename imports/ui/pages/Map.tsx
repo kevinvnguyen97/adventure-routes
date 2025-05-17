@@ -3,11 +3,14 @@ import {
   DirectionsRenderer,
   DirectionsService,
   GoogleMap,
+  useJsApiLoader,
 } from "@react-google-maps/api";
 import { useParams } from "react-router-dom";
+
 import { useAdventureRoute } from "/imports/providers/adventureRoutes";
 import { useAlertSnackbar } from "/imports/providers/AlertSnackbarProvider";
 import { Loading } from "/imports/ui/pages/Loading";
+import { GOOGLE_MAPS_LIBRARIES, SECRETS } from "/imports/constants";
 
 const MAP_CONTAINER_STYLE: CSSProperties = {
   width: "100%",
@@ -24,6 +27,10 @@ export const Map = () => {
     useAdventureRoute(routeId);
   const { route } = adventureRoute || {};
   const { origin = "", waypoints = [], destination = "" } = route || {};
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: SECRETS.public.oauth.googleMapsApiKey,
+    libraries: GOOGLE_MAPS_LIBRARIES,
+  });
 
   useEffect(() => {
     if (adventureRoute) {
@@ -62,7 +69,7 @@ export const Map = () => {
     [isRouteRendered]
   );
 
-  if (!routeId || isAdventureRouteLoading) {
+  if (!routeId || isAdventureRouteLoading || !isLoaded) {
     return <Loading />;
   }
   return (

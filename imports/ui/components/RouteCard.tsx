@@ -111,9 +111,7 @@ export const RouteCard = (props: RouteCardProps) => {
           height: "100%",
         }}
       >
-        <Typography variant="h5" component="div">
-          {adventureRoute.name}
-        </Typography>
+        <Typography variant="h5">{adventureRoute.name}</Typography>
         <Typography variant="body2" color="text.secondary">
           {adventureRoute.description}
         </Typography>
