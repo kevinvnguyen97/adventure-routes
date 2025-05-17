@@ -5,6 +5,7 @@ import { Comment, CommentsCollection } from "/imports/api/comments";
 Meteor.startup(async () => {
   await Promise.all([
     AdventureRoutesCollection.createIndexAsync({ userId: -1 }),
+    CommentsCollection.createIndexAsync({ userId: -1 }),
   ]);
 
   Meteor.publish("adventureRoutesForUser", (userId?: string) => {
