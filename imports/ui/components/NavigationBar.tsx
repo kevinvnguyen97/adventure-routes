@@ -118,7 +118,9 @@ export const NavigationBar = () => {
   const [anchorUserElement, setAnchorUserElement] =
     useState<HTMLButtonElement | null>(null);
 
-  const { loggedIn } = useMeteorAuth();
+  const { loggedIn, user } = useMeteorAuth();
+  const { profile } = user || {};
+  const { firstName = "", lastName = "" } = profile || {};
   const { setSnackbar } = useAlertSnackbar();
   const isUserMenuOpen = Boolean(anchorUserElement);
 
@@ -159,7 +161,7 @@ export const NavigationBar = () => {
             aria-controls={isUserMenuOpen ? PROFILE_MENU_ID : undefined}
             disabled={!loggedIn}
           >
-            <Avatar />
+            <Avatar>{user ? firstName?.[0] + lastName?.[0] : ""}</Avatar>
           </IconButton>
           <Menu
             id="profile-menu"
@@ -178,8 +180,8 @@ export const NavigationBar = () => {
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
             <ListItem>
-              <Avatar />
-              Profile
+              <Avatar>{user ? firstName?.[0] + lastName?.[0] : ""}</Avatar>
+              {user?.username}
             </ListItem>
             <MenuItem disabled>
               <ListItemIcon>
