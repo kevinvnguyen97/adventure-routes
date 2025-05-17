@@ -11,7 +11,6 @@ import { useAdventureRoute } from "/imports/providers/adventureRoutes";
 import { useAlertSnackbar } from "/imports/providers/AlertSnackbarProvider";
 import { Loading } from "/imports/ui/pages/Loading";
 import { CustomMapInfo } from "/imports/ui/components/CustomMapInfo";
-import { useMeteorAuth } from "/imports/providers/Auth";
 
 const MAP_CONTAINER_STYLE: CSSProperties = {
   width: "100%",

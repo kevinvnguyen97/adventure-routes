@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, FormControl, TextField, Typography } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Meteor } from "meteor/meteor";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,6 @@ import { useAlertSnackbar } from "/imports/providers/AlertSnackbarProvider";
 export const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     window.document.title = "Login";
@@ -20,7 +19,6 @@ export const Login = () => {
 
   const handleLogin = (event: React.FormEvent) => {
     event.preventDefault();
-    setIsSubmitted(true);
 
     if (!username || !password) {
       setSnackbar({
