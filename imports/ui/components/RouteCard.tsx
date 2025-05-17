@@ -151,13 +151,13 @@ export const RouteCard = (props: RouteCardProps) => {
         }}
         disableSpacing
       >
-        <IconButton onClick={handleDeleteRouteDialogOpen}>
+        <IconButton size="large" onClick={handleDeleteRouteDialogOpen}>
           <Close />
         </IconButton>
-        <IconButton onClick={handleRouteModalOpen}>
+        <IconButton size="large" onClick={handleRouteModalOpen}>
           <Edit />
         </IconButton>
-        <IconButton onClick={openMap}>
+        <IconButton size="large" onClick={openMap}>
           <Map />
         </IconButton>
       </CardActions>
