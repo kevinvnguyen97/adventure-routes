@@ -13,7 +13,6 @@ import {
   Typography,
   Box,
   Button,
-  TextField,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -105,10 +104,15 @@ const DesktopNavFormat = () => {
           <Button
             sx={{ color: "white", textTransform: "none" }}
             onClick={() => navigate("/")}
+            size="large"
           >
             Dashboard
           </Button>
-          <Button sx={{ color: "white", textTransform: "none" }} disabled>
+          <Button
+            sx={{ color: "white", textTransform: "none" }}
+            disabled
+            size="large"
+          >
             Other Users
           </Button>
         </>
