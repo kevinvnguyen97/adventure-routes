@@ -49,6 +49,7 @@ export const NavigationBar = () => {
     null
   );
 
+  const userId = Meteor.userId();
   const { setSnackbar } = useAlertSnackbar();
   const isPopoverOpen = Boolean(anchorElement);
 
@@ -88,6 +89,7 @@ export const NavigationBar = () => {
         <IconButton
           onClick={handlePopoverOpen}
           aria-controls={isPopoverOpen ? PROFILE_MENU_ID : undefined}
+          disabled={!userId}
         >
           <Avatar />
         </IconButton>
