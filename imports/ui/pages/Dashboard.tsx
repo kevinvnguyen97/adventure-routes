@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Meteor } from "meteor/meteor";
-import { Box, Button, Grid } from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { LocationOn } from "@mui/icons-material";
 
 import { useMeteorAuth } from "/imports/providers/Auth";
 import { useAdventureRoutesForUser } from "/imports/providers/adventureRoutes";
@@ -56,16 +57,34 @@ export const Dashboard = () => {
       display="flex"
       flexDirection="column"
       justifyContent="center"
+      alignItems="center"
       gap={2}
       padding={2}
     >
+      <Typography fontSize={60}>
+        <LocationOn fontSize="inherit" /> Adventure Routes
+      </Typography>
       <AddOrEditRouteModal
         isOpen={isRouteModalOpen}
         onClose={handleRouteModalClose}
       />
-      <Button onClick={handleRouteModalOpen} sx={{ alignSelf: "center" }}>
-        Create Adventure Route
-      </Button>
+      <Box display="flex" gap={3} alignItems="center" justifyContent="center">
+        <TextField
+          variant="filled"
+          size="medium"
+          label="Search for a route"
+          disabled
+        />
+        <Typography>or</Typography>
+        <Button
+          size="large"
+          variant="contained"
+          onClick={handleRouteModalOpen}
+          sx={{ alignSelf: "center" }}
+        >
+          Create Adventure Route
+        </Button>
+      </Box>
       <Grid
         container
         spacing={2}
@@ -74,6 +93,7 @@ export const Dashboard = () => {
           justifyContent: "center",
           alignItems: "stretch",
           display: "flex",
+          width: "100%",
         }}
       >
         {adventureRoutes.map((adventureRoute) => (
