@@ -6,12 +6,20 @@ export async function meteorMethodPromise(
   adventureRouteId: string
 ): Promise<void>;
 export async function meteorMethodPromise(
+  name: "changeProfilePicture",
+  newProfilePictureUrl: string
+): Promise<void>;
+export async function meteorMethodPromise(
+  name: "deleteComment",
+  commentId: string
+): Promise<void>;
+export async function meteorMethodPromise(
   name: "upsertAdventureRoute",
   adventureRoute: AdventureRoute
 ): Promise<void>;
 export async function meteorMethodPromise(
-  name: "changeProfilePicture",
-  newProfilePictureUrl: string
+  name: "upsertComment",
+  comment: Comment
 ): Promise<void>;
 export async function meteorMethodPromise<TReturn, TArgs extends any[]>(
   name: string,

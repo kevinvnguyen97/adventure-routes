@@ -1,5 +1,5 @@
-import React, { useState, MouseEvent } from "react";
-
+import React, { useState, MouseEvent, FormEvent } from "react";
+import { Meteor } from "meteor/meteor";
 import { InfoOutlined, Directions, Comment } from "@mui/icons-material";
 import {
   Box,
@@ -10,6 +10,7 @@ import {
   Popover,
   Select,
   SxProps,
+  TextField,
   Theme,
   Typography,
 } from "@mui/material";
@@ -20,8 +21,12 @@ import {
   formatImperialDistance,
   getTotalDistance,
   getTotalDuration,
+  meteorMethodPromise,
 } from "/imports/util";
-import { RouteDirectionLeg } from "./RouteDirectionLeg";
+import { RouteDirectionLeg } from "/imports/ui/components/RouteDirectionLeg";
+import { useCommentsForAdventureRoute } from "/imports/providers/adventureRoutes";
+import { CommentCard } from "/imports/ui/components/CommentCard";
+import { useAlertSnackbar } from "/imports/providers/AlertSnackbarProvider";
 
 const BUTTON_STYLE: SxProps<Theme> = {
   textTransform: "none",
@@ -46,6 +51,11 @@ type CustomMapInfoProps = {
 export const CustomMapInfo = (props: CustomMapInfoProps) => {
   const { adventureRoute, directions, travelMode, setTravelMode } = props;
 
+  const [commentText, setCommentText] = useState("");
+
+  const userId = Meteor.userId() ?? "";
+  const { data: comments, isLoading: isCommentsLoading } =
+    useCommentsForAdventureRoute(adventureRoute._id);
   const { routes } = directions || {};
   const route = routes?.[0];
   const { legs } = route || {};
@@ -53,17 +63,24 @@ export const CustomMapInfo = (props: CustomMapInfoProps) => {
   const totalDuration = getTotalDuration(legs);
   const formattedDistance = formatImperialDistance(totalDistance);
   const formattedDuration = formatDuration(totalDuration);
+  const { setSnackbar } = useAlertSnackbar();
 
   const [infoAnchorElement, setInfoAnchorElement] =
     useState<HTMLButtonElement | null>(null);
   const [directionsAnchorElement, setDirectionsAnchorElement] =
     useState<HTMLButtonElement | null>(null);
+  const [commentsAnchorElement, setCommentsAnchorElement] =
+    useState<HTMLButtonElement | null>(null);
 
   const isInfoPopoverOpen = Boolean(infoAnchorElement);
   const isDirectionsPopoverOpen = Boolean(directionsAnchorElement);
+  const isCommentsPopoverOpen = Boolean(commentsAnchorElement);
   const infoPopoverId = isInfoPopoverOpen ? "info-popover" : undefined;
   const directionsPopoverId = isDirectionsPopoverOpen
     ? "directions-popover"
+    : undefined;
+  const commentsPopoverId = isCommentsPopoverOpen
+    ? "comments-popover"
     : undefined;
 
   const handleInfoClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -77,6 +94,38 @@ export const CustomMapInfo = (props: CustomMapInfoProps) => {
   };
   const handleDirectionsClose = () => {
     setDirectionsAnchorElement(null);
+  };
+  const handleCommentsClick = (event: MouseEvent<HTMLButtonElement>) => {
+    setCommentsAnchorElement(event.currentTarget);
+  };
+  const handleCommentsClose = () => {
+    setCommentsAnchorElement(null);
+  };
+  const onCommentSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      await meteorMethodPromise("upsertComment", {
+        // @ts-ignore
+        userId,
+        adventureRouteId: adventureRoute._id,
+        commentText,
+        date: new Date(),
+      });
+      setSnackbar({
+        isOpen: true,
+        message: "Comment sent successfully",
+        severity: "success",
+      });
+    } catch (error) {
+      if (error instanceof Meteor.Error) {
+        setSnackbar({
+          isOpen: true,
+          message: error.message,
+          severity: "error",
+        });
+      }
+    }
   };
 
   return (
@@ -145,9 +194,52 @@ export const CustomMapInfo = (props: CustomMapInfoProps) => {
           })}
         </Box>
       </Popover>
-      <Button variant="contained" sx={BUTTON_STYLE} aria-describedby="">
+      <Button
+        variant="contained"
+        sx={BUTTON_STYLE}
+        aria-describedby={commentsPopoverId}
+        onClick={handleCommentsClick}
+      >
         <Comment />
       </Button>
+      <Popover
+        id={commentsPopoverId}
+        open={isCommentsPopoverOpen}
+        anchorEl={commentsAnchorElement}
+        onClose={handleCommentsClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        marginThreshold={-100}
+      >
+        <Box
+          padding={2}
+          display="flex"
+          flexDirection="column"
+          gap={2}
+          maxWidth={400}
+          maxHeight={500}
+        >
+          <Typography variant="h5">Comments</Typography>
+          <Box component="form" display="flex" onSubmit={onCommentSubmit}>
+            <TextField
+              label="Add comment"
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+            />
+            <Button
+              type="submit"
+              color="primary"
+              variant="contained"
+              disabled={!commentText}
+            >
+              Send
+            </Button>
+          </Box>
+          {!isCommentsLoading &&
+            comments.map((comment) => (
+              <CommentCard key={comment._id} comment={comment} />
+            ))}
+        </Box>
+      </Popover>
     </Box>
   );
 };
