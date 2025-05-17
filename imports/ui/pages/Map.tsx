@@ -11,12 +11,12 @@ import { useAdventureRoute } from "/imports/providers/adventureRoutes";
 import { useAlertSnackbar } from "/imports/providers/AlertSnackbarProvider";
 import { Loading } from "/imports/ui/pages/Loading";
 import { GOOGLE_MAPS_LIBRARIES, SECRETS } from "/imports/constants";
+import { Box, Button } from "@mui/material";
 
 const MAP_CONTAINER_STYLE: CSSProperties = {
   width: "100%",
-  height: "calc(100vh - 84px)",
+  height: "100%",
 };
-
 export const Map = () => {
   const { routeId = "" } = useParams();
   const [isRouteRendered, setIsRouteRendered] = useState(false);
@@ -73,23 +73,47 @@ export const Map = () => {
     return <Loading />;
   }
   return (
-    <GoogleMap mapContainerStyle={MAP_CONTAINER_STYLE} onLoad={onLoad}>
-      {origin && destination && (
-        <DirectionsService
-          callback={directionsCallback}
-          options={{
-            origin,
-            destination,
-            waypoints: formattedWaypoints,
-            travelMode: google.maps.TravelMode.DRIVING,
-            drivingOptions: {
-              departureTime: new Date(),
-              trafficModel: google.maps.TrafficModel.BEST_GUESS,
-            },
-          }}
-        />
-      )}
-      {directions && <DirectionsRenderer options={{ directions }} />}
-    </GoogleMap>
+    <Box position="relative" height="calc(100vh - 100px)">
+      <Button
+        variant="contained"
+        color="info"
+        sx={{
+          position: "absolute",
+          zIndex: 1,
+          top: 10,
+          left: 178,
+          textTransform: "none",
+          bgcolor: "white",
+          "&:hover": {
+            bgcolor: "whitesmoke",
+          },
+          borderRadius: "2px",
+          padding: "4px 17px",
+          fontSize: "18px",
+          fontFamily: "Roboto, Arial, sans-serif",
+          fontWeight: "normal",
+        }}
+      >
+        Route Info
+      </Button>
+      <GoogleMap mapContainerStyle={MAP_CONTAINER_STYLE} onLoad={onLoad}>
+        {origin && destination && (
+          <DirectionsService
+            callback={directionsCallback}
+            options={{
+              origin,
+              destination,
+              waypoints: formattedWaypoints,
+              travelMode: google.maps.TravelMode.DRIVING,
+              drivingOptions: {
+                departureTime: new Date(),
+                trafficModel: google.maps.TrafficModel.BEST_GUESS,
+              },
+            }}
+          />
+        )}
+        {directions && <DirectionsRenderer options={{ directions }} />}
+      </GoogleMap>
+    </Box>
   );
 };

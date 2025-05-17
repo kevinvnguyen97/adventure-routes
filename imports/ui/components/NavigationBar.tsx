@@ -4,23 +4,26 @@ import {
   IconButton,
   Avatar,
   AppBar,
-  Typography,
   Menu,
   Theme,
   SxProps,
   MenuItem,
   ListItemIcon,
-  Box,
   ListItem,
+  Typography,
+  Box,
+  Button,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Meteor } from "meteor/meteor";
 import { useAlertSnackbar } from "/imports/providers/AlertSnackbarProvider";
 import { Logout, Settings } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import { useMeteorAuth } from "/imports/providers/Auth";
 
 const PROFILE_MENU_ID = "profile-menu";
-const PROFILE_MENU_STYLE: SxProps<Theme> = {
+const MENU_STYLE: SxProps<Theme> = {
   overflow: "visible",
   filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
   mt: 1.5,
@@ -30,34 +33,100 @@ const PROFILE_MENU_STYLE: SxProps<Theme> = {
     ml: -0.5,
     mr: 1,
   },
-  "&::before": {
-    content: '""',
-    display: "block",
-    position: "absolute",
-    top: 0,
-    right: 14,
-    width: 10,
-    height: 10,
-    bgcolor: "background.paper",
-    transform: "translateY(-50%) rotate(45deg)",
-    zIndex: 0,
-  },
+};
+const NAV_MENU_ID = "nav-menu";
+
+const MobileNavFormat = () => {
+  const [anchorNavElement, setAnchorNavElement] =
+    useState<HTMLButtonElement | null>(null);
+  const isNavMenuOpen = Boolean(anchorNavElement);
+
+  const { loggedIn } = useMeteorAuth();
+  const navigate = useNavigate();
+
+  const handleNavMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
+    setAnchorNavElement(event.currentTarget);
+  };
+  const handleNavMenuClose = () => {
+    setAnchorNavElement(null);
+  };
+
+  return (
+    <>
+      <Box sx={{ display: { xs: "block", md: "none" } }}>
+        <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          onClick={handleNavMenuOpen}
+          aria-controls={isNavMenuOpen ? NAV_MENU_ID : undefined}
+          disabled={!loggedIn}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Menu
+          id="nav-menu"
+          variant="selectedMenu"
+          open={isNavMenuOpen}
+          anchorEl={anchorNavElement}
+          onClose={handleNavMenuClose}
+          onClick={handleNavMenuClose}
+          slotProps={{ paper: { elevation: 2, sx: MENU_STYLE } }}
+          transformOrigin={{ horizontal: "left", vertical: "top" }}
+          anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
+        >
+          <MenuItem onClick={() => navigate("/")}>Dashboard</MenuItem>
+          <MenuItem disabled>Other Users</MenuItem>
+        </Menu>
+      </Box>
+      <LocationOnIcon
+        fontSize="large"
+        sx={{ display: { xs: "block", md: "none" } }}
+      />
+    </>
+  );
+};
+
+const DesktopNavFormat = () => {
+  const navigate = useNavigate();
+  const { loggedIn } = useMeteorAuth();
+
+  return (
+    <Box sx={{ display: { xs: "none", md: "flex" } }}>
+      <Typography fontSize={30} mr={3}>
+        <LocationOnIcon fontSize="inherit" /> Adventure Routes
+      </Typography>
+      {loggedIn && (
+        <>
+          <Button
+            sx={{ color: "white", textTransform: "none" }}
+            onClick={() => navigate("/")}
+          >
+            Dashboard
+          </Button>
+          <Button sx={{ color: "white", textTransform: "none" }} disabled>
+            Other Users
+          </Button>
+        </>
+      )}
+    </Box>
+  );
 };
 
 export const NavigationBar = () => {
-  const [anchorElement, setAnchorElement] = useState<HTMLButtonElement | null>(
-    null
-  );
+  const [anchorUserElement, setAnchorUserElement] =
+    useState<HTMLButtonElement | null>(null);
 
-  const userId = Meteor.userId();
+  const { loggedIn } = useMeteorAuth();
   const { setSnackbar } = useAlertSnackbar();
-  const isPopoverOpen = Boolean(anchorElement);
+  const isUserMenuOpen = Boolean(anchorUserElement);
 
-  const handlePopoverOpen = (event: MouseEvent<HTMLButtonElement>) => {
-    setAnchorElement(event.currentTarget);
+  const handleUserMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
+    setAnchorUserElement(event.currentTarget);
   };
-  const handlePopoverClose = () => {
-    setAnchorElement(null);
+  const handleUserMenuClose = () => {
+    setAnchorUserElement(null);
   };
   const logout = () => {
     Meteor.logout((error) => {
@@ -80,53 +149,57 @@ export const NavigationBar = () => {
   };
 
   return (
-    <AppBar position="static">
-      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-        <IconButton size="large" edge="start" color="inherit" aria-label="menu">
-          <MenuIcon />
-        </IconButton>
-        <LocationOnIcon fontSize="large" />
-        <IconButton
-          onClick={handlePopoverOpen}
-          aria-controls={isPopoverOpen ? PROFILE_MENU_ID : undefined}
-          disabled={!userId}
-        >
-          <Avatar />
-        </IconButton>
-        <Menu
-          id="profile-menu"
-          variant="selectedMenu"
-          open={isPopoverOpen}
-          anchorEl={anchorElement}
-          onClose={handlePopoverClose}
-          onClick={handlePopoverClose}
-          slotProps={{
-            paper: {
-              elevation: 0,
-              sx: PROFILE_MENU_STYLE,
-            },
-          }}
-          transformOrigin={{ horizontal: "right", vertical: "top" }}
-          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-        >
-          <ListItem>
+    <Box>
+      <AppBar position="fixed">
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+          <DesktopNavFormat />
+          <MobileNavFormat />
+          <IconButton
+            onClick={handleUserMenuOpen}
+            aria-controls={isUserMenuOpen ? PROFILE_MENU_ID : undefined}
+            disabled={!loggedIn}
+          >
             <Avatar />
-            Profile
-          </ListItem>
-          <MenuItem disabled>
-            <ListItemIcon>
-              <Settings />
-            </ListItemIcon>
-            Settings
-          </MenuItem>
-          <MenuItem onClick={logout}>
-            <ListItemIcon>
-              <Logout />
-            </ListItemIcon>
-            Logout
-          </MenuItem>
-        </Menu>
-      </Toolbar>
-    </AppBar>
+          </IconButton>
+          <Menu
+            id="profile-menu"
+            variant="selectedMenu"
+            open={isUserMenuOpen}
+            anchorEl={anchorUserElement}
+            onClose={handleUserMenuClose}
+            onClick={handleUserMenuClose}
+            slotProps={{
+              paper: {
+                elevation: 2,
+                sx: MENU_STYLE,
+              },
+            }}
+            transformOrigin={{ horizontal: "right", vertical: "top" }}
+            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+          >
+            <ListItem>
+              <Avatar />
+              Profile
+            </ListItem>
+            <MenuItem disabled>
+              <ListItemIcon>
+                <Settings />
+              </ListItemIcon>
+              Settings
+            </MenuItem>
+            <MenuItem onClick={logout}>
+              <ListItemIcon>
+                <Logout />
+              </ListItemIcon>
+              Logout
+            </MenuItem>
+          </Menu>
+        </Toolbar>
+      </AppBar>
+      {/** Filler behind the actual app bar when scrolling */}
+      <AppBar position="relative" sx={{ visibility: "hidden", margin: 0 }}>
+        <Toolbar />
+      </AppBar>
+    </Box>
   );
 };

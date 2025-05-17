@@ -53,12 +53,11 @@ export const Dashboard = () => {
   }
   return (
     <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        gap: 2,
-      }}
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      gap={2}
+      padding={2}
     >
       <AddOrEditRouteModal
         isOpen={isRouteModalOpen}

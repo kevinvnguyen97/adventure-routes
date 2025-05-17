@@ -14,45 +14,43 @@ export const App = () => {
     <Box>
       <NavigationBar />
       <AlertSnackbar />
-      <Box paddingTop={2} paddingBottom={2} width="100%">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/">
-            <Route
-              index
-              element={
-                <RequireAuth>
-                  <Dashboard />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="map/:routeId"
-              element={
-                <RequireAuth>
-                  <Map />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="login"
-              element={
-                <RequireNotAuth>
-                  <Login />
-                </RequireNotAuth>
-              }
-            />
-            <Route
-              path="register"
-              element={
-                <RequireNotAuth>
-                  <Register />
-                </RequireNotAuth>
-              }
-            />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Route>
-        </Routes>
-      </Box>
+      <Routes location={location} key={location.pathname}>
+        <Route path="/">
+          <Route
+            index
+            element={
+              <RequireAuth>
+                <Dashboard />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="map/:routeId"
+            element={
+              <RequireAuth>
+                <Map />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="login"
+            element={
+              <RequireNotAuth>
+                <Login />
+              </RequireNotAuth>
+            }
+          />
+          <Route
+            path="register"
+            element={
+              <RequireNotAuth>
+                <Register />
+              </RequireNotAuth>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Route>
+      </Routes>
     </Box>
   );
 };

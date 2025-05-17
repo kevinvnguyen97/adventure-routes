@@ -14,6 +14,25 @@ Meteor.startup(() => {
 
   const theme = createTheme({
     palette: { mode: "dark" },
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          text: {
+            textTransform: "none",
+          },
+          containedPrimary: {
+            textTransform: "none",
+          },
+        },
+      },
+      MuiToggleButton: {
+        styleOverrides: {
+          root: {
+            textTransform: "none",
+          },
+        },
+      },
+    },
   });
 
   root.render(

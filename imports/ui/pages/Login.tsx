@@ -52,7 +52,13 @@ export const Login = () => {
   };
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      gap={2}
+      padding={2}
+    >
       <Typography fontSize={60}>
         <LocationOnIcon fontSize="inherit" /> Adventure Routes
       </Typography>
