@@ -3,20 +3,20 @@ import { Meteor } from "meteor/meteor";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { LocationOn } from "@mui/icons-material";
 
-import { useMeteorAuth } from "/imports/providers/Auth";
 import { useAdventureRoutesForUser } from "/imports/providers/adventureRoutes";
 import { AddOrEditRouteModal } from "/imports/ui/components/AddOrEditRouteModal";
 import { meteorMethodPromise } from "/imports/util";
 import { useAlertSnackbar } from "/imports/providers/AlertSnackbarProvider";
 import { RouteCard } from "/imports/ui/components/RouteCard";
 import { Loading } from "/imports/ui/pages/Loading";
+import { useParams } from "react-router-dom";
 
 export const Dashboard = () => {
+  const { userId = "" } = useParams();
   const [isRouteModalOpen, setIsRouteModalOpen] = useState(false);
 
-  const { userId = "" } = useMeteorAuth();
   const { data: adventureRoutes, isLoading: isAdventureRoutesLoading } =
-    useAdventureRoutesForUser(userId ?? "");
+    useAdventureRoutesForUser(userId);
   const { setSnackbar } = useAlertSnackbar();
 
   useEffect(() => {

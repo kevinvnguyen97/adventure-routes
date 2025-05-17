@@ -215,7 +215,7 @@ export const CustomMapInfo = (props: CustomMapInfoProps) => {
           display="flex"
           flexDirection="column"
           gap={2}
-          maxWidth={400}
+          maxWidth={450}
           maxHeight={500}
         >
           <Typography variant="h5">Comments</Typography>
@@ -224,6 +224,7 @@ export const CustomMapInfo = (props: CustomMapInfoProps) => {
               label="Add comment"
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
+              fullWidth
             />
             <Button
               type="submit"
@@ -234,10 +235,17 @@ export const CustomMapInfo = (props: CustomMapInfoProps) => {
               Send
             </Button>
           </Box>
-          {!isCommentsLoading &&
-            comments.map((comment) => (
-              <CommentCard key={comment._id} comment={comment} />
-            ))}
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap={2}
+            sx={{ overflowY: "scroll" }}
+          >
+            {!isCommentsLoading &&
+              comments.map((comment) => (
+                <CommentCard key={comment._id} comment={comment} />
+              ))}
+          </Box>
         </Box>
       </Popover>
     </Box>

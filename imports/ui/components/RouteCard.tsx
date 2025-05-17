@@ -26,6 +26,7 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { AddOrEditRouteModal } from "./AddOrEditRouteModal";
+import { useMeteorAuth } from "/imports/providers/Auth";
 
 type DeleteRouteDialogProps = {
   isOpen: boolean;
@@ -69,6 +70,7 @@ export const RouteCard = (props: RouteCardProps) => {
   const [isDeleteRouteDialogOpen, setIsDeleteRouteDialogOpen] = useState(false);
 
   const navigate = useNavigate();
+  const { userId = "" } = useMeteorAuth();
 
   const handleRouteModalOpen = () => {
     setIsRouteModalOpen(true);
@@ -138,6 +140,14 @@ export const RouteCard = (props: RouteCardProps) => {
           <LocationCity />
           <Box>{adventureRoute.route.destination}</Box>
         </Typography>
+        {userId === adventureRoute.userId && (
+          <Typography
+            variant="body2"
+            color={adventureRoute.isPublic ? "success" : "error"}
+          >
+            {adventureRoute.isPublic ? "Public" : "Private"}
+          </Typography>
+        )}
         <Typography justifySelf="end">
           {[...Array(adventureRoute.priceCategory)].map((_, i) => (
             <AttachMoney key={i} />

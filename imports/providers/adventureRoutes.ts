@@ -2,25 +2,47 @@ import { Meteor } from "meteor/meteor";
 import { useTracker } from "meteor/react-meteor-data";
 import { AdventureRoutesCollection } from "/imports/api/adventureRoutes";
 import { CommentsCollection } from "/imports/api/comments";
+import { AdventureRoute } from "/imports/api/adventureRoutes";
 
-export const useAdventureRoutesForUser = (userId: string) => {
+export const useAdventureRoutesForUser = (userId?: string) => {
+  const loggedInUserId = Meteor.userId() ?? "";
   return useTracker(() => {
     const subscription = Meteor.subscribe("adventureRoutesForUser", userId);
-    const adventureRoutes = userId
-      ? AdventureRoutesCollection.find({ userId }).fetch()
-      : [];
+
+    let adventureRoutes: AdventureRoute[];
+    if (userId) {
+      adventureRoutes = AdventureRoutesCollection.find({
+        userId,
+        isPublic: true,
+      }).fetch();
+    } else {
+      adventureRoutes = AdventureRoutesCollection.find({
+        userId: loggedInUserId,
+      }).fetch();
+    }
     return { data: adventureRoutes, isLoading: !subscription.ready() };
   }, [userId]);
 };
 
 export const useAdventureRoute = (id: string) => {
-  const userId = Meteor.userId();
+  const userId = Meteor.userId() ?? "";
   return useTracker(() => {
     const subscription = Meteor.subscribe("adventureRouteById", id);
     const adventureRoute = AdventureRoutesCollection.findOne({
       _id: id,
     });
-    return { data: adventureRoute, isLoading: !subscription.ready() };
+    if (adventureRoute?.userId === userId) {
+      return { data: adventureRoute, isLoading: !subscription.ready() };
+    } else {
+      const adventureRouteOtherUser = AdventureRoutesCollection.findOne({
+        _id: id,
+        isPublic: true,
+      });
+      return {
+        data: adventureRouteOtherUser,
+        isLoading: !subscription.ready(),
+      };
+    }
   }, [userId, id]);
 };
 
@@ -52,4 +74,21 @@ export const useUserInfo = (userId: string) => {
     );
     return { data: users, isLoading: !subscription.ready() };
   }, [userId]);
+};
+
+export const useAllUsers = () => {
+  return useTracker(() => {
+    const userId = Meteor.userId() ?? "";
+    const subscription = Meteor.subscribe("getAllUsers");
+    const users = Meteor.users
+      .find(
+        { _id: { $not: { $eq: userId } } },
+        {
+          fields: { userId: 1, username: 1, "profile.profilePictureUrl": 1 },
+          sort: { username: 1 },
+        }
+      )
+      .fetch();
+    return { data: users, isLoading: !subscription.ready() };
+  });
 };

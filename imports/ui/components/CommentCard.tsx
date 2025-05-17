@@ -27,7 +27,7 @@ export const CommentCard = (props: CommentCardProps) => {
     return <Loading />;
   }
   return (
-    <Card>
+    <Card sx={{ minHeight: 125 }}>
       <CardContent sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         <Box display="flex" alignItems="center" gap={2}>
           <Avatar src={profilePictureUrl} />

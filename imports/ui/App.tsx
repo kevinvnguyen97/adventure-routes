@@ -4,8 +4,8 @@ import { Box } from "@mui/material";
 
 import { NavigationBar } from "/imports/ui/components/NavigationBar";
 import { AlertSnackbar } from "/imports/ui/components/AlertSnackbar";
-import { Dashboard, Login, Register, Map } from "/imports/ui/pages";
-import { RequireAuth, RequireNotAuth } from "../providers/Auth";
+import { Dashboard, Login, Register, Map, OtherUsers } from "/imports/ui/pages";
+import { RequireAuth, RequireNotAuth } from "/imports/providers/Auth";
 
 export const App = () => {
   const location = useLocation();
@@ -21,6 +21,22 @@ export const App = () => {
             element={
               <RequireAuth>
                 <Dashboard />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/:userId"
+            element={
+              <RequireAuth>
+                <Dashboard />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="other-users"
+            element={
+              <RequireAuth>
+                <OtherUsers />
               </RequireAuth>
             }
           />

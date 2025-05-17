@@ -110,7 +110,7 @@ const DesktopNavFormat = () => {
           </Button>
           <Button
             sx={{ color: "white", textTransform: "none" }}
-            disabled
+            onClick={() => navigate("/other-users")}
             size="large"
           >
             Other Users

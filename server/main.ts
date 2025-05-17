@@ -7,8 +7,13 @@ Meteor.startup(async () => {
     AdventureRoutesCollection.createIndexAsync({ userId: -1 }),
   ]);
 
-  Meteor.publish("adventureRoutesForUser", (userId: string) => {
-    return AdventureRoutesCollection.find({ userId });
+  Meteor.publish("adventureRoutesForUser", (userId?: string) => {
+    const loggedInUserId = Meteor.userId() ?? "";
+    if (userId) {
+      return AdventureRoutesCollection.find({ userId, isPublic: true });
+    } else {
+      return AdventureRoutesCollection.find({ userId: loggedInUserId });
+    }
   });
   Meteor.publish("adventureRouteById", (id: string) => {
     const userId = Meteor.userId();
@@ -28,6 +33,13 @@ Meteor.startup(async () => {
         fields: { userId: 1, username: 1, "profile.profilePictureUrl": 1 },
         limit: 1,
       }
+    );
+  });
+  Meteor.publish("getAllUsers", () => {
+    const userId = Meteor.userId() ?? "";
+    return Meteor.users.find(
+      { _id: { $not: { $eq: userId } } },
+      { sort: { username: 1 } }
     );
   });
 });
