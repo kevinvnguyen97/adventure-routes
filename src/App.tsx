@@ -1,7 +1,7 @@
 import "./App.css";
 import { Box, Image } from "@chakra-ui/react";
 import NavigationBar from "@components/NavigationBar";
-import { Login } from "@pages/Login";
+import Login from "@pages/Login";
 
 const App = () => {
   return (

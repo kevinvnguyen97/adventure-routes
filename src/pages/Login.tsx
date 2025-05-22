@@ -1,7 +1,7 @@
 import { Box, Input, Image, Button } from "@chakra-ui/react";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 
-export const Login = () => {
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -44,3 +44,5 @@ export const Login = () => {
     </Box>
   );
 };
+
+export default Login;
