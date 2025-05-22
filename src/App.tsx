@@ -1,5 +1,5 @@
 import "./App.css";
-import { Box, Image } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import NavigationBar from "@components/NavigationBar";
 import Login from "@pages/Login";
 
