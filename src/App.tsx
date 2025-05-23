@@ -5,7 +5,7 @@ import Login from "@pages/Login";
 
 const App = () => {
   return (
-    <Box width="100%" padding={5}>
+    <Box width="100%" colorPalette="orange">
       <NavigationBar />
       <Login />
     </Box>
