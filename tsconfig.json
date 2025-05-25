@@ -2,8 +2,13 @@
   "compilerOptions": {
     "paths": {
       "@components/*": ["components/*"],
-      "@pages/*": ["pages/*"]
+      "@constants/*": ["constants/*"],
+      "@models/*": ["models/*"],
+      "@pages/*": ["pages/*"],
+      "@routes/*": ["routes/*"],
+      "@services/*": ["services/*"]
     },
+    "esModuleInterop": true,
     "baseUrl": "src"
   },
   "files": [],
