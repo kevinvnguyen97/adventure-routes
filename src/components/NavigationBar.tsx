@@ -33,8 +33,6 @@ const UserAvatar = (props: UseAvatarProps) => {
 
 const UserPopover = () => {
   const [isUserPopoverOpen, setIsUserPopoverOpen] = useState(false);
-  const popoverBgColor = useColorModeValue("orange.500", "gray.950");
-  const logoutTextColor = useColorModeValue("red.700", "red.500");
 
   const onUserPopoverChange = () => {
     setIsUserPopoverOpen(!isUserPopoverOpen);
@@ -50,11 +48,7 @@ const UserPopover = () => {
       </Popover.Trigger>
       <Portal>
         <Popover.Positioner>
-          <Popover.Content
-            bgColor={popoverBgColor}
-            color="white"
-            colorPalette="orange"
-          >
+          <Popover.Content colorPalette="orange">
             <Popover.Arrow />
             <Popover.Body display="flex" flexDirection="column">
               <Box
@@ -66,22 +60,15 @@ const UserPopover = () => {
                   <UserAvatar fallbackProps={{ name: TMP_USERNAME }} />
                   <Text fontWeight="bold">{TMP_USERNAME}</Text>
                 </Box>
-                <ColorModeButton
-                  color="white"
-                  _hover={{ bgColor: "orange.600" }}
-                />
+                <ColorModeButton colorPalette="gray" />
               </Box>
               <Separator />
-              <Button
-                variant="ghost"
-                color="white"
-                _hover={{ bgColor: "orange.600" }}
-              >
+              <Button variant="ghost" colorPalette="gray">
                 <Settings />
                 Settings
               </Button>
               <Separator />
-              <Button variant="ghost" color={logoutTextColor}>
+              <Button variant="ghost" color="red" colorPalette="red">
                 <Logout />
                 Log Out
               </Button>
