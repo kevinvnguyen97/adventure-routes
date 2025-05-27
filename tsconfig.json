@@ -5,8 +5,10 @@
       "@constants/*": ["constants/*"],
       "@models/*": ["models/*"],
       "@pages/*": ["pages/*"],
+      "@providers/*": ["providers/*"],
       "@routes/*": ["routes/*"],
-      "@services/*": ["services/*"]
+      "@services/*": ["services/*"],
+      "@utils/*": ["utils/*"]
     },
     "esModuleInterop": true,
     "baseUrl": "src"

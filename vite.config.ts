@@ -7,8 +7,10 @@ const SECTIONS = [
   "constants",
   "models",
   "pages",
+  "providers",
   "routes",
   "services",
+  "utils",
 ];
 
 // https://vite.dev/config/

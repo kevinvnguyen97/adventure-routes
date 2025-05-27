@@ -1,17 +1,31 @@
 import "./App.css";
-import type { ReactNode } from "react";
-
 import { Box } from "@chakra-ui/react";
-import { Navigate, Routes, Route } from "react-router-dom";
+import { Navigate, Routes, Route, Outlet } from "react-router-dom";
+
 import NavigationBar from "@components/NavigationBar";
 import Login from "@pages/Login";
 import Dashboard from "@pages/Dashboard";
 import Register from "@pages/Register";
+import { useAuth } from "@utils/auth";
 
-const PrivateRoute = ({ children }: { children: ReactNode }) => {
-  const isAuthenticated = localStorage.getItem("token");
+const ProtectedRoute = () => {
+  const { token } = useAuth();
 
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  if (!token) {
+    return <Navigate to="/login" />;
+  }
+
+  return <Outlet />;
+};
+
+const NonProtectedRoute = () => {
+  const { token } = useAuth();
+
+  if (token) {
+    return <Navigate to="/" />;
+  }
+
+  return <Outlet />;
 };
 
 const App = () => {
@@ -19,16 +33,13 @@ const App = () => {
     <Box width="100%" colorPalette="orange">
       <NavigationBar />
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route
-          path="/"
-          element={
-            <PrivateRoute>
-              <Dashboard />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/" element={<ProtectedRoute />}>
+          <Route index element={<Dashboard />} />
+        </Route>
+        <Route path="/" element={<NonProtectedRoute />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
       </Routes>
     </Box>
   );
