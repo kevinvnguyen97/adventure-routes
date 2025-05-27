@@ -1,7 +1,7 @@
 import { Box, Input, Image, Button } from "@chakra-ui/react";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 
-const Login = () => {
+const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -11,22 +11,8 @@ const Login = () => {
   const onPasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
-  const loginUser = async (event: FormEvent<HTMLDivElement>) => {
+  const loginUser = (event: FormEvent<HTMLDivElement>) => {
     event.preventDefault();
-
-    try {
-      const token = await fetch("/api/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
-      console.log("TOKEN:", token);
-    } catch (error) {
-      const loginError = error as Error;
-      console.error("Login failed:", loginError.message);
-    }
   };
 
   return (
@@ -52,13 +38,11 @@ const Login = () => {
           variant="subtle"
           placeholder="Password"
         />
-        <Button variant="solid" type="submit">
-          Login
-        </Button>
+        <Button variant="solid">Login</Button>
         <Button variant="subtle">New user? Register here</Button>
       </Box>
     </Box>
   );
 };
 
-export default Login;
+export default Register;

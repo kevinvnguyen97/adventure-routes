@@ -1,5 +1,6 @@
 import express from "express";
 import * as cors from "cors";
+
 import { connectToDatabase } from "../services/database.service.ts";
 import { routesRouter } from "../routes/routes.router.ts";
 import { usersRouter } from "../routes/users.router.ts";

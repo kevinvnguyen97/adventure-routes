@@ -27,9 +27,29 @@ const validatePassword = async (args: {
   const isValid = await compare(password, hashedPassword);
   return isValid;
 };
-const generateToken = (userId: string) => {
-  return jwt.sign({ id: userId }, env.VITE_JWT_SECRET!, { expiresIn: "1h" });
+const generateToken = (user: User) => {
+  return jwt.sign({ userId: user.id }, env.VITE_JWT_SECRET!, {
+    algorithm: "PS256",
+    expiresIn: "1h",
+  });
 };
+
+// Get
+usersRouter.get("/", async (_req: Request, res: Response) => {
+  try {
+    const users = (await collections.users
+      ?.find({})
+      .toArray()) as unknown as User[];
+    if (users) {
+      res.json(users);
+    } else {
+      res.status(404).send("No users found");
+    }
+  } catch (error) {
+    const userError = error as Error;
+    res.status(500).send(userError.message);
+  }
+});
 
 // Post
 usersRouter.post("/register", async (req: Request, res: Response) => {
@@ -45,9 +65,8 @@ usersRouter.post("/register", async (req: Request, res: Response) => {
     const result = await collections.users?.insertOne(newUser);
 
     if (result) {
-      res
-        .status(201)
-        .send(`User with id ${result.insertedId} successfully created`);
+      const token = generateToken(newUser);
+      res.json({ token });
     } else {
       res.status(500).send(`Failed to create user`);
     }
@@ -64,6 +83,7 @@ usersRouter.post("/login", async (req: Request, res: Response) => {
     const user = (await collections.users?.findOne({
       username,
     })) as unknown as User;
+
     const isPasswordValid = await validatePassword({
       password,
       hashedPassword: user.password,
@@ -74,7 +94,8 @@ usersRouter.post("/login", async (req: Request, res: Response) => {
       return;
     }
 
-    const token = generateToken(user.id as unknown as string);
+    const token = generateToken(user);
+    console.log("TOKEN:", token);
     res.json({ token });
   } catch (error) {
     const userError = error as Error;

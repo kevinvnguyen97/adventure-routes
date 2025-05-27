@@ -19,17 +19,22 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         "/api": {
-          target: "http://localhost:8080",
-          changeOrigin: false,
+          target: "http://localhost:8080/",
+          changeOrigin: true,
           secure: false,
           ws: true,
+          rewrite: (path) => path.replace(/^\/api/, ""),
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           configure: (proxy, _options) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             proxy.on("error", (err, _req, _res) => {
               console.log("proxy error", err);
             });
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             proxy.on("proxyReq", (_proxyReq, req, _res) => {
               console.log("Sending Request to Target:", req.method, req.url);
             });
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             proxy.on("proxyRes", (proxyRes, req, _res) => {
               console.log(
                 "Received Response from the Target:",
