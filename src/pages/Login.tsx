@@ -32,7 +32,7 @@ const Login = () => {
       <VStack
         as="form"
         onSubmit={loginUser}
-        width={{ smToMd: "100%", md: 400 }}
+        width={{ smDown: "100%", sm: 400 }}
         gap={5}
       >
         <Input

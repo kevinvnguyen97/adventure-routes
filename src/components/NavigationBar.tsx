@@ -88,7 +88,12 @@ const NavigationBar = () => {
   return (
     <Box padding={5} bgColor={navBarBgColor}>
       <Flex h={5} alignItems="center" justifyContent="space-between">
-        <IconButton variant="ghost" md={{ display: "none" }} size="xl">
+        <IconButton
+          variant="ghost"
+          smDown={{ display: "block" }}
+          sm={{ display: "none" }}
+          size="xl"
+        >
           <MenuIcon />
         </IconButton>
         <Image src="/small_logo.png" width={20} height="auto" />

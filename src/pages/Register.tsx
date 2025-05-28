@@ -28,7 +28,7 @@ const Register = () => {
       <VStack
         as="form"
         onSubmit={() => {}}
-        width={{ smToMd: "100%", md: 400 }}
+        width={{ smDown: "100%", sm: 400 }}
         gap={5}
       >
         <HStack gap={2} alignItems="center">
