@@ -15,6 +15,7 @@ import {
 import { Menu as MenuIcon, Settings, Logout } from "@mui/icons-material";
 import { useState } from "react";
 import { ColorModeButton, useColorModeValue } from "@components/ui";
+import { useAuth } from "@utils/auth";
 
 const TMP_USERNAME = "Placeholder";
 
@@ -32,6 +33,7 @@ const UserAvatar = (props: UseAvatarProps) => {
 };
 
 const UserPopover = () => {
+  const { token } = useAuth();
   const [isUserPopoverOpen, setIsUserPopoverOpen] = useState(false);
 
   const onUserPopoverChange = () => {
@@ -39,7 +41,7 @@ const UserPopover = () => {
   };
   return (
     <Popover.Root open={isUserPopoverOpen} onOpenChange={onUserPopoverChange}>
-      <Popover.Trigger>
+      <Popover.Trigger disabled={!token}>
         <UserAvatar
           fallbackProps={{ name: TMP_USERNAME }}
           variant="subtle"

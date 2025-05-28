@@ -1,47 +1,89 @@
-import { Box, Input, Image, Button } from "@chakra-ui/react";
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import {
+  Box,
+  Input,
+  Image,
+  Button,
+  Avatar,
+  Text,
+  HStack,
+  VStack,
+} from "@chakra-ui/react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+
+  const [profilePictureUrl, setProfilePictureUrl] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const onUsernameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
-  };
-  const onPasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  };
-  const loginUser = (event: FormEvent<HTMLDivElement>) => {
-    event.preventDefault();
-  };
+  const [reEnterPassword, setReEnterPassword] = useState("");
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center">
+    <VStack alignItems="center">
       <Image src="./large_logo.png" />
-      <Box
+      <VStack
         as="form"
-        onSubmit={loginUser}
+        onSubmit={() => {}}
         width={{ smToMd: "100%", md: 400 }}
-        display="flex"
-        flexDirection="column"
         gap={5}
       >
+        <HStack gap={2} alignItems="center">
+          <Avatar.Root size="2xl" variant="subtle">
+            <Avatar.Fallback
+              name={[firstName, lastName].filter(Boolean).join(" ")}
+            />
+            <Avatar.Image />
+          </Avatar.Root>
+          <Input
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value.trim())}
+            variant="subtle"
+            placeholder="First Name"
+            required
+          />
+          <Input
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value.trim())}
+            variant="subtle"
+            placeholder="Last Name"
+          />
+        </HStack>
+        <Input
+          value={email}
+          onChange={(e) => setEmail(e.target.value.trim())}
+          variant="subtle"
+          placeholder="Email"
+        />
         <Input
           value={username}
-          onChange={onUsernameChange}
+          onChange={(e) => setUsername(e.target.value.trim())}
           variant="subtle"
-          placeholder="Username or Email"
+          placeholder="Username"
         />
         <Input
           value={password}
-          onChange={onPasswordChange}
+          onChange={(e) => setPassword(e.target.value)}
           variant="subtle"
           placeholder="Password"
+          type="password"
         />
-        <Button variant="solid">Login</Button>
-        <Button variant="subtle">New user? Register here</Button>
-      </Box>
-    </Box>
+        <Input
+          value={reEnterPassword}
+          onChange={(e) => setReEnterPassword(e.target.value)}
+          variant="subtle"
+          placeholder="Re-Enter Password"
+          type="password"
+        />
+        <Button variant="solid">Register</Button>
+        <Button variant="ghost" onClick={() => navigate("/login")}>
+          Existing user? Login here
+        </Button>
+      </VStack>
+    </VStack>
   );
 };
 

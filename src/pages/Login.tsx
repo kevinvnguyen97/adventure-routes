@@ -1,16 +1,13 @@
-import { Box, Input, Image, Button } from "@chakra-ui/react";
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { Box, Input, Image, Button, VStack } from "@chakra-ui/react";
+import { useState, type FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const onUsernameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
-  };
-  const onPasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  };
   const loginUser = async (event: FormEvent<HTMLDivElement>) => {
     event.preventDefault();
 
@@ -30,34 +27,35 @@ const Login = () => {
   };
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center">
+    <VStack alignItems="center">
       <Image src="./large_logo.png" />
-      <Box
+      <VStack
         as="form"
         onSubmit={loginUser}
         width={{ smToMd: "100%", md: 400 }}
-        display="flex"
-        flexDirection="column"
         gap={5}
       >
         <Input
           value={username}
-          onChange={onUsernameChange}
+          onChange={(e) => setUsername(e.target.value)}
           variant="subtle"
           placeholder="Username or Email"
         />
         <Input
           value={password}
-          onChange={onPasswordChange}
+          onChange={(e) => setPassword(e.target.value)}
           variant="subtle"
           placeholder="Password"
+          type="password"
         />
         <Button variant="solid" type="submit">
           Login
         </Button>
-        <Button variant="subtle">New user? Register here</Button>
-      </Box>
-    </Box>
+        <Button variant="ghost" onClick={() => navigate("/register")}>
+          New user? Register here
+        </Button>
+      </VStack>
+    </VStack>
   );
 };
 
