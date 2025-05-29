@@ -1,13 +1,13 @@
 import {
-  Box,
   Input,
   Image,
   Button,
   Avatar,
-  Text,
   HStack,
   VStack,
+  Field,
 } from "@chakra-ui/react";
+import { checkIsPasswordRequirementsMet } from "@utils/password";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -21,6 +21,23 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [reEnterPassword, setReEnterPassword] = useState("");
+
+  const arePasswordsMatched = password === reEnterPassword;
+
+  const checkIsPasswordValid = (passwordString: string) => {
+    return (
+      checkIsPasswordRequirementsMet(passwordString) || arePasswordsMatched
+    );
+  };
+
+  const getPasswordInvalidMessage = (passwordString: string) => {
+    if (passwordString.length < 8) {
+      return "Password must be at least 8 characters long";
+    }
+    if (!arePasswordsMatched) {
+      return "Passwords do not match";
+    }
+  };
 
   return (
     <VStack alignItems="center">
@@ -64,20 +81,30 @@ const Register = () => {
           variant="subtle"
           placeholder="Username"
         />
-        <Input
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          variant="subtle"
-          placeholder="Password"
-          type="password"
-        />
-        <Input
-          value={reEnterPassword}
-          onChange={(e) => setReEnterPassword(e.target.value)}
-          variant="subtle"
-          placeholder="Re-Enter Password"
-          type="password"
-        />
+        <Field.Root invalid={!checkIsPasswordValid(password)}>
+          <Input
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            variant="subtle"
+            placeholder="Password"
+            type="password"
+          />
+          <Field.ErrorText>
+            {getPasswordInvalidMessage(password)}
+          </Field.ErrorText>
+        </Field.Root>
+        <Field.Root invalid={!checkIsPasswordValid(reEnterPassword)}>
+          <Input
+            value={reEnterPassword}
+            onChange={(e) => setReEnterPassword(e.target.value)}
+            variant="subtle"
+            placeholder="Re-Enter Password"
+            type="password"
+          />
+          <Field.ErrorText>
+            {getPasswordInvalidMessage(reEnterPassword)}
+          </Field.ErrorText>
+        </Field.Root>
         <Button variant="solid">Register</Button>
         <Button variant="ghost" onClick={() => navigate("/login")}>
           Existing user? Login here
