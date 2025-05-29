@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 const Register = () => {
   const navigate = useNavigate();
 
-  const [profilePictureUrl, setProfilePictureUrl] = useState("");
+  // const [profilePictureUrl, setProfilePictureUrl] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
