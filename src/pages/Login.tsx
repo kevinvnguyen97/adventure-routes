@@ -1,4 +1,4 @@
-import { Box, Input, Image, Button, VStack } from "@chakra-ui/react";
+import { Input, Image, Button, VStack } from "@chakra-ui/react";
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 

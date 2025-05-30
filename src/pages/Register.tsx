@@ -8,7 +8,7 @@ import {
   Field,
 } from "@chakra-ui/react";
 import { checkIsPasswordRequirementsMet } from "@utils/password";
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -39,12 +39,34 @@ const Register = () => {
     }
   };
 
+  const registerUser = async (event: FormEvent<HTMLDivElement>) => {
+    event.preventDefault();
+
+    try {
+      const token = await fetch("/api/users/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          email,
+          username,
+          password,
+        }),
+      });
+      console.log("TOKEN CREATED:", token);
+    } catch (error) {
+      const registerError = error as Error;
+      console.error("Register failed:", registerError.message);
+    }
+  };
+
   return (
     <VStack alignItems="center">
       <Image src="./large_logo.png" />
       <VStack
         as="form"
-        onSubmit={() => {}}
+        onSubmit={registerUser}
         width={{ smDown: "100%", sm: 400 }}
         gap={5}
       >
@@ -105,7 +127,9 @@ const Register = () => {
             {getPasswordInvalidMessage(reEnterPassword)}
           </Field.ErrorText>
         </Field.Root>
-        <Button variant="solid">Register</Button>
+        <Button variant="solid" type="submit">
+          Register
+        </Button>
         <Button variant="ghost" onClick={() => navigate("/login")}>
           Existing user? Login here
         </Button>

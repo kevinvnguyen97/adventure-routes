@@ -5,11 +5,10 @@ import {
   json as ExpressJson,
 } from "express";
 import { genSalt, hash, compare } from "bcrypt";
-import * as jwt from "jsonwebtoken";
 
-import env from "@constants/env";
 import type User from "@models/user.d.ts";
 import { collections } from "@services/database.service";
+import type { MongoServerError } from "mongodb";
 
 export const usersRouter = Router();
 usersRouter.use(ExpressJson());
@@ -26,12 +25,6 @@ const validatePassword = async (args: {
   const { password, hashedPassword } = args;
   const isValid = await compare(password, hashedPassword);
   return isValid;
-};
-const generateToken = (user: User) => {
-  return jwt.sign({ userId: user.id }, env.VITE_JWT_SECRET!, {
-    algorithm: "PS256",
-    expiresIn: "1h",
-  });
 };
 
 // Get
@@ -53,7 +46,7 @@ usersRouter.get("/", async (_req: Request, res: Response) => {
 
 // Post
 usersRouter.post("/register", async (req: Request, res: Response) => {
-  const { password } = req.body as User;
+  const { username, password } = req.body as User;
   const hashedPassword = await getHashedPassword(password);
 
   const newUser: User = {
@@ -65,13 +58,13 @@ usersRouter.post("/register", async (req: Request, res: Response) => {
     const result = await collections.users?.insertOne(newUser);
 
     if (result) {
-      const token = generateToken(newUser);
-      res.json({ token });
+      res.status(200).send(`User created successfully! Welcome, ${username}`);
     } else {
       res.status(500).send(`Failed to create user`);
     }
   } catch (error) {
-    const userError = error as Error;
+    const userError = error as MongoServerError;
+    console.log("USER ERROR:", userError);
     res.status(400).send(userError.message);
   }
 });
@@ -94,9 +87,7 @@ usersRouter.post("/login", async (req: Request, res: Response) => {
       return;
     }
 
-    const token = generateToken(user);
-    console.log("TOKEN:", token);
-    res.json({ token });
+    res.status(201).send(`Login successful! Welcome back, ${username}`);
   } catch (error) {
     const userError = error as Error;
     res.status(400).send(userError.message);

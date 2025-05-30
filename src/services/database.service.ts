@@ -6,7 +6,7 @@ import type User from "@models/user";
 type AdventureRouteDBCollections = {
   users?: Collection<User>;
   routes?: Collection<Route>;
-  comments?: Collection;
+  comments?: Collection<Comment>;
 };
 export const collections: AdventureRouteDBCollections = {};
 
@@ -19,7 +19,8 @@ export const connectToDatabase = async () => {
 
   const usersCollection: Collection<User> = db.collection<User>("users");
   const routesCollection: Collection<Route> = db.collection<Route>("routes");
-  const commentsCollection: Collection = db.collection("comments");
+  const commentsCollection: Collection<Comment> =
+    db.collection<Comment>("comments");
 
   usersCollection.createIndex(
     { id: 1, username: 1, email: 1 },
