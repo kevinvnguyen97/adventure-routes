@@ -9,3 +9,5 @@ export default interface User {
   email: string;
   profilePictureUrl?: string;
 }
+
+export type UserWithoutPassword = Omit<User, "password">;

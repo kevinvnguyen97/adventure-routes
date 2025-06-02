@@ -9,9 +9,9 @@ import Register from "@pages/Register";
 import { useAuth } from "@utils/auth";
 
 const ProtectedRoute = () => {
-  const { token } = useAuth();
+  const { user } = useAuth();
 
-  if (!token) {
+  if (!user) {
     return <Navigate to="/login" />;
   }
 
@@ -19,9 +19,9 @@ const ProtectedRoute = () => {
 };
 
 const NonProtectedRoute = () => {
-  const { token } = useAuth();
+  const { user } = useAuth();
 
-  if (token) {
+  if (user) {
     return <Navigate to="/" />;
   }
 

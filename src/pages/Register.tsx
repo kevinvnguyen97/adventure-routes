@@ -7,12 +7,14 @@ import {
   VStack,
   Field,
 } from "@chakra-ui/react";
+import { useAuth } from "@utils/auth";
 import { checkIsPasswordRequirementsMet } from "@utils/password";
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
+  const { registerUser } = useAuth();
 
   // const [profilePictureUrl, setProfilePictureUrl] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -39,26 +41,10 @@ const Register = () => {
     }
   };
 
-  const registerUser = async (event: FormEvent<HTMLDivElement>) => {
+  const registerSubmit = async (event: FormEvent<HTMLDivElement>) => {
     event.preventDefault();
 
-    try {
-      const token = await fetch("/api/users/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          email,
-          username,
-          password,
-        }),
-      });
-      console.log("TOKEN CREATED:", token);
-    } catch (error) {
-      const registerError = error as Error;
-      console.error("Register failed:", registerError.message);
-    }
+    registerUser({ firstName, lastName, email, username, password });
   };
 
   return (
@@ -66,7 +52,7 @@ const Register = () => {
       <Image src="./large_logo.png" />
       <VStack
         as="form"
-        onSubmit={registerUser}
+        onSubmit={registerSubmit}
         width={{ smDown: "100%", sm: 400 }}
         gap={5}
       >

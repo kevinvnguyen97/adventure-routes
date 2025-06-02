@@ -5,10 +5,11 @@ import {
   json as ExpressJson,
 } from "express";
 import { genSalt, hash, compare } from "bcrypt";
+import type { MongoServerError } from "mongodb";
 
 import type User from "@models/user.d.ts";
 import { collections } from "@services/database.service";
-import type { MongoServerError } from "mongodb";
+import type { UserWithoutPassword } from "@models/user.d.ts";
 
 export const usersRouter = Router();
 usersRouter.use(ExpressJson());
@@ -28,6 +29,16 @@ const validatePassword = async (args: {
 };
 
 // Get
+usersRouter.get("/profile", (req: Request, res: Response) => {
+  const user = req.session?.user;
+
+  if (user) {
+    res.status(200).json(user);
+  } else {
+    res.status(401).send("User access denied. Not logged in");
+  }
+});
+
 usersRouter.get("/", async (_req: Request, res: Response) => {
   try {
     const users = (await collections.users
@@ -58,13 +69,15 @@ usersRouter.post("/register", async (req: Request, res: Response) => {
     const result = await collections.users?.insertOne(newUser);
 
     if (result) {
+      const { password, ...userWithoutPassword } = newUser;
+      req.session.user = userWithoutPassword as UserWithoutPassword;
       res.status(200).send(`User created successfully! Welcome, ${username}`);
     } else {
       res.status(500).send(`Failed to create user`);
     }
   } catch (error) {
     const userError = error as MongoServerError;
-    console.log("USER ERROR:", userError);
+    console.error("USER ERROR:", userError);
     res.status(400).send(userError.message);
   }
 });
@@ -87,9 +100,22 @@ usersRouter.post("/login", async (req: Request, res: Response) => {
       return;
     }
 
+    const { password: passwordToOmit, ...userWithoutPassword } = user;
+    req.session.user = userWithoutPassword as UserWithoutPassword;
     res.status(201).send(`Login successful! Welcome back, ${username}`);
   } catch (error) {
     const userError = error as Error;
+    console.error("Login error:", userError.message);
     res.status(400).send(userError.message);
   }
+});
+
+usersRouter.post("/logout", async (req: Request, res: Response) => {
+  req.session.destroy((error) => {
+    if (error) {
+      console.error("Error destroying session:", error);
+      return res.status(500).send("Logout failed");
+    }
+    res.status(200).send("Logout successful");
+  });
 });
