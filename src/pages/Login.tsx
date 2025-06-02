@@ -1,29 +1,19 @@
 import { Input, Image, Button, VStack } from "@chakra-ui/react";
+import { useAuth } from "@utils/auth";
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { loginUser } = useAuth();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const loginUser = async (event: FormEvent<HTMLDivElement>) => {
+  const loginSubmit = async (event: FormEvent<HTMLDivElement>) => {
     event.preventDefault();
 
-    try {
-      const token = await fetch("/api/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
-      console.log("TOKEN:", token);
-    } catch (error) {
-      const loginError = error as Error;
-      console.error("Login failed:", loginError.message);
-    }
+    loginUser({ username, password });
   };
 
   return (
@@ -31,7 +21,7 @@ const Login = () => {
       <Image src="./large_logo.png" />
       <VStack
         as="form"
-        onSubmit={loginUser}
+        onSubmit={loginSubmit}
         width={{ smDown: "100%", sm: 400 }}
         gap={5}
       >

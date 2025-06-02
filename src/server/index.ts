@@ -1,4 +1,5 @@
 import express from "express";
+import session from "express-session";
 import * as cors from "cors";
 
 import { connectToDatabase } from "../services/database.service.ts";
@@ -8,6 +9,14 @@ import { usersRouter } from "../routes/users.router.ts";
 const app = express();
 const port = 8080;
 app.use(cors.default());
+app.use(
+  session({
+    secret: "my-secret",
+    resave: false,
+    cookie: { secure: false, maxAge: 3600000 },
+    saveUninitialized: false,
+  })
+);
 
 const startDatabase = async () => {
   try {

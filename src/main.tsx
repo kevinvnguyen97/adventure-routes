@@ -10,11 +10,11 @@ import AuthProvider from "@providers/Auth";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider>
-      <AuthProvider>
-        <BrowserRouter>
+      <BrowserRouter>
+        <AuthProvider>
           <App />
-        </BrowserRouter>
-      </AuthProvider>
+        </AuthProvider>
+      </BrowserRouter>
     </Provider>
   </StrictMode>
 );

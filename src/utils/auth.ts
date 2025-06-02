@@ -1,12 +1,23 @@
+import type { UserWithoutPassword } from "@models/user";
 import { useContext, createContext } from "react";
 
 type AuthTokenValues = {
-  token: string;
-  updateToken: (token: string) => void;
+  user?: UserWithoutPassword;
+  loginUser: (args: { username: string; password: string }) => void;
+  registerUser: (args: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    username: string;
+    password: string;
+  }) => void;
+  logoutUser: () => void;
 };
 export const AuthContext = createContext<AuthTokenValues>({
-  token: "",
-  updateToken: () => {},
+  user: undefined,
+  loginUser: () => {},
+  registerUser: () => {},
+  logoutUser: () => {},
 });
 export const useAuth = () => {
   return useContext(AuthContext);
