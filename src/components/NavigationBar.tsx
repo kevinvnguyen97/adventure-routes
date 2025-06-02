@@ -17,8 +17,6 @@ import { useState } from "react";
 import { ColorModeButton, useColorModeValue } from "@components/ui";
 import { useAuth } from "@utils/auth";
 
-const TMP_USERNAME = "Placeholder";
-
 type UseAvatarProps = AvatarRootProps & {
   fallbackProps?: AvatarFallbackProps;
 };
@@ -33,20 +31,17 @@ const UserAvatar = (props: UseAvatarProps) => {
 };
 
 const UserPopover = () => {
-  const { logoutUser } = useAuth();
+  const { user, logoutUser } = useAuth();
   const [isUserPopoverOpen, setIsUserPopoverOpen] = useState(false);
 
   const onUserPopoverChange = () => {
     setIsUserPopoverOpen(!isUserPopoverOpen);
   };
-  const logoutSubmit = () => {
-    logoutUser();
-  };
   return (
     <Popover.Root open={isUserPopoverOpen} onOpenChange={onUserPopoverChange}>
       <Popover.Trigger>
         <UserAvatar
-          fallbackProps={{ name: TMP_USERNAME }}
+          fallbackProps={{ name: user?.username }}
           variant="subtle"
           _hover={{ cursor: "pointer" }}
         />
@@ -59,29 +54,33 @@ const UserPopover = () => {
               <Box
                 display="flex"
                 justifyContent="space-between"
-                paddingBottom={5}
+                paddingBottom={user ? 5 : 0}
               >
                 <Box display="flex" gap={2} alignItems="center">
-                  <UserAvatar fallbackProps={{ name: TMP_USERNAME }} />
-                  <Text fontWeight="bold">{TMP_USERNAME}</Text>
+                  <UserAvatar fallbackProps={{ name: user?.username }} />
+                  <Text fontWeight="bold">{user?.username}</Text>
                 </Box>
                 <ColorModeButton colorPalette="gray" />
               </Box>
-              <Separator />
-              <Button variant="ghost" colorPalette="gray">
-                <Settings />
-                Settings
-              </Button>
-              <Separator />
-              <Button
-                onClick={logoutSubmit}
-                variant="ghost"
-                color="red"
-                colorPalette="red"
-              >
-                <Logout />
-                Log Out
-              </Button>
+              {user && (
+                <>
+                  <Separator />
+                  <Button variant="ghost" colorPalette="gray">
+                    <Settings />
+                    Settings
+                  </Button>
+                  <Separator />
+                  <Button
+                    onClick={logoutUser}
+                    variant="ghost"
+                    color="red"
+                    colorPalette="red"
+                  >
+                    <Logout />
+                    Log Out
+                  </Button>
+                </>
+              )}
             </Popover.Body>
           </Popover.Content>
         </Popover.Positioner>
