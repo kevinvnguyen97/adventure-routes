@@ -1,11 +1,12 @@
-import { Button, Input, VStack } from "@chakra-ui/react";
+import { Input, VStack } from "@chakra-ui/react";
+import RouteFormDialog from "@components/RouteFormDialog";
 
 const Dashboard = () => {
   return (
     <VStack alignItems="center">
       <VStack width={{ smDown: "100%", sm: 400 }}>
         <Input placeholder="Search for route" />
-        <Button>Create a Route</Button>
+        <RouteFormDialog />
       </VStack>
     </VStack>
   );
