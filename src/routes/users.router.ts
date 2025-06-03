@@ -69,7 +69,8 @@ usersRouter.post("/register", async (req: Request, res: Response) => {
     const result = await collections.users?.insertOne(newUser);
 
     if (result) {
-      const { password, ...userWithoutPassword } = newUser;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password: _passwordToOmit, ...userWithoutPassword } = newUser;
       req.session.user = userWithoutPassword as UserWithoutPassword;
       res.status(200).send(`User created successfully! Welcome, ${username}`);
     } else {
@@ -87,7 +88,7 @@ usersRouter.post("/login", async (req: Request, res: Response) => {
 
   try {
     const user = (await collections.users?.findOne({
-      username,
+      $or: [{ username }, { email: username }],
     })) as unknown as User;
 
     const isPasswordValid = await validatePassword({
@@ -100,7 +101,8 @@ usersRouter.post("/login", async (req: Request, res: Response) => {
       return;
     }
 
-    const { password: passwordToOmit, ...userWithoutPassword } = user;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _passwordToOmit, ...userWithoutPassword } = user;
     req.session.user = userWithoutPassword as UserWithoutPassword;
     res.status(201).send(`Login successful! Welcome back, ${username}`);
   } catch (error) {
