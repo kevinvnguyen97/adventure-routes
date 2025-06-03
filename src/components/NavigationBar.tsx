@@ -11,6 +11,8 @@ import {
   type AvatarFallbackProps,
   Separator,
   Button,
+  VStack,
+  HStack,
 } from "@chakra-ui/react";
 import { Menu as MenuIcon, Settings, Logout } from "@mui/icons-material";
 import { useState } from "react";
@@ -34,6 +36,8 @@ const UserPopover = () => {
   const { user, logoutUser } = useAuth();
   const [isUserPopoverOpen, setIsUserPopoverOpen] = useState(false);
 
+  const fullName = [user?.firstName, user?.lastName].filter(Boolean).join(" ");
+
   const onUserPopoverChange = () => {
     setIsUserPopoverOpen(!isUserPopoverOpen);
   };
@@ -51,17 +55,19 @@ const UserPopover = () => {
           <Popover.Content colorPalette="orange">
             <Popover.Arrow />
             <Popover.Body display="flex" flexDirection="column">
-              <Box
-                display="flex"
+              <HStack
                 justifyContent="space-between"
                 paddingBottom={user ? 5 : 0}
               >
-                <Box display="flex" gap={2} alignItems="center">
+                <HStack gap={2} alignItems="center">
                   <UserAvatar fallbackProps={{ name: user?.username }} />
-                  <Text fontWeight="bold">{user?.username}</Text>
-                </Box>
+                  <VStack justifyContent="left" alignItems="start">
+                    <Text fontWeight="bold">{fullName}</Text>
+                    <Text>{user?.username}</Text>
+                  </VStack>
+                </HStack>
                 <ColorModeButton colorPalette="gray" />
-              </Box>
+              </HStack>
               {user && (
                 <>
                   <Separator />
