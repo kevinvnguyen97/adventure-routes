@@ -50,8 +50,8 @@ usersRouter.get("/", async (_req: Request, res: Response) => {
       res.status(404).send("No users found");
     }
   } catch (error) {
-    const userError = error as Error;
-    res.status(500).send(userError.message);
+    const userError = error as MongoServerError;
+    res.status(500).send(userError.errmsg);
   }
 });
 
@@ -78,7 +78,7 @@ usersRouter.post("/register", async (req: Request, res: Response) => {
   } catch (error) {
     const userError = error as MongoServerError;
     console.error("USER ERROR:", userError);
-    res.status(400).send(userError.message);
+    res.status(400).send(userError.errmsg);
   }
 });
 

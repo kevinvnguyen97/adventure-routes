@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { AuthContext } from "@utils/auth";
 import type { UserWithoutPassword } from "@models/user";
 import { useNavigate } from "react-router-dom";
+import { toaster } from "@utils/toaster";
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
@@ -29,15 +30,27 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       switch (response.status) {
         case 201:
           await fetchUser();
+          toaster.create({
+            title: `Code ${response.status} (${response.statusText})`,
+            description: await response.text(),
+            type: "success",
+            closable: true,
+          });
           navigate("/");
           break;
         default:
+          toaster.create({
+            title: `Error ${response.status} (${response.statusText})`,
+            description: await response.text(),
+            type: "error",
+            closable: true,
+          });
           console.error("Login does not work");
           break;
       }
     } catch (error) {
       const loginError = error as Error;
-      console.error("Login failed:", loginError.message);
+      console.error("Login failed:", loginError);
     }
   };
 

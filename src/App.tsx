@@ -3,6 +3,7 @@ import { Box } from "@chakra-ui/react";
 import { Navigate, Routes, Route, Outlet } from "react-router-dom";
 
 import NavigationBar from "@components/NavigationBar";
+import { Toaster } from "@components/ui/toaster";
 import Login from "@pages/Login";
 import Dashboard from "@pages/Dashboard";
 import Register from "@pages/Register";
@@ -32,6 +33,7 @@ const App = () => {
   return (
     <Box width="100%" colorPalette="orange">
       <NavigationBar />
+      <Toaster />
       <Routes>
         <Route path="/" element={<ProtectedRoute />}>
           <Route index element={<Dashboard />} />
