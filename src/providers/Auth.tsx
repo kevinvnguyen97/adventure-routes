@@ -17,18 +17,21 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(user);
   };
 
-  const loginUser = async (args: { username: string; password: string }) => {
-    const { username, password } = args;
+  const loginUser = async (args: {
+    usernameOrEmail: string;
+    password: string;
+  }) => {
+    const { usernameOrEmail, password } = args;
     try {
       const response = await fetch("/api/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ usernameOrEmail, password }),
       });
       switch (response.status) {
-        case 201:
+        case 200:
           await fetchUser();
           toaster.create({
             title: `Code ${response.status} (${response.statusText})`,

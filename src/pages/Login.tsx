@@ -7,13 +7,13 @@ const Login = () => {
   const navigate = useNavigate();
   const { loginUser } = useAuth();
 
-  const [username, setUsername] = useState("");
+  const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const loginSubmit = async (event: FormEvent<HTMLDivElement>) => {
     event.preventDefault();
 
-    loginUser({ username, password });
+    loginUser({ usernameOrEmail, password });
   };
 
   return (
@@ -26,8 +26,8 @@ const Login = () => {
         gap={5}
       >
         <Input
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={usernameOrEmail}
+          onChange={(e) => setUsernameOrEmail(e.target.value)}
           variant="subtle"
           placeholder="Username or Email"
         />

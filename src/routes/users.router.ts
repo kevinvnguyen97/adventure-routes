@@ -84,16 +84,19 @@ usersRouter.post("/register", async (req: Request, res: Response) => {
 });
 
 usersRouter.post("/login", async (req: Request, res: Response) => {
-  const { username, password } = req.body as User;
+  const { usernameOrEmail, password } = req.body as {
+    usernameOrEmail: string;
+    password: string;
+  };
 
   try {
     const user = (await collections.users?.findOne({
-      $or: [{ username }, { email: username }],
+      $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
     })) as unknown as User;
 
     const isPasswordValid = await validatePassword({
       password,
-      hashedPassword: user.password,
+      hashedPassword: user?.password,
     });
 
     if (!password || !user || !isPasswordValid) {
@@ -104,11 +107,11 @@ usersRouter.post("/login", async (req: Request, res: Response) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _passwordToOmit, ...userWithoutPassword } = user;
     req.session.user = userWithoutPassword as UserWithoutPassword;
-    res.status(201).send(`Login successful! Welcome back, ${username}`);
+    res.status(200).send(`Login successful! Welcome back, ${user?.username}`);
   } catch (error) {
-    const userError = error as Error;
-    console.error("Login error:", userError.message);
-    res.status(400).send(userError.message);
+    const userError = error as MongoServerError;
+    console.error("Login error:", userError);
+    res.status(400).send(userError.errmsg);
   }
 });
 

@@ -3,7 +3,7 @@ import { useContext, createContext } from "react";
 
 type AuthTokenValues = {
   user?: UserWithoutPassword;
-  loginUser: (args: { username: string; password: string }) => void;
+  loginUser: (args: { usernameOrEmail: string; password: string }) => void;
   registerUser: (args: {
     firstName: string;
     lastName: string;
