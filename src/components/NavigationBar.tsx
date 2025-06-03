@@ -65,13 +65,20 @@ const UserPopover = () => {
               {user && (
                 <>
                   <Separator />
-                  <Button variant="ghost" colorPalette="gray">
+                  <Button
+                    onClick={onUserPopoverChange}
+                    variant="ghost"
+                    colorPalette="gray"
+                  >
                     <Settings />
                     Settings
                   </Button>
                   <Separator />
                   <Button
-                    onClick={logoutUser}
+                    onClick={() => {
+                      logoutUser();
+                      onUserPopoverChange();
+                    }}
                     variant="ghost"
                     color="red"
                     colorPalette="red"
