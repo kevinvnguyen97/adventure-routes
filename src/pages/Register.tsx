@@ -58,9 +58,7 @@ const Register = () => {
       >
         <HStack gap={2} alignItems="center">
           <Avatar.Root size="2xl" variant="subtle">
-            <Avatar.Fallback
-              name={[firstName, lastName].filter(Boolean).join(" ")}
-            />
+            <Avatar.Fallback name={username} />
             <Avatar.Image />
           </Avatar.Root>
           <Input
