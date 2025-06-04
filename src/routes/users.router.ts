@@ -57,8 +57,20 @@ usersRouter.get("/", async (_req: Request, res: Response) => {
 
 // Post
 usersRouter.post("/register", async (req: Request, res: Response) => {
-  const { username, password } = req.body as User;
+  const { email, username, firstName, lastName, password } = req.body as User;
   const hashedPassword = await getHashedPassword(password);
+
+  const areAllFieldsFilled = [
+    email,
+    username,
+    firstName,
+    lastName,
+    password,
+  ].every(Boolean);
+
+  if (!areAllFieldsFilled) {
+    res.status(400).send(`Not all fields are filled`);
+  }
 
   const newUser: User = {
     ...(req.body as User),

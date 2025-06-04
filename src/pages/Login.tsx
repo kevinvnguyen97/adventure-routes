@@ -1,4 +1,5 @@
-import { Input, Image, Button, VStack } from "@chakra-ui/react";
+import { Input, Image, Button, VStack, Field } from "@chakra-ui/react";
+import { PasswordInput } from "@components/ui/password-input";
 import { useAuth } from "@utils/auth";
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
@@ -18,26 +19,34 @@ const Login = () => {
 
   return (
     <VStack alignItems="center">
-      <Image src="./large_logo.png" />
+      <Image src="./large_logo.png" width={450} height="auto" />
       <VStack
         as="form"
         onSubmit={loginSubmit}
         width={{ smDown: "100%", sm: 400 }}
-        gap={5}
+        gap={3}
       >
-        <Input
-          value={usernameOrEmail}
-          onChange={(e) => setUsernameOrEmail(e.target.value)}
-          variant="subtle"
-          placeholder="Username or Email"
-        />
-        <Input
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          variant="subtle"
-          placeholder="Password"
-          type="password"
-        />
+        <Field.Root required>
+          <Field.Label color="white">
+            Username or Email <Field.RequiredIndicator />
+          </Field.Label>
+          <Input
+            value={usernameOrEmail}
+            onChange={(e) => setUsernameOrEmail(e.target.value)}
+            variant="subtle"
+          />
+        </Field.Root>
+        <Field.Root required>
+          <Field.Label color="white">
+            Password <Field.RequiredIndicator />
+          </Field.Label>
+          <PasswordInput
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            variant="subtle"
+            type="password"
+          />
+        </Field.Root>
         <Button variant="solid" type="submit">
           Login
         </Button>
