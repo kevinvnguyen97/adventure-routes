@@ -12,7 +12,10 @@ import {
   PasswordStrengthMeter,
 } from "@components/ui/password-input";
 import { useAuth } from "@utils/auth";
-import { checkIsPasswordRequirementsMet } from "@utils/password";
+import {
+  checkIsPasswordRequirementsMet,
+  getPasswordStrength,
+} from "@utils/password";
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -52,7 +55,11 @@ const Register = () => {
   };
 
   return (
-    <VStack alignItems="center">
+    <VStack
+      data-state="open"
+      _open={{ animation: "fade-in 1s ease-out" }}
+      alignItems="center"
+    >
       <Image src="./large_logo.png" width={450} height="auto" />
       <VStack
         as="form"
@@ -120,7 +127,13 @@ const Register = () => {
           <Field.ErrorText>
             {getPasswordInvalidMessage(password)}
           </Field.ErrorText>
-          {password && <PasswordStrengthMeter value={0} width="100%" />}
+          {password && (
+            <PasswordStrengthMeter
+              value={getPasswordStrength(password)}
+              width="100%"
+              color="white"
+            />
+          )}
         </Field.Root>
         <Field.Root required invalid={!checkIsPasswordValid(reEnterPassword)}>
           <Field.Label color="white">
@@ -135,7 +148,13 @@ const Register = () => {
           <Field.ErrorText>
             {getPasswordInvalidMessage(reEnterPassword)}
           </Field.ErrorText>
-          {reEnterPassword && <PasswordStrengthMeter value={0} width="100%" />}
+          {reEnterPassword && (
+            <PasswordStrengthMeter
+              value={getPasswordStrength(reEnterPassword)}
+              width="100%"
+              color="white"
+            />
+          )}
         </Field.Root>
         <Button variant="solid" type="submit">
           Register

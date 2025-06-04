@@ -18,7 +18,11 @@ const Login = () => {
   };
 
   return (
-    <VStack alignItems="center">
+    <VStack
+      data-state="open"
+      _open={{ animation: "fade-in 1s ease-out" }}
+      alignItems="center"
+    >
       <Image src="./large_logo.png" width={450} height="auto" />
       <VStack
         as="form"
