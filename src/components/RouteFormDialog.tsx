@@ -4,8 +4,6 @@ import {
   Portal,
   Input,
   Textarea,
-  createListCollection,
-  Combobox,
   InputGroup,
   IconButton,
   Box,
@@ -14,9 +12,8 @@ import {
 import { useState } from "react";
 import { LuMinus, LuPlus } from "react-icons/lu";
 
-import { defaultActivities } from "@constants/activities";
 import PriceCategorySlider from "@components/PriceCategorySlider";
-import { Form } from "react-router-dom";
+import ActivityMultiSelect from "@components/ActivityMultiSelect";
 
 const RouteFormDialog = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -90,34 +87,7 @@ const RouteFormDialog = () => {
                 priceCategory={priceCategory}
                 setPriceCategory={setPriceCategory}
               />
-              <Field.Root orientation="horizontal">
-                <Field.Label>Activities</Field.Label>
-                <Combobox.Root
-                  value={activities}
-                  collection={activityCollection}
-                  multiple
-                  variant="subtle"
-                  display="flex"
-                >
-                  <Combobox.Control>
-                    <Combobox.Input placeholder="Select activities" />
-                    <Combobox.IndicatorGroup>
-                      <Combobox.ClearTrigger />
-                      <Combobox.Trigger />
-                    </Combobox.IndicatorGroup>
-                  </Combobox.Control>
-                  <Combobox.Positioner>
-                    <Combobox.Content>
-                      {activityCollection.items.map((activity) => (
-                        <Combobox.Item item={activity} key={activity.value}>
-                          {activity.label}
-                          <Combobox.ItemIndicator />
-                        </Combobox.Item>
-                      ))}
-                    </Combobox.Content>
-                  </Combobox.Positioner>
-                </Combobox.Root>
-              </Field.Root>
+              <ActivityMultiSelect activities={activities} />
               <Field.Root orientation="horizontal">
                 <Field.Label>Origin</Field.Label>
                 <Input
@@ -192,12 +162,5 @@ const RouteFormDialog = () => {
     </Dialog.Root>
   );
 };
-
-const activityCollection = createListCollection({
-  items: defaultActivities.map((activity) => ({
-    label: activity,
-    value: activity,
-  })),
-});
 
 export default RouteFormDialog;
