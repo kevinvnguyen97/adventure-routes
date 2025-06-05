@@ -8,6 +8,7 @@ import {
   IconButton,
   Box,
   Field,
+  CloseButton,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { LuMinus, LuPlus } from "react-icons/lu";
@@ -56,6 +57,9 @@ const RouteFormDialog = () => {
         <Dialog.Backdrop />
         <Dialog.Positioner>
           <Dialog.Content colorPalette="orange">
+            <Dialog.CloseTrigger asChild>
+              <CloseButton />
+            </Dialog.CloseTrigger>
             <Dialog.Header>
               <Dialog.Title>Create Adventure Route</Dialog.Title>
             </Dialog.Header>
@@ -87,7 +91,10 @@ const RouteFormDialog = () => {
                 priceCategory={priceCategory}
                 setPriceCategory={setPriceCategory}
               />
-              <ActivityMultiSelect activities={activities} />
+              <ActivityMultiSelect
+                activities={activities}
+                setActivities={setActivities}
+              />
               <Field.Root orientation="horizontal">
                 <Field.Label>Origin</Field.Label>
                 <Input
