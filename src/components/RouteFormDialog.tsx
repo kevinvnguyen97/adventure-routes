@@ -138,11 +138,17 @@ const RouteFormDialog = () => {
                             onClick={() => removeStop(index)}
                             variant="ghost"
                             color="red"
+                            colorPalette="red"
                           >
                             <LuMinus />
                           </IconButton>
                         )}
-                        <IconButton onClick={addStop} variant="ghost">
+                        <IconButton
+                          onClick={addStop}
+                          variant="ghost"
+                          color="blue"
+                          colorPalette="blue"
+                        >
                           <LuPlus />
                         </IconButton>
                       </Box>

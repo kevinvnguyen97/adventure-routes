@@ -5,7 +5,7 @@ const Dashboard = () => {
   return (
     <VStack alignItems="center">
       <VStack width={{ smDown: "100%", sm: 400 }}>
-        <Input placeholder="Search for route" />
+        <Input size="2xl" variant="subtle" placeholder="Search for route" />
         <RouteFormDialog />
       </VStack>
     </VStack>
