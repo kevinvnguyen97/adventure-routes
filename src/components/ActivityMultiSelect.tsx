@@ -6,6 +6,8 @@ import {
   Wrap,
   Badge,
   VStack,
+  HStack,
+  Text,
 } from "@chakra-ui/react";
 import { defaultActivities } from "@constants/activities";
 
@@ -19,8 +21,9 @@ const ActivityMultiSelect = (props: ActivityMultiSelectProps) => {
 
   const { collection: activityCollection, filter } = useListCollection({
     initialItems: defaultActivities.map((activity) => ({
-      label: activity,
-      value: activity,
+      icon: activity.icon,
+      label: activity.text,
+      value: activity.text,
     })),
     filter: contains,
   });
@@ -32,9 +35,16 @@ const ActivityMultiSelect = (props: ActivityMultiSelectProps) => {
       </Field.Label>
       <VStack width="100%">
         <Wrap gap={2}>
-          {activities.map((activity) => (
-            <Badge key={activity}>{activity}</Badge>
-          ))}
+          {activities.map((activity) => {
+            const defaultActivity = defaultActivities.find(
+              (defaultActivity) => defaultActivity.text === activity
+            );
+            return (
+              <Badge key={activity}>
+                {defaultActivity!.icon} {activity}
+              </Badge>
+            );
+          })}
         </Wrap>
         <Combobox.Root
           value={activities}
@@ -56,7 +66,10 @@ const ActivityMultiSelect = (props: ActivityMultiSelectProps) => {
             <Combobox.Content>
               {activityCollection.items.map((activity) => (
                 <Combobox.Item item={activity} key={activity.value}>
-                  {activity.label}
+                  <HStack>
+                    {activity.icon}
+                    <Text>{activity.label}</Text>
+                  </HStack>
                   <Combobox.ItemIndicator />
                 </Combobox.Item>
               ))}
