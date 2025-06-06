@@ -1,7 +1,6 @@
 import {
   Field,
   InputGroup,
-  Box,
   IconButton,
   Input,
   ButtonGroup,

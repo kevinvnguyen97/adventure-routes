@@ -4,15 +4,10 @@ import {
   Portal,
   Input,
   Textarea,
-  InputGroup,
-  IconButton,
-  Box,
-  createListCollection,
-  Combobox,
   Field,
   CloseButton,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import {
   DndContext,
   KeyboardSensor,
@@ -49,6 +44,17 @@ const RouteFormDialog = () => {
     useSensor(TouchSensor),
     useSensor(KeyboardSensor)
   );
+
+  const descriptionTextAreaRef = createRef<HTMLTextAreaElement>();
+
+  useEffect(() => {
+    if (descriptionTextAreaRef.current) {
+      descriptionTextAreaRef.current.style.resize = "none";
+      descriptionTextAreaRef.current.style.height = "auto";
+      const scrollHeight = descriptionTextAreaRef.current.scrollHeight || 58;
+      descriptionTextAreaRef.current.style.height = `${scrollHeight}px`;
+    }
+  }, [descriptionTextAreaRef]);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -125,6 +131,7 @@ const RouteFormDialog = () => {
               <Field.Root orientation="horizontal">
                 <Field.Label>Description</Field.Label>
                 <Textarea
+                  ref={descriptionTextAreaRef}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Description"
