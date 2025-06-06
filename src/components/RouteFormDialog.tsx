@@ -6,17 +6,28 @@ import {
   Textarea,
   createListCollection,
   Combobox,
-  InputGroup,
-  IconButton,
-  Box,
   Field,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { LuMinus, LuPlus } from "react-icons/lu";
+import {
+  DndContext,
+  KeyboardSensor,
+  MouseSensor,
+  TouchSensor,
+  closestCorners,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
 import { defaultActivities } from "@constants/activities";
 import PriceCategorySlider from "@components/PriceCategorySlider";
-import { Form } from "react-router-dom";
+import WaypointTextField from "@components/WaypointTextField";
 
 const RouteFormDialog = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,25 +35,52 @@ const RouteFormDialog = () => {
   const [description, setDescription] = useState("");
   const [priceCategory, setPriceCategory] = useState(0);
   const [activities, setActivities] = useState<string[]>([]);
-  const [origin, setOrigin] = useState("");
-  const [stops, setStops] = useState<string[]>([""]);
-  const [destination, setDestination] = useState("");
+  const [waypoints, setWaypoints] = useState<WaypointInput[]>([
+    { id: Math.random(), text: "" },
+    { id: Math.random(), text: "" },
+  ]);
 
-  const onStopChange = (args: { newStopValue: string; index: number }) => {
-    const { newStopValue, index } = args;
-    const newStops = stops.map((stop, i) =>
-      i === index ? newStopValue : stop
+  const sensors = useSensors(
+    useSensor(MouseSensor),
+    useSensor(TouchSensor),
+    useSensor(KeyboardSensor)
+  );
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      const activeIndex = waypoints.findIndex(
+        (waypoint) => active.id === waypoint.id
+      );
+      const overIndex = waypoints.findIndex(
+        (waypoint) => over?.id === waypoint.id
+      );
+
+      const newWaypoints = arrayMove(waypoints, activeIndex, overIndex);
+      setWaypoints(newWaypoints);
+    }
+  };
+
+  const onWaypointChange = (args: { newWaypointValue: string; id: number }) => {
+    const { newWaypointValue, id } = args;
+    const newWaypoints = waypoints.map((waypoint) =>
+      waypoint.id === id ? { ...waypoint, text: newWaypointValue } : waypoint
     );
-    setStops(newStops);
+    setWaypoints(newWaypoints);
   };
 
-  const removeStop = (indexToRemove: number) => {
-    const newStops = stops.filter((_, i) => i !== indexToRemove);
-    setStops(newStops);
+  const removeWaypoint = (id: number) => {
+    const newWaypoints = waypoints.filter((waypoint) => id !== waypoint.id);
+    setWaypoints(newWaypoints);
   };
 
-  const addStop = () => {
-    setStops((prev) => [...prev, ""]);
+  const addWaypoint = (indexToAdd: number) => {
+    const updatedWaypoints = waypoints.toSpliced(indexToAdd + 1, 0, {
+      id: Math.random(),
+      text: "",
+    });
+    setWaypoints(updatedWaypoints);
   };
 
   return (
@@ -118,65 +156,37 @@ const RouteFormDialog = () => {
                   </Combobox.Positioner>
                 </Combobox.Root>
               </Field.Root>
-              <Field.Root orientation="horizontal">
-                <Field.Label>Origin</Field.Label>
-                <Input
-                  value={origin}
-                  onChange={(e) => setOrigin(e.target.value)}
-                  placeholder="Enter address or place of interest"
-                  variant="subtle"
-                />
-              </Field.Root>
-              {stops.map((stop, index) => {
-                return (
-                  <InputGroup
-                    key={index}
-                    endElement={
-                      <Box>
-                        {stops.length > 1 && (
-                          <IconButton
-                            onClick={() => removeStop(index)}
-                            variant="ghost"
-                            color="red"
-                            colorPalette="red"
-                          >
-                            <LuMinus />
-                          </IconButton>
-                        )}
-                        <IconButton
-                          onClick={addStop}
-                          variant="ghost"
-                          color="blue"
-                          colorPalette="blue"
-                        >
-                          <LuPlus />
-                        </IconButton>
-                      </Box>
-                    }
-                  >
-                    <Field.Root orientation="horizontal">
-                      <Field.Label>Stop #{index + 1}</Field.Label>
-                      <Input
-                        value={stop}
-                        onChange={(e) =>
-                          onStopChange({ newStopValue: e.target.value, index })
+              <DndContext
+                collisionDetection={closestCorners}
+                onDragEnd={handleDragEnd}
+                sensors={sensors}
+              >
+                <SortableContext
+                  items={waypoints}
+                  strategy={verticalListSortingStrategy}
+                >
+                  {waypoints.map((waypoint, index) => {
+                    return (
+                      <WaypointTextField
+                        key={waypoint.id}
+                        waypoint={waypoint}
+                        stopNumber={index}
+                        isOrigin={index === 0}
+                        isDestination={index === waypoints.length - 1}
+                        hasMoreWaypoints={waypoints.length > 2}
+                        addWaypoint={() => addWaypoint(index)}
+                        removeWaypoint={() => removeWaypoint(waypoint.id)}
+                        onWaypointChange={(newWaypointValue) =>
+                          onWaypointChange({
+                            newWaypointValue,
+                            id: waypoint.id,
+                          })
                         }
-                        placeholder="Enter address or place of interest"
-                        variant="subtle"
                       />
-                    </Field.Root>
-                  </InputGroup>
-                );
-              })}
-              <Field.Root orientation="horizontal">
-                <Field.Label>Destination</Field.Label>
-                <Input
-                  value={destination}
-                  onChange={(e) => setDestination(e.target.value)}
-                  placeholder="Enter address or place of interest"
-                  variant="subtle"
-                />
-              </Field.Root>
+                    );
+                  })}
+                </SortableContext>
+              </DndContext>
             </Dialog.Body>
             <Dialog.Footer>
               <Dialog.ActionTrigger asChild>
