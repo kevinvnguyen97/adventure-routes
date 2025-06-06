@@ -106,21 +106,18 @@ const RouteFormDialog = () => {
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
-          <Dialog.Content colorPalette="orange">
+          <Dialog.Content as="form" colorPalette="orange">
             <Dialog.CloseTrigger asChild>
               <CloseButton />
             </Dialog.CloseTrigger>
             <Dialog.Header>
               <Dialog.Title>Create Adventure Route</Dialog.Title>
             </Dialog.Header>
-            <Dialog.Body
-              as="form"
-              display="flex"
-              flexDirection="column"
-              gap={5}
-            >
-              <Field.Root orientation="horizontal">
-                <Field.Label>Name</Field.Label>
+            <Dialog.Body display="flex" flexDirection="column" gap={5}>
+              <Field.Root orientation="horizontal" required>
+                <Field.Label>
+                  Name <Field.RequiredIndicator />
+                </Field.Label>
                 <Input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -128,8 +125,10 @@ const RouteFormDialog = () => {
                   variant="subtle"
                 />
               </Field.Root>
-              <Field.Root orientation="horizontal">
-                <Field.Label>Description</Field.Label>
+              <Field.Root orientation="horizontal" required>
+                <Field.Label>
+                  Description <Field.RequiredIndicator />
+                </Field.Label>
                 <Textarea
                   ref={descriptionTextAreaRef}
                   value={description}
@@ -184,7 +183,7 @@ const RouteFormDialog = () => {
                   Cancel
                 </Button>
               </Dialog.ActionTrigger>
-              <Button>Create</Button>
+              <Button type="submit">Create</Button>
             </Dialog.Footer>
           </Dialog.Content>
         </Dialog.Positioner>

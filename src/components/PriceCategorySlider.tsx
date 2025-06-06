@@ -7,8 +7,10 @@ type PriceCategorySliderProps = {
 const PriceCategorySlider = (props: PriceCategorySliderProps) => {
   const { priceCategory, setPriceCategory } = props;
   return (
-    <Field.Root orientation="horizontal">
-      <Field.Label>Price Category</Field.Label>
+    <Field.Root orientation="horizontal" required>
+      <Field.Label>
+        Price Category <Field.RequiredIndicator />
+      </Field.Label>
       <Slider.Root
         value={[priceCategory]}
         onValueChange={(e) => setPriceCategory(e.value[0])}

@@ -51,18 +51,19 @@ const WaypointTextField = (props: WaypointTextFieldProps) => {
     <Field.Root
       orientation="horizontal"
       ref={setNodeRef}
-      style={{ transform: CSS.Transform.toString(transform) }}
-      // transform={CSS.Transform.toString(transform)}
+      transform={CSS.Transform.toString(transform)}
       transition={transition}
       opacity={isDragging ? 0.5 : 1}
       touchAction="none"
+      required={isOrigin || isDestination}
     >
       <Field.Label>
         {isOrigin
           ? "Origin"
           : isDestination
           ? "Destination"
-          : `Stop #${stopNumber}`}
+          : `Stop #${stopNumber}`}{" "}
+        {(isOrigin || isDestination) && <Field.RequiredIndicator />}
       </Field.Label>
       <InputGroup
         startElement={<LuMapPin />}
