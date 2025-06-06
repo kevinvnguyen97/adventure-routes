@@ -1,3 +1,4 @@
+import type { JSX } from "react";
 import {
   LuMusic,
   LuSandwich,
@@ -6,7 +7,11 @@ import {
   LuFilm,
 } from "react-icons/lu";
 
-export const defaultActivities = [
+type DefaultActivity = {
+  icon: JSX.Element;
+  text: string;
+};
+export const defaultActivities: DefaultActivity[] = [
   { icon: <LuMusic />, text: "Music" },
   { icon: <LuSandwich />, text: "Food/Drink" },
   { icon: <LuVolleyball />, text: "Sports" },
