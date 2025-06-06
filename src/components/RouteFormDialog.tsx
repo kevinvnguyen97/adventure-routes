@@ -4,9 +4,13 @@ import {
   Portal,
   Input,
   Textarea,
+  InputGroup,
+  IconButton,
+  Box,
   createListCollection,
   Combobox,
   Field,
+  CloseButton,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import {
@@ -25,8 +29,8 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-import { defaultActivities } from "@constants/activities";
 import PriceCategorySlider from "@components/PriceCategorySlider";
+import ActivityMultiSelect from "@components/ActivityMultiSelect";
 import WaypointTextField from "@components/WaypointTextField";
 
 const RouteFormDialog = () => {
@@ -97,6 +101,9 @@ const RouteFormDialog = () => {
         <Dialog.Backdrop />
         <Dialog.Positioner>
           <Dialog.Content colorPalette="orange">
+            <Dialog.CloseTrigger asChild>
+              <CloseButton />
+            </Dialog.CloseTrigger>
             <Dialog.Header>
               <Dialog.Title>Create Adventure Route</Dialog.Title>
             </Dialog.Header>
@@ -128,34 +135,10 @@ const RouteFormDialog = () => {
                 priceCategory={priceCategory}
                 setPriceCategory={setPriceCategory}
               />
-              <Field.Root orientation="horizontal">
-                <Field.Label>Activities</Field.Label>
-                <Combobox.Root
-                  value={activities}
-                  collection={activityCollection}
-                  multiple
-                  variant="subtle"
-                  display="flex"
-                >
-                  <Combobox.Control>
-                    <Combobox.Input placeholder="Select activities" />
-                    <Combobox.IndicatorGroup>
-                      <Combobox.ClearTrigger />
-                      <Combobox.Trigger />
-                    </Combobox.IndicatorGroup>
-                  </Combobox.Control>
-                  <Combobox.Positioner>
-                    <Combobox.Content>
-                      {activityCollection.items.map((activity) => (
-                        <Combobox.Item item={activity} key={activity.value}>
-                          {activity.label}
-                          <Combobox.ItemIndicator />
-                        </Combobox.Item>
-                      ))}
-                    </Combobox.Content>
-                  </Combobox.Positioner>
-                </Combobox.Root>
-              </Field.Root>
+              <ActivityMultiSelect
+                activities={activities}
+                setActivities={setActivities}
+              />
               <DndContext
                 collisionDetection={closestCorners}
                 onDragEnd={handleDragEnd}
@@ -202,12 +185,5 @@ const RouteFormDialog = () => {
     </Dialog.Root>
   );
 };
-
-const activityCollection = createListCollection({
-  items: defaultActivities.map((activity) => ({
-    label: activity,
-    value: activity,
-  })),
-});
 
 export default RouteFormDialog;
