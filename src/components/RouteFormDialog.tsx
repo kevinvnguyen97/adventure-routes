@@ -7,7 +7,7 @@ import {
   Field,
   CloseButton,
 } from "@chakra-ui/react";
-import { createRef, useEffect, useState } from "react";
+import { createRef, useEffect, useState, type FormEvent } from "react";
 import {
   DndContext,
   KeyboardSensor,
@@ -93,6 +93,44 @@ const RouteFormDialog = () => {
     setWaypoints(updatedWaypoints);
   };
 
+  const handleSubmit = async (event: FormEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    // Handle form submission logic here
+    console.log({
+      name,
+      description,
+      priceCategory,
+      activities,
+      waypoints,
+    });
+
+    try {
+      const response = await fetch("/api/routes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          description,
+          priceCategory,
+          activities,
+          waypoints: waypoints.map((waypoint) => waypoint.text),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create adventure route");
+      }
+
+      const data = await response.json();
+      console.log("Adventure route created successfully:", data);
+      setIsOpen(false); // Close the dialog on success
+    } catch (error) {
+      console.error("Error creating adventure route:", error);
+    }
+  };
+
   return (
     <Dialog.Root
       open={isOpen}
@@ -106,7 +144,11 @@ const RouteFormDialog = () => {
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
-          <Dialog.Content as="form" colorPalette="orange">
+          <Dialog.Content
+            as="form"
+            onSubmit={handleSubmit}
+            colorPalette="orange"
+          >
             <Dialog.CloseTrigger asChild>
               <CloseButton />
             </Dialog.CloseTrigger>
