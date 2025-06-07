@@ -3,6 +3,7 @@
     "paths": {
       "@components/*": ["components/*"],
       "@constants/*": ["constants/*"],
+      "@hooks/*": ["hooks/*"],
       "@models/*": ["models/*"],
       "@pages/*": ["pages/*"],
       "@providers/*": ["providers/*"],

@@ -5,6 +5,7 @@ import { fileURLToPath, URL } from "url";
 const SECTIONS = [
   "components",
   "constants",
+  "hooks",
   "models",
   "pages",
   "providers",
