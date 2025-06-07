@@ -34,7 +34,7 @@ const ActivityMultiSelect = (props: ActivityMultiSelectProps) => {
         Activities
       </Field.Label>
       <VStack width="100%">
-        <Wrap gap={2}>
+        <Wrap gap={0.5}>
           {activities.map((activity) => {
             const defaultActivity = defaultActivities.find(
               (defaultActivity) => defaultActivity.text === activity
