@@ -21,3 +21,24 @@ export const useAdventureRoute = (routeId: string) => {
 
   return { adventureRoute, isLoading };
 };
+
+export const useAdventureRoutes = () => {
+  const [adventureRoutes, setAdventureRoutes] = useState<Route[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchAdventureRoutes = useCallback(async () => {
+    const response = await fetch("/api/routes", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const adventureRoutes = (await response.json()) as unknown as Route[];
+    setAdventureRoutes(adventureRoutes);
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    fetchAdventureRoutes();
+  }, [fetchAdventureRoutes]);
+
+  return { adventureRoutes, isLoading };
+};
