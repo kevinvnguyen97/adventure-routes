@@ -135,7 +135,6 @@ const RouteFormDialog = () => {
     <Dialog.Root
       open={isOpen}
       onOpenChange={(e) => setIsOpen(e.open)}
-      lazyMount
       placement="center"
     >
       <Dialog.Trigger asChild>
@@ -148,16 +147,17 @@ const RouteFormDialog = () => {
             as="form"
             onSubmit={handleSubmit}
             colorPalette="orange"
+            bgColor={{ _light: "orange" }}
           >
             <Dialog.CloseTrigger asChild>
-              <CloseButton />
+              <CloseButton color="white" _hover={{ color: "red" }} />
             </Dialog.CloseTrigger>
             <Dialog.Header>
-              <Dialog.Title>Create Adventure Route</Dialog.Title>
+              <Dialog.Title color="white">Create Adventure Route</Dialog.Title>
             </Dialog.Header>
             <Dialog.Body display="flex" flexDirection="column" gap={5}>
               <Field.Root orientation="horizontal" required>
-                <Field.Label>
+                <Field.Label color="white">
                   Name <Field.RequiredIndicator />
                 </Field.Label>
                 <Input
@@ -168,7 +168,7 @@ const RouteFormDialog = () => {
                 />
               </Field.Root>
               <Field.Root orientation="horizontal" required>
-                <Field.Label>
+                <Field.Label color="white">
                   Description <Field.RequiredIndicator />
                 </Field.Label>
                 <Textarea

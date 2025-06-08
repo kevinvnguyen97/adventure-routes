@@ -1,4 +1,11 @@
-import { Card, Input, VStack } from "@chakra-ui/react";
+import {
+  Badge,
+  Card,
+  CloseButton,
+  Input,
+  VStack,
+  Wrap,
+} from "@chakra-ui/react";
 import RouteFormDialog from "@components/RouteFormDialog";
 import { useAdventureRoutes } from "@hooks/adventureRoute";
 
@@ -11,7 +18,11 @@ const Dashboard = () => {
     return <div>Loading...</div>;
   }
   return (
-    <VStack alignItems="center">
+    <VStack
+      alignItems="center"
+      data-state="open"
+      _open={{ animation: "fade-in 1s ease-out" }}
+    >
       <VStack width={{ smDown: "100%", sm: 400 }}>
         <Input size="2xl" variant="subtle" placeholder="Search for route" />
         <RouteFormDialog />
@@ -23,7 +34,13 @@ const Dashboard = () => {
           >
             <Card.Header fontWeight="bold">{adventureRoute.name}</Card.Header>
             <Card.Body>{adventureRoute.description}</Card.Body>
-            <Card.Footer />
+            <Card.Footer>
+              <Wrap gap={0.5}>
+                {adventureRoute.activities?.map((activity) => (
+                  <Badge key={activity}>{activity}</Badge>
+                ))}
+              </Wrap>
+            </Card.Footer>
           </Card.Root>
         ))}
       </VStack>

@@ -52,9 +52,16 @@ const UserPopover = () => {
       </Popover.Trigger>
       <Portal>
         <Popover.Positioner>
-          <Popover.Content colorPalette="orange">
-            <Popover.Arrow />
-            <Popover.Body display="flex" flexDirection="column">
+          <Popover.Content
+            colorPalette="orange"
+            css={{
+              "--popover-bg": { _light: "#F97316" },
+            }}
+          >
+            <Popover.Arrow>
+              <Popover.ArrowTip borderColor={{ _light: "orange.600" }} />
+            </Popover.Arrow>
+            <Popover.Body display="flex" flexDirection="column" color="white">
               <HStack
                 justifyContent="space-between"
                 paddingBottom={user ? 5 : 0}
@@ -66,28 +73,37 @@ const UserPopover = () => {
                     <Text>{user?.username}</Text>
                   </VStack>
                 </HStack>
-                <ColorModeButton colorPalette="gray" />
+                <ColorModeButton
+                  color="white"
+                  _hover={{ _light: { bgColor: "orange.600" } }}
+                />
               </HStack>
               {user && (
                 <>
-                  <Separator />
+                  <Separator borderColor={{ _light: "orange.600" }} />
                   <Button
                     onClick={onUserPopoverChange}
                     variant="ghost"
-                    colorPalette="gray"
+                    color="white"
+                    _hover={{ _light: { bgColor: "orange.600" } }}
                   >
                     <Settings />
                     Settings
                   </Button>
-                  <Separator />
+                  <Separator borderColor={{ _light: "orange.600" }} />
                   <Button
                     onClick={() => {
                       logoutUser();
                       onUserPopoverChange();
                     }}
                     variant="ghost"
-                    color="red"
+                    color={{
+                      _light: "red.700",
+                      _dark: "red.500",
+                      _hover: "white",
+                    }}
                     colorPalette="red"
+                    _hover={{ bgColor: "red.600" }}
                   >
                     <Logout />
                     Log Out

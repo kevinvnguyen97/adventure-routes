@@ -57,7 +57,7 @@ const WaypointTextField = (props: WaypointTextFieldProps) => {
       touchAction="none"
       required={isOrigin || isDestination}
     >
-      <Field.Label>
+      <Field.Label color="white">
         {isOrigin
           ? "Origin"
           : isDestination

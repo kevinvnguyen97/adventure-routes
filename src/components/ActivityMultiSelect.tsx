@@ -30,7 +30,7 @@ const ActivityMultiSelect = (props: ActivityMultiSelectProps) => {
 
   return (
     <Field.Root orientation="horizontal">
-      <Field.Label marginTop={activities.length > 0 ? 5 : 0}>
+      <Field.Label color="white" marginTop={activities.length > 0 ? 5 : 0}>
         Activities
       </Field.Label>
       <VStack width="100%">
