@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Field,
   InputGroup,
@@ -48,8 +49,24 @@ const WaypointTextField = (props: WaypointTextFieldProps) => {
     isDragging,
   } = useSortable({ id: waypoint.id });
 
+  const [autocomplete, setAutocomplete] =
+    useState<google.maps.places.Autocomplete | null>(null);
+
+  const onLoad = (autocompleteInstance: google.maps.places.Autocomplete) => {
+    setAutocomplete(autocompleteInstance);
+  };
+
+  const onPlaceChanged = () => {
+    console.log("Place changed");
+    if (autocomplete) {
+      const place = autocomplete.getPlace();
+      console.log("Selected place:", place);
+      onWaypointChange(place.formatted_address || place.name || "");
+    }
+  };
+
   return (
-    <Autocomplete>
+    <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
       <Field.Root
         orientation="horizontal"
         ref={setNodeRef}

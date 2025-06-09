@@ -35,6 +35,7 @@ import PriceCategorySlider from "@components/PriceCategorySlider";
 import ActivityMultiSelect from "@components/ActivityMultiSelect";
 import WaypointTextField from "@components/WaypointTextField";
 import type Route from "@models/route";
+import { googleLibraries } from "@constants/google";
 
 type RouteFormDialogProps = {
   adventureRoute?: Route;
@@ -46,7 +47,7 @@ const RouteFormDialog = (props: RouteFormDialogProps) => {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-autocomplete",
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-    libraries: ["places"],
+    libraries: googleLibraries,
   });
 
   const [isOpen, setIsOpen] = useState(false);

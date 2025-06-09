@@ -5,7 +5,7 @@ import {
   ColorModeProvider,
   type ColorModeProviderProps,
 } from "@components/ui/color-mode";
-import { autocompleteCss } from "@constants/autocomplete";
+import { autocompleteCss } from "@constants/google";
 
 const system = createSystem(defaultConfig, {
   globalCss: {

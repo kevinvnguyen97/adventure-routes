@@ -1,8 +1,9 @@
 import type { SystemStyleObject } from "@chakra-ui/react";
+import type { Libraries } from "@react-google-maps/api";
 
 export const autocompleteCss: Record<string, SystemStyleObject> = {
   ".pac-container": {
-    zIndex: "10000 !important",
+    zIndex: "100000 !important",
     backgroundColor: { _dark: "var(--chakra-colors-bg-panel) !important" },
     color: { _dark: "white !important" },
     fontFamily: "Inter, sans-serif !important",
@@ -34,3 +35,5 @@ export const autocompleteCss: Record<string, SystemStyleObject> = {
     fontSize: "14px !important",
   },
 };
+
+export const googleLibraries: Libraries = ["places"];
