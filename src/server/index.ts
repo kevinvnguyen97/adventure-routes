@@ -2,9 +2,9 @@ import express from "express";
 import session from "express-session";
 import * as cors from "cors";
 
-import { connectToDatabase } from "../services/database.service.ts";
-import { tripsRouter } from "../routes/trips.router.ts";
-import { usersRouter } from "../routes/users.router.ts";
+import { connectToDatabase } from "@services/database.service.ts";
+import { tripsRouter } from "@routes/trips.router.ts";
+import { usersRouter } from "@routes/users.router.ts";
 
 const app = express();
 const port = 8080;
@@ -23,7 +23,7 @@ const startDatabase = async () => {
   try {
     await connectToDatabase();
 
-    app.use("/routes", tripsRouter);
+    app.use("/trips", tripsRouter);
     app.use("/users", usersRouter);
 
     app.listen(port, () => {
