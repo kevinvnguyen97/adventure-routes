@@ -1,4 +1,3 @@
-import "./App.css";
 import { Box } from "@chakra-ui/react";
 import { Navigate, Routes, Route, Outlet } from "react-router-dom";
 

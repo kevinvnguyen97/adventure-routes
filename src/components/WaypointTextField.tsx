@@ -15,6 +15,7 @@ import {
   LuArrowUp,
 } from "react-icons/lu";
 import { CSS } from "@dnd-kit/utilities";
+import { Autocomplete } from "@react-google-maps/api";
 
 type WaypointTextFieldProps = {
   waypoint: WaypointInput;
@@ -48,74 +49,77 @@ const WaypointTextField = (props: WaypointTextFieldProps) => {
   } = useSortable({ id: waypoint.id });
 
   return (
-    <Field.Root
-      orientation="horizontal"
-      ref={setNodeRef}
-      transform={CSS.Transform.toString(transform)}
-      transition={transition}
-      opacity={isDragging ? 0.5 : 1}
-      touchAction="none"
-      required={isOrigin || isDestination}
-    >
-      <Field.Label color="white">
-        {isOrigin
-          ? "Origin"
-          : isDestination
-          ? "Destination"
-          : `Stop #${stopNumber}`}{" "}
-        {(isOrigin || isDestination) && <Field.RequiredIndicator />}
-      </Field.Label>
-      <InputGroup
-        startElement={<LuMapPin />}
-        endAddonProps={{ variant: "subtle", paddingLeft: 0, paddingRight: 0 }}
-        endAddon={
-          <ButtonGroup gap={0}>
-            {hasMoreWaypoints && (
+    <Autocomplete>
+      <Field.Root
+        orientation="horizontal"
+        ref={setNodeRef}
+        transform={CSS.Transform.toString(transform)}
+        transition={transition}
+        opacity={isDragging ? 0.5 : 1}
+        touchAction="none"
+        required={isOrigin || isDestination}
+      >
+        <Field.Label color="white">
+          {isOrigin
+            ? "Origin"
+            : isDestination
+            ? "Destination"
+            : `Stop #${stopNumber}`}{" "}
+          {(isOrigin || isDestination) && <Field.RequiredIndicator />}
+        </Field.Label>
+        <InputGroup
+          startElement={<LuMapPin />}
+          endAddonProps={{ variant: "subtle", paddingLeft: 0, paddingRight: 0 }}
+          endAddon={
+            <ButtonGroup gap={0}>
+              {hasMoreWaypoints && (
+                <IconButton
+                  onClick={removeWaypoint}
+                  variant="ghost"
+                  color="red"
+                  colorPalette="red"
+                  size="xs"
+                >
+                  <LuMinus />
+                </IconButton>
+              )}
               <IconButton
-                onClick={removeWaypoint}
+                onClick={addWaypoint}
                 variant="ghost"
-                color="red"
-                colorPalette="red"
+                color={{ _light: "green", _dark: "lightgreen" }}
+                colorPalette="green"
                 size="xs"
               >
-                <LuMinus />
+                <LuPlus />
               </IconButton>
-            )}
-            <IconButton
-              onClick={addWaypoint}
-              variant="ghost"
-              color={{ _light: "green", _dark: "lightgreen" }}
-              colorPalette="green"
-              size="xs"
-            >
-              <LuPlus />
-            </IconButton>
-            <IconButton
-              {...attributes}
-              {...listeners}
-              variant="ghost"
-              color={{ _light: "black", _dark: "white" }}
-              size="xs"
-            >
-              {isOrigin ? (
-                <LuArrowDown />
-              ) : isDestination ? (
-                <LuArrowUp />
-              ) : (
-                <LuArrowDownUp />
-              )}
-            </IconButton>
-          </ButtonGroup>
-        }
-      >
-        <Input
-          value={waypoint.text}
-          onChange={(e) => onWaypointChange(e.target.value)}
-          placeholder="Enter address or place of interest"
-          variant="subtle"
-        />
-      </InputGroup>
-    </Field.Root>
+              <IconButton
+                {...attributes}
+                {...listeners}
+                variant="ghost"
+                color={{ _light: "black", _dark: "white" }}
+                size="xs"
+              >
+                {isOrigin ? (
+                  <LuArrowDown />
+                ) : isDestination ? (
+                  <LuArrowUp />
+                ) : (
+                  <LuArrowDownUp />
+                )}
+              </IconButton>
+            </ButtonGroup>
+          }
+        >
+          <Input
+            value={waypoint.text}
+            onChange={(e) => onWaypointChange(e.target.value)}
+            placeholder="Enter address or place of interest"
+            variant="subtle"
+            width="100%"
+          />
+        </InputGroup>
+      </Field.Root>
+    </Autocomplete>
   );
 };
 

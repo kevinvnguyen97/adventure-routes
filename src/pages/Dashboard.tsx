@@ -15,8 +15,6 @@ import { LuPencil } from "react-icons/lu";
 const Dashboard = () => {
   const { adventureRoutes, isLoading } = useAdventureRoutes();
 
-  console.log("Adventure Routes:", adventureRoutes);
-
   if (isLoading) {
     return <div>Loading...</div>;
   }

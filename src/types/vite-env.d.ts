@@ -3,6 +3,7 @@
 interface ImportMetaEnv {
   readonly VITE_DB_CONNECTION_STRING: string;
   readonly VITE_JWT_SECRET: string;
+  readonly VITE_GOOGLE_MAPS_API_KEY: string;
 }
 
 interface ImportMeta {

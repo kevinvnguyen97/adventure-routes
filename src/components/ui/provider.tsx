@@ -1,19 +1,19 @@
 "use client";
 
 import { ChakraProvider, createSystem, defaultConfig } from "@chakra-ui/react";
-import { ColorModeProvider, type ColorModeProviderProps } from "./color-mode";
+import {
+  ColorModeProvider,
+  type ColorModeProviderProps,
+} from "@components/ui/color-mode";
+import { autocompleteCss } from "@constants/autocomplete";
 
 const system = createSystem(defaultConfig, {
   globalCss: {
     body: {
-      _light: {
-        bgColor: "orange",
-      },
-      _dark: {
-        bgColor: "black",
-      },
+      bgColor: { _light: "orange", _dark: "black" },
       padding: 5,
     },
+    ...autocompleteCss,
   },
 });
 
