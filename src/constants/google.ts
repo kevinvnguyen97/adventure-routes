@@ -2,6 +2,7 @@ import type { SystemStyleObject } from "@chakra-ui/react";
 import type { Libraries } from "@react-google-maps/api";
 
 export const autocompleteCss: Record<string, SystemStyleObject> = {
+  // Entire container for the autocomplete dropdown
   ".pac-container": {
     zIndex: "100000 !important",
     backgroundColor: { _dark: "var(--chakra-colors-bg-panel) !important" },
@@ -16,19 +17,28 @@ export const autocompleteCss: Record<string, SystemStyleObject> = {
     border: "0 !important",
     borderRadius: "var(--chakra-radii-l2) !important",
   },
+  // Individual items in the autocomplete dropdown
   ".pac-item": {
     color: { _dark: "white !important" },
     height: "32px !important",
     border: "0 !important",
     fontSize: "14px !important",
     padding: "6px 8px !important",
+    display: "inline-flex !important",
+    alignItems: "center !important",
   },
+  // Hover state for individual items
   ".pac-item:hover": {
     bgColor: { _dark: "white !important" },
   },
+  ".pac-item-selected": {
+    bgColor: { _dark: "var(--global-color-border) !important" },
+  },
+  // Powered by Google logo container
   ".hdpi.pac-logo:after": {
     bgColor: { _dark: "var(--global-color-border) !important" },
   },
+  // Query input field in the autocomplete dropdown
   ".pac-item-query": {
     color: { _dark: "white !important" },
     fontFamily: "Inter, sans-serif !important",

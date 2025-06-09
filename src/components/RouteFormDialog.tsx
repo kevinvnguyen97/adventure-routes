@@ -164,8 +164,7 @@ const RouteFormDialog = (props: RouteFormDialogProps) => {
         if (!response.ok) {
           throw new Error("Failed to update adventure route");
         }
-        const data = await response.json();
-        console.log("Adventure route updated successfully:", data);
+        console.log("Adventure route updated successfully");
         setIsOpen(false); // Close the dialog on success
       } catch (error) {
         console.error("Error updating adventure route:", error);
@@ -192,8 +191,7 @@ const RouteFormDialog = (props: RouteFormDialogProps) => {
           throw new Error("Failed to create adventure route");
         }
 
-        const data = await response.json();
-        console.log("Adventure route created successfully:", data);
+        console.log("Adventure route created successfully");
         setIsOpen(false); // Close the dialog on success
       } catch (error) {
         console.error("Error creating adventure route:", error);
