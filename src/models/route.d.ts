@@ -1,9 +1,9 @@
 import { ObjectId } from "mongodb";
 
 export default interface Route {
-  id: ObjectId;
+  _id: ObjectId;
   name: string;
-  priceCategory: string;
+  priceCategory: number;
   waypoints: string[];
   description?: string;
   activities?: string[];

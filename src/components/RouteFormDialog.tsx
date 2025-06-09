@@ -7,7 +7,13 @@ import {
   Field,
   CloseButton,
 } from "@chakra-ui/react";
-import { createRef, useEffect, useState, type FormEvent } from "react";
+import {
+  createRef,
+  useEffect,
+  useState,
+  type FormEvent,
+  type JSX,
+} from "react";
 import {
   DndContext,
   KeyboardSensor,
@@ -27,8 +33,15 @@ import {
 import PriceCategorySlider from "@components/PriceCategorySlider";
 import ActivityMultiSelect from "@components/ActivityMultiSelect";
 import WaypointTextField from "@components/WaypointTextField";
+import type Route from "@models/route";
 
-const RouteFormDialog = () => {
+type RouteFormDialogProps = {
+  adventureRoute?: Route;
+  triggerButton: JSX.Element;
+};
+const RouteFormDialog = (props: RouteFormDialogProps) => {
+  const { adventureRoute, triggerButton } = props;
+
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -55,6 +68,25 @@ const RouteFormDialog = () => {
       descriptionTextAreaRef.current.style.height = `${scrollHeight}px`;
     }
   }, [descriptionTextAreaRef]);
+
+  useEffect(() => {
+    if (adventureRoute) {
+      const {
+        name,
+        description = "",
+        priceCategory = 0,
+        activities = [],
+        waypoints = [],
+      } = adventureRoute;
+      setName(name);
+      setDescription(description);
+      setPriceCategory(priceCategory);
+      setActivities(activities);
+      setWaypoints(
+        waypoints.map((waypoint) => ({ id: Math.random(), text: waypoint }))
+      );
+    }
+  }, [adventureRoute]);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -104,30 +136,60 @@ const RouteFormDialog = () => {
       waypoints,
     });
 
-    try {
-      const response = await fetch("/api/routes", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          description,
-          priceCategory,
-          activities,
-          waypoints: waypoints.map((waypoint) => waypoint.text),
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to create adventure route");
+    if (adventureRoute) {
+      try {
+        const response = await fetch(`/api/routes/${adventureRoute._id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            description,
+            priceCategory,
+            activities,
+            waypoints: waypoints
+              .filter((waypoint) => !!waypoint.text)
+              .map((waypoint) => waypoint.text),
+          }),
+        });
+        if (!response.ok) {
+          throw new Error("Failed to update adventure route");
+        }
+        const data = await response.json();
+        console.log("Adventure route updated successfully:", data);
+        setIsOpen(false); // Close the dialog on success
+      } catch (error) {
+        console.error("Error updating adventure route:", error);
       }
+    } else {
+      try {
+        const response = await fetch("/api/routes", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            description,
+            priceCategory,
+            activities,
+            waypoints: waypoints
+              .filter((waypoint) => !!waypoint.text)
+              .map((waypoint) => waypoint.text),
+          }),
+        });
 
-      const data = await response.json();
-      console.log("Adventure route created successfully:", data);
-      setIsOpen(false); // Close the dialog on success
-    } catch (error) {
-      console.error("Error creating adventure route:", error);
+        if (!response.ok) {
+          throw new Error("Failed to create adventure route");
+        }
+
+        const data = await response.json();
+        console.log("Adventure route created successfully:", data);
+        setIsOpen(false); // Close the dialog on success
+      } catch (error) {
+        console.error("Error creating adventure route:", error);
+      }
     }
   };
 
@@ -137,9 +199,7 @@ const RouteFormDialog = () => {
       onOpenChange={(e) => setIsOpen(e.open)}
       placement="center"
     >
-      <Dialog.Trigger asChild>
-        <Button>Create a Route</Button>
-      </Dialog.Trigger>
+      <Dialog.Trigger asChild>{triggerButton}</Dialog.Trigger>
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
@@ -153,7 +213,9 @@ const RouteFormDialog = () => {
               <CloseButton color="white" _hover={{ color: "red" }} />
             </Dialog.CloseTrigger>
             <Dialog.Header>
-              <Dialog.Title color="white">Create Adventure Route</Dialog.Title>
+              <Dialog.Title color="white">
+                {adventureRoute ? "Edit" : "Create"} Adventure Route
+              </Dialog.Title>
             </Dialog.Header>
             <Dialog.Body display="flex" flexDirection="column" gap={5}>
               <Field.Root orientation="horizontal" required>
@@ -225,7 +287,9 @@ const RouteFormDialog = () => {
                   Cancel
                 </Button>
               </Dialog.ActionTrigger>
-              <Button type="submit">Create</Button>
+              <Button type="submit">
+                {adventureRoute ? "Save" : "Create"}
+              </Button>
             </Dialog.Footer>
           </Dialog.Content>
         </Dialog.Positioner>
