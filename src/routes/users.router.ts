@@ -42,7 +42,7 @@ usersRouter.get("/profile", (req: Request, res: Response) => {
 usersRouter.get("/", async (_req: Request, res: Response) => {
   try {
     const users = (await collections.users
-      ?.find({})
+      ?.find({}, { projection: { password: 0 } })
       .toArray()) as unknown as User[];
     if (users) {
       res.json(users);

@@ -17,6 +17,7 @@ app.use(
     saveUninitialized: false,
   })
 );
+app.set("json spaces", 2);
 
 const startDatabase = async () => {
   try {
