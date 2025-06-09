@@ -27,8 +27,8 @@ const Dashboard = () => {
       _open={{ animation: "fade-in 1s ease-out" }}
     >
       <VStack width={{ smDown: "100%", sm: 400 }}>
-        <Input size="2xl" variant="subtle" placeholder="Search for route" />
-        <TripFormDialog triggerButton={<Button>Create a Route</Button>} />
+        <Input size="2xl" variant="subtle" placeholder="Search for Trip" />
+        <TripFormDialog triggerButton={<Button>Create a Trip</Button>} />
         {trips.map((trip) => (
           <Card.Root
             bgColor={{ _light: "orange.500" }}

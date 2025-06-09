@@ -215,7 +215,7 @@ const TripFormDialog = (props: TripFormDialogProps) => {
             </Dialog.CloseTrigger>
             <Dialog.Header>
               <Dialog.Title color="white">
-                {trip ? "Edit" : "Create"} Adventure Route
+                {trip ? "Edit" : "Create"} Trip
               </Dialog.Title>
             </Dialog.Header>
             <Dialog.Body display="flex" flexDirection="column" gap={5}>
