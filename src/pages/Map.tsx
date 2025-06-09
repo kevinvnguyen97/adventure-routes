@@ -1,4 +1,4 @@
-import { useAdventureRoute } from "@hooks/adventureRoute";
+import { useTrip } from "@hooks/trip";
 import {
   DirectionsRenderer,
   DirectionsService,
@@ -8,11 +8,11 @@ import {
 import { useParams } from "react-router-dom";
 
 const Map = () => {
-  const { routeId = "" } = useParams();
+  const { tripId = "" } = useParams();
 
   //   const [map, setMap] = useState<google.maps.Map | null>(null);
 
-  const { adventureRoute, isLoading } = useAdventureRoute(routeId);
+  const { trip, isLoading } = useTrip(tripId);
 
   const onMapLoad = (map: google.maps.Map) => {
     console.log("Map loaded:", map);
@@ -47,10 +47,8 @@ const Map = () => {
     >
       <DirectionsService
         options={{
-          origin: adventureRoute?.waypoints[0] || "",
-          destination:
-            adventureRoute?.waypoints[adventureRoute?.waypoints.length - 1] ||
-            "",
+          origin: trip?.waypoints[0] || "",
+          destination: trip?.waypoints[trip?.waypoints.length - 1] || "",
           travelMode: google.maps.TravelMode.DRIVING,
         }}
         callback={directionsServiceCallback}

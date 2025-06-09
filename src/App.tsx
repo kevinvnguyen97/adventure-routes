@@ -37,7 +37,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<ProtectedRoute />}>
           <Route index element={<Dashboard />} />
-          <Route path="/map/:routeId" element={<Map />} />
+          <Route path="/map/:tripId" element={<Map />} />
         </Route>
         <Route path="/" element={<NonProtectedRoute />}>
           <Route index path="/login" element={<Login />} />

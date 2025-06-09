@@ -1,14 +1,14 @@
 import { Collection, Db, MongoClient } from "mongodb";
 import env from "@constants/env";
-import type Route from "@models/route";
+import type Route from "@models/trip";
 import type User from "@models/user";
 
-type AdventureRouteDBCollections = {
+type tripDBCollections = {
   users?: Collection<User>;
-  routes?: Collection<Route>;
+  trips?: Collection<Route>;
   comments?: Collection<Comment>;
 };
-export const collections: AdventureRouteDBCollections = {};
+export const collections: tripDBCollections = {};
 
 export const connectToDatabase = async () => {
   const client: MongoClient = new MongoClient(env.VITE_DB_CONNECTION_STRING!);
@@ -18,7 +18,7 @@ export const connectToDatabase = async () => {
   const db: Db = client.db("adventure-routes");
 
   const usersCollection: Collection<User> = db.collection<User>("users");
-  const routesCollection: Collection<Route> = db.collection<Route>("routes");
+  const tripsCollection: Collection<Route> = db.collection<Route>("trips");
   const commentsCollection: Collection<Comment> =
     db.collection<Comment>("comments");
 
@@ -26,11 +26,11 @@ export const connectToDatabase = async () => {
     { id: 1, username: 1, email: 1 },
     { unique: true }
   );
-  routesCollection.createIndex({ id: 1 });
+  tripsCollection.createIndex({ id: 1 });
   commentsCollection.createIndex({ id: 1 });
 
   collections.users = usersCollection;
-  collections.routes = routesCollection;
+  collections.trips = tripsCollection;
   collections.comments = commentsCollection;
 
   console.log(`Successfully connected to database: ${db.databaseName}`);

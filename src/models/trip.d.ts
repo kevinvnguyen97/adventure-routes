@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 
-export default interface Route {
+export default interface Trip {
   _id: ObjectId;
   name: string;
   priceCategory: number;

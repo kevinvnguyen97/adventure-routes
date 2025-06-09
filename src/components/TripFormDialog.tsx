@@ -33,14 +33,14 @@ import {
 import PriceCategorySlider from "@components/PriceCategorySlider";
 import ActivityMultiSelect from "@components/ActivityMultiSelect";
 import WaypointTextField from "@components/WaypointTextField";
-import type Route from "@models/route";
+import type Route from "@models/trip";
 
-type RouteFormDialogProps = {
-  adventureRoute?: Route;
+type TripFormDialogProps = {
+  trip?: Route;
   triggerButton: JSX.Element;
 };
-const RouteFormDialog = (props: RouteFormDialogProps) => {
-  const { adventureRoute, triggerButton } = props;
+const TripFormDialog = (props: TripFormDialogProps) => {
+  const { trip, triggerButton } = props;
 
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState("");
@@ -70,14 +70,14 @@ const RouteFormDialog = (props: RouteFormDialogProps) => {
   }, [descriptionTextAreaRef]);
 
   useEffect(() => {
-    if (adventureRoute) {
+    if (trip) {
       const {
         name,
         description = "",
         priceCategory = 0,
         activities = [],
         waypoints = [],
-      } = adventureRoute;
+      } = trip;
       setName(name);
       setDescription(description);
       setPriceCategory(priceCategory);
@@ -86,7 +86,7 @@ const RouteFormDialog = (props: RouteFormDialogProps) => {
         waypoints.map((waypoint) => ({ id: Math.random(), text: waypoint }))
       );
     }
-  }, [adventureRoute]);
+  }, [trip]);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -136,9 +136,9 @@ const RouteFormDialog = (props: RouteFormDialogProps) => {
       waypoints,
     });
 
-    if (adventureRoute) {
+    if (trip) {
       try {
-        const response = await fetch(`/api/routes/${adventureRoute._id}`, {
+        const response = await fetch(`/api/trips/${trip._id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -163,7 +163,7 @@ const RouteFormDialog = (props: RouteFormDialogProps) => {
       }
     } else {
       try {
-        const response = await fetch("/api/routes", {
+        const response = await fetch("/api/trips", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -215,7 +215,7 @@ const RouteFormDialog = (props: RouteFormDialogProps) => {
             </Dialog.CloseTrigger>
             <Dialog.Header>
               <Dialog.Title color="white">
-                {adventureRoute ? "Edit" : "Create"} Adventure Route
+                {trip ? "Edit" : "Create"} Adventure Route
               </Dialog.Title>
             </Dialog.Header>
             <Dialog.Body display="flex" flexDirection="column" gap={5}>
@@ -288,9 +288,7 @@ const RouteFormDialog = (props: RouteFormDialogProps) => {
                   Cancel
                 </Button>
               </Dialog.ActionTrigger>
-              <Button type="submit">
-                {adventureRoute ? "Save" : "Create"}
-              </Button>
+              <Button type="submit">{trip ? "Save" : "Create"}</Button>
             </Dialog.Footer>
           </Dialog.Content>
         </Dialog.Positioner>
@@ -299,4 +297,4 @@ const RouteFormDialog = (props: RouteFormDialogProps) => {
   );
 };
 
-export default RouteFormDialog;
+export default TripFormDialog;
