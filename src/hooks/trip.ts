@@ -26,7 +26,7 @@ export const useTrips = () => {
   const [trips, setTrips] = useState<Trip[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchTrips = useCallback(async () => {
+  const refetchTrips = useCallback(async () => {
     const response = await fetch("/api/trips", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -34,11 +34,11 @@ export const useTrips = () => {
     const trips = (await response.json()) as unknown as Trip[];
     setTrips(trips);
     setIsLoading(false);
-  }, []);
+  }, [setTrips, setIsLoading]);
 
   useEffect(() => {
-    fetchTrips();
-  }, [fetchTrips]);
+    refetchTrips();
+  }, [refetchTrips]);
 
-  return { trips, isLoading };
+  return { trips, refetchTrips, isLoading };
 };

@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { trips, isLoading } = useTrips();
+  const { trips, refetchTrips, isLoading } = useTrips();
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -28,7 +28,10 @@ const Dashboard = () => {
     >
       <VStack width={{ smDown: "100%", sm: 400 }}>
         <Input size="2xl" variant="subtle" placeholder="Search for Trip" />
-        <TripFormDialog triggerButton={<Button>Create a Trip</Button>} />
+        <TripFormDialog
+          triggerButton={<Button>Create a Trip</Button>}
+          refetchTrips={refetchTrips}
+        />
         {trips.map((trip) => (
           <Card.Root
             bgColor={{ _light: "orange.500" }}
@@ -53,6 +56,7 @@ const Dashboard = () => {
                       <LuPencil />
                     </IconButton>
                   }
+                  refetchTrips={refetchTrips}
                 />
                 <Button onClick={() => navigate(`/map/${trip._id}`)}>
                   Map

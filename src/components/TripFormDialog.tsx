@@ -38,9 +38,10 @@ import type Route from "@models/trip";
 type TripFormDialogProps = {
   trip?: Route;
   triggerButton: JSX.Element;
+  refetchTrips: () => void;
 };
 const TripFormDialog = (props: TripFormDialogProps) => {
-  const { trip, triggerButton } = props;
+  const { trip, triggerButton, refetchTrips } = props;
 
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState("");
@@ -158,6 +159,7 @@ const TripFormDialog = (props: TripFormDialogProps) => {
         }
         console.log("Adventure route updated successfully");
         setIsOpen(false); // Close the dialog on success
+        refetchTrips();
       } catch (error) {
         console.error("Error updating adventure route:", error);
       }
@@ -185,6 +187,7 @@ const TripFormDialog = (props: TripFormDialogProps) => {
 
         console.log("Adventure route created successfully");
         setIsOpen(false); // Close the dialog on success
+        refetchTrips();
       } catch (error) {
         console.error("Error creating adventure route:", error);
       }
