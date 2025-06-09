@@ -29,13 +29,11 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { useJsApiLoader } from "@react-google-maps/api";
 
 import PriceCategorySlider from "@components/PriceCategorySlider";
 import ActivityMultiSelect from "@components/ActivityMultiSelect";
 import WaypointTextField from "@components/WaypointTextField";
 import type Route from "@models/route";
-import { googleLibraries } from "@constants/google";
 
 type RouteFormDialogProps = {
   adventureRoute?: Route;
@@ -43,12 +41,6 @@ type RouteFormDialogProps = {
 };
 const RouteFormDialog = (props: RouteFormDialogProps) => {
   const { adventureRoute, triggerButton } = props;
-
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-autocomplete",
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-    libraries: googleLibraries,
-  });
 
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState("");
@@ -198,10 +190,6 @@ const RouteFormDialog = (props: RouteFormDialogProps) => {
       }
     }
   };
-
-  if (!isLoaded) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <Dialog.Root

@@ -11,8 +11,10 @@ import {
 import RouteFormDialog from "@components/RouteFormDialog";
 import { useAdventureRoutes } from "@hooks/adventureRoute";
 import { LuPencil } from "react-icons/lu";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const { adventureRoutes, isLoading } = useAdventureRoutes();
 
   if (isLoading) {
@@ -35,22 +37,26 @@ const Dashboard = () => {
           >
             <Card.Header fontWeight="bold" as={HStack}>
               {adventureRoute.name}
-              <RouteFormDialog
-                adventureRoute={adventureRoute}
-                triggerButton={
-                  <IconButton>
-                    <LuPencil />
-                  </IconButton>
-                }
-              />
             </Card.Header>
-            <Card.Description>{adventureRoute.description}</Card.Description>
-            <Card.Body></Card.Body>
+            <Card.Body>
+              <Card.Description>{adventureRoute.description}</Card.Description>
+            </Card.Body>
             <Card.Footer>
               <Wrap gap={0.5}>
                 {adventureRoute.activities?.map((activity) => (
                   <Badge key={activity}>{activity}</Badge>
                 ))}
+                <RouteFormDialog
+                  adventureRoute={adventureRoute}
+                  triggerButton={
+                    <IconButton>
+                      <LuPencil />
+                    </IconButton>
+                  }
+                />
+                <Button onClick={() => navigate(`/map/${adventureRoute._id}`)}>
+                  Map
+                </Button>
               </Wrap>
             </Card.Footer>
           </Card.Root>

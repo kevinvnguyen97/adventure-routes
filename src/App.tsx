@@ -6,6 +6,7 @@ import { Toaster } from "@components/ui/toaster";
 import Login from "@pages/Login";
 import Dashboard from "@pages/Dashboard";
 import Register from "@pages/Register";
+import Map from "@pages/Map";
 import { useAuth } from "@utils/auth";
 
 const ProtectedRoute = () => {
@@ -36,6 +37,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<ProtectedRoute />}>
           <Route index element={<Dashboard />} />
+          <Route path="/map/:routeId" element={<Map />} />
         </Route>
         <Route path="/" element={<NonProtectedRoute />}>
           <Route index path="/login" element={<Login />} />
