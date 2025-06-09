@@ -23,13 +23,11 @@ export const autocompleteCss: Record<string, SystemStyleObject> = {
     height: "32px !important",
     border: "0 !important",
     fontSize: "14px !important",
-    padding: "6px 8px !important",
-    display: "inline-flex !important",
-    alignItems: "center !important",
+    padding: "6px 8px 35px !important",
   },
   // Hover state for individual items
   ".pac-item:hover": {
-    bgColor: { _dark: "white !important" },
+    bgColor: { _dark: "var(--global-color-border) !important" },
   },
   ".pac-item-selected": {
     bgColor: { _dark: "var(--global-color-border) !important" },
@@ -37,6 +35,7 @@ export const autocompleteCss: Record<string, SystemStyleObject> = {
   // Powered by Google logo container
   ".hdpi.pac-logo:after": {
     bgColor: { _dark: "var(--global-color-border) !important" },
+    display: "none !important",
   },
   // Query input field in the autocomplete dropdown
   ".pac-item-query": {

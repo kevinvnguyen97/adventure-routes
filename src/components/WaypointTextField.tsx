@@ -5,6 +5,7 @@ import {
   IconButton,
   Input,
   ButtonGroup,
+  CloseButton,
 } from "@chakra-ui/react";
 import { useSortable } from "@dnd-kit/sortable";
 import {
@@ -17,6 +18,22 @@ import {
 } from "react-icons/lu";
 import { CSS } from "@dnd-kit/utilities";
 import { Autocomplete } from "@react-google-maps/api";
+
+type ClearWaypointInputButtonProps = {
+  clearWaypointInput: () => void;
+};
+const ClearWaypointInputButton = ({
+  clearWaypointInput,
+}: ClearWaypointInputButtonProps) => {
+  return (
+    <CloseButton
+      onClick={clearWaypointInput}
+      variant="ghost"
+      size="xs"
+      color="white"
+    />
+  );
+};
 
 type WaypointTextFieldProps = {
   waypoint: WaypointInput;
@@ -86,45 +103,10 @@ const WaypointTextField = (props: WaypointTextFieldProps) => {
         </Field.Label>
         <InputGroup
           startElement={<LuMapPin />}
-          endAddonProps={{ variant: "subtle", paddingLeft: 0, paddingRight: 0 }}
-          endAddon={
-            <ButtonGroup gap={0}>
-              {hasMoreWaypoints && (
-                <IconButton
-                  onClick={removeWaypoint}
-                  variant="ghost"
-                  color="red"
-                  colorPalette="red"
-                  size="xs"
-                >
-                  <LuMinus />
-                </IconButton>
-              )}
-              <IconButton
-                onClick={addWaypoint}
-                variant="ghost"
-                color={{ _light: "green", _dark: "lightgreen" }}
-                colorPalette="green"
-                size="xs"
-              >
-                <LuPlus />
-              </IconButton>
-              <IconButton
-                {...attributes}
-                {...listeners}
-                variant="ghost"
-                color={{ _light: "black", _dark: "white" }}
-                size="xs"
-              >
-                {isOrigin ? (
-                  <LuArrowDown />
-                ) : isDestination ? (
-                  <LuArrowUp />
-                ) : (
-                  <LuArrowDownUp />
-                )}
-              </IconButton>
-            </ButtonGroup>
+          endElement={
+            <ClearWaypointInputButton
+              clearWaypointInput={() => onWaypointChange("")}
+            />
           }
         >
           <Input
@@ -135,6 +117,43 @@ const WaypointTextField = (props: WaypointTextFieldProps) => {
             width="100%"
           />
         </InputGroup>
+        <ButtonGroup gap={0}>
+          {hasMoreWaypoints && (
+            <IconButton
+              onClick={removeWaypoint}
+              variant="ghost"
+              color="red"
+              colorPalette="red"
+              size="xs"
+            >
+              <LuMinus />
+            </IconButton>
+          )}
+          <IconButton
+            onClick={addWaypoint}
+            variant="ghost"
+            color={{ _light: "green", _dark: "lightgreen" }}
+            colorPalette="green"
+            size="xs"
+          >
+            <LuPlus />
+          </IconButton>
+          <IconButton
+            {...attributes}
+            {...listeners}
+            variant="ghost"
+            color={{ _light: "black", _dark: "white" }}
+            size="xs"
+          >
+            {isOrigin ? (
+              <LuArrowDown />
+            ) : isDestination ? (
+              <LuArrowUp />
+            ) : (
+              <LuArrowDownUp />
+            )}
+          </IconButton>
+        </ButtonGroup>
       </Field.Root>
     </Autocomplete>
   );

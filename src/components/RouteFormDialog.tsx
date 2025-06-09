@@ -208,6 +208,9 @@ const RouteFormDialog = (props: RouteFormDialogProps) => {
       open={isOpen}
       onOpenChange={(e) => setIsOpen(e.open)}
       placement="center"
+      size="lg"
+      scrollBehavior="inside"
+      modal={false}
     >
       <Dialog.Trigger asChild>{triggerButton}</Dialog.Trigger>
       <Portal>
