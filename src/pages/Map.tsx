@@ -4,33 +4,54 @@ import {
   DirectionsService,
   GoogleMap,
 } from "@react-google-maps/api";
-// import { useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 const Map = () => {
   const { tripId = "" } = useParams();
 
-  //   const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [directions, setDirections] = useState<
+    google.maps.DirectionsResult | undefined
+  >();
+  const [isDirectionsRendered, setIsDirectionsRendered] = useState(false);
 
   const { trip, isLoading } = useTrip(tripId);
+  const { waypoints = [] } = trip || {};
+  const origin = waypoints[0];
+  const stops: google.maps.DirectionsWaypoint[] =
+    waypoints.length <= 2
+      ? []
+      : waypoints
+          .toSpliced(0, 1)
+          .toSpliced(waypoints.length - 2)
+          .map((waypoint) => ({
+            location: waypoint,
+            stopover: true,
+          }));
+  const destination = waypoints[waypoints.length - 1];
 
   const onMapLoad = (map: google.maps.Map) => {
     console.log("Map loaded:", map);
     const bounds = new google.maps.LatLngBounds();
     map.fitBounds(bounds);
-    // setMap(map);
+    setMap(map);
   };
   const onMapUnmount = () => {
     console.log("Map unmounted");
-    // setMap(null);
+    setMap(null);
   };
 
   const directionsServiceCallback = (
     response: google.maps.DirectionsResult | null,
     status: google.maps.DirectionsStatus
   ) => {
-    if (status === "OK") {
+    if (isDirectionsRendered) {
+      return;
+    } else if (status === "OK" && !isDirectionsRendered) {
       console.log("Directions response:", response);
+      setDirections(response as google.maps.DirectionsResult | undefined);
+      setIsDirectionsRendered(true);
     } else {
       console.error("Error fetching directions:", status);
     }
@@ -47,13 +68,21 @@ const Map = () => {
     >
       <DirectionsService
         options={{
-          origin: trip?.waypoints[0] || "",
-          destination: trip?.waypoints[trip?.waypoints.length - 1] || "",
+          origin,
+          waypoints: stops,
+          destination,
           travelMode: google.maps.TravelMode.DRIVING,
+          provideRouteAlternatives: true,
         }}
         callback={directionsServiceCallback}
       />
-      <DirectionsRenderer />
+      {directions?.routes.map((route, index) => (
+        <DirectionsRenderer
+          key={route.summary}
+          directions={directions}
+          routeIndex={index}
+        />
+      ))}
     </GoogleMap>
   );
 };
