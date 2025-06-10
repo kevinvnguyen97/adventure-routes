@@ -11,17 +11,17 @@ import { googleLibraries } from "@constants/google.ts";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider>
-      <BrowserRouter>
-        <AuthProvider>
+      <AuthProvider>
+        <BrowserRouter>
           <LoadScript
             googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
             libraries={googleLibraries}
-            loadingElement={<div style={{ height: "100%" }}>Loading...</div>}
+            loadingElement={<div>Loading...</div>}
           >
             <App />
           </LoadScript>
-        </AuthProvider>
-      </BrowserRouter>
+        </BrowserRouter>
+      </AuthProvider>
     </Provider>
   </StrictMode>
 );

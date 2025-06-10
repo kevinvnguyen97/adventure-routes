@@ -10,9 +10,9 @@ import Map from "@pages/Map";
 import { useAuth } from "@utils/auth";
 
 const ProtectedRoute = () => {
-  const { user } = useAuth();
+  const { user, isUserDataLoading } = useAuth();
 
-  if (!user) {
+  if (!user && !isUserDataLoading) {
     return <Navigate to="/login" />;
   }
 
@@ -20,9 +20,9 @@ const ProtectedRoute = () => {
 };
 
 const NonProtectedRoute = () => {
-  const { user } = useAuth();
+  const { user, isUserDataLoading } = useAuth();
 
-  if (user) {
+  if (user && !isUserDataLoading) {
     return <Navigate to="/" />;
   }
 
@@ -43,6 +43,7 @@ const App = () => {
           <Route index path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Box>
   );

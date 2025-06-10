@@ -1,21 +1,22 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { AuthContext } from "@utils/auth";
 import type { UserWithoutPassword } from "@models/user";
-import { useNavigate } from "react-router-dom";
 import { toaster } from "@utils/toaster";
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const navigate = useNavigate();
   const [user, setUser] = useState<UserWithoutPassword | undefined>(undefined);
+  const [isUserDataLoading, setIsUserDataLoading] = useState(true);
 
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
+    setIsUserDataLoading(true);
     const response = await fetch("/api/users/profile", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
     const user = (await response.json()) as unknown as UserWithoutPassword;
     setUser(user);
-  };
+    setIsUserDataLoading(false);
+  }, [setUser, setIsUserDataLoading]);
 
   const loginUser = async (args: {
     usernameOrEmail: string;
@@ -39,7 +40,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
             type: "success",
             closable: true,
           });
-          navigate("/");
           break;
         default:
           toaster.create({
@@ -73,7 +73,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       switch (response.status) {
         case 200:
           await fetchUser();
-          navigate("/");
           break;
         default:
           console.error("Register does not work");
@@ -92,7 +91,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         headers: { "Content-Type": "application/json" },
       });
       setUser(undefined);
-      navigate("/login");
     } catch (error) {
       const logoutError = error as Error;
       console.error("Logout failed:", logoutError.message);
@@ -101,9 +99,15 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     fetchUser();
-  }, []);
+  }, [fetchUser]);
 
-  const contextValue = { user, loginUser, logoutUser, registerUser };
+  const contextValue = {
+    user,
+    isUserDataLoading,
+    loginUser,
+    logoutUser,
+    registerUser,
+  };
 
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>

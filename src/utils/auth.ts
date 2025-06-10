@@ -3,6 +3,7 @@ import { useContext, createContext } from "react";
 
 type AuthTokenValues = {
   user?: UserWithoutPassword;
+  isUserDataLoading: boolean;
   loginUser: (args: { usernameOrEmail: string; password: string }) => void;
   registerUser: (args: {
     firstName: string;
@@ -15,6 +16,7 @@ type AuthTokenValues = {
 };
 export const AuthContext = createContext<AuthTokenValues>({
   user: undefined,
+  isUserDataLoading: true,
   loginUser: () => {},
   registerUser: () => {},
   logoutUser: () => {},
