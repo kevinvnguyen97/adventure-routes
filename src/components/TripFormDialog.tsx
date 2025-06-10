@@ -265,10 +265,8 @@ const TripFormDialog = (props: TripFormDialogProps) => {
                   variant="subtle"
                 />
               </Field.Root>
-              <Field.Root orientation="horizontal" required>
-                <Field.Label color="white">
-                  Description <Field.RequiredIndicator />
-                </Field.Label>
+              <Field.Root orientation="horizontal">
+                <Field.Label color="white">Description</Field.Label>
                 <Textarea
                   ref={descriptionTextAreaRef}
                   value={description}
