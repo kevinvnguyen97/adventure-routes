@@ -87,7 +87,14 @@ const TripFormDialog = (props: TripFormDialogProps) => {
         waypoints.map((waypoint) => ({ id: Math.random(), text: waypoint }))
       );
     }
-  }, [trip]);
+  }, [
+    trip,
+    setName,
+    setDescription,
+    setPriceCategory,
+    setActivities,
+    setWaypoints,
+  ]);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
