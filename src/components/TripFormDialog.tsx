@@ -201,6 +201,30 @@ const TripFormDialog = (props: TripFormDialogProps) => {
     }
   };
 
+  const resetFields = () => {
+    if (trip) {
+      setName(trip.name);
+      setDescription(trip.description || "");
+      setPriceCategory(trip.priceCategory);
+      setActivities(trip.activities || []);
+      setWaypoints(
+        trip.waypoints.map((waypoint) => ({
+          id: Math.random(),
+          text: waypoint,
+        }))
+      );
+    } else {
+      setName("");
+      setDescription("");
+      setPriceCategory(0);
+      setActivities([]);
+      setWaypoints([
+        { id: Math.random(), text: "" },
+        { id: Math.random(), text: "" },
+      ]);
+    }
+  };
+
   return (
     <Dialog.Root
       open={isOpen}
@@ -294,7 +318,11 @@ const TripFormDialog = (props: TripFormDialogProps) => {
             </Dialog.Body>
             <Dialog.Footer>
               <Dialog.ActionTrigger asChild>
-                <Button variant="ghost" colorPalette="red">
+                <Button
+                  onClick={resetFields}
+                  variant="ghost"
+                  colorPalette="red"
+                >
                   Cancel
                 </Button>
               </Dialog.ActionTrigger>
