@@ -233,6 +233,7 @@ const TripFormDialog = (props: TripFormDialogProps) => {
       size="lg"
       scrollBehavior="inside"
       modal={false}
+      unmountOnExit
     >
       <Dialog.Trigger asChild>{triggerButton}</Dialog.Trigger>
       <Portal>
