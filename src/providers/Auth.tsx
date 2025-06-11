@@ -13,9 +13,13 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
-    const user = (await response.json()) as unknown as UserWithoutPassword;
-    setUser(user);
-    setIsUserDataLoading(false);
+    if (response.status === 200) {
+      const user = (await response.json()) as unknown as UserWithoutPassword;
+      setUser(user);
+      setIsUserDataLoading(false);
+    } else {
+      setIsUserDataLoading(false);
+    }
   }, [setUser, setIsUserDataLoading]);
 
   const loginUser = async (args: {
