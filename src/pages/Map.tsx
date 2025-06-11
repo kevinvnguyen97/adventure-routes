@@ -1,5 +1,4 @@
-import { useColorMode, useColorModeValue } from "@components/ui";
-import { darkGoogleMapCss } from "@constants/google";
+import { useColorMode } from "@components/ui";
 import { useTrip } from "@hooks/trip";
 import {
   DirectionsRenderer,
@@ -8,18 +7,14 @@ import {
 } from "@react-google-maps/api";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { renderToStaticMarkup } from "react-dom/server";
+import { renderToString } from "react-dom/server";
 
 const MapOptionsButton = () => {
   return (
     <button
       style={{
-        backgroundColor: "white",
-        color: "black",
         padding: "11px 23px",
         fontSize: "18px",
-        marginTop: "10px",
-        marginLeft: "10px",
         cursor: "pointer",
         fontWeight: "500",
         borderRadius: "2px",
@@ -41,8 +36,6 @@ const Map = () => {
   >();
   const [isDirectionsRendered, setIsDirectionsRendered] = useState(false);
 
-  console.log("Map:", map);
-
   const { trip, isLoading } = useTrip(tripId);
   const { waypoints = [] } = trip || {};
   const origin = waypoints[0];
@@ -58,16 +51,28 @@ const Map = () => {
           }));
   const destination = waypoints[waypoints.length - 1];
 
+  const createContainer = () => {
+    const buttonContainer = document.createElement("div");
+    buttonContainer.setAttribute("id", "map-options-button-container");
+    const button = renderToString(<MapOptionsButton />);
+    buttonContainer.onclick = () => console.log("Hello");
+    buttonContainer.innerHTML = button;
+    buttonContainer.style.backgroundColor =
+      colorMode === "light" ? "white" : "#444444";
+    buttonContainer.style.color = colorMode === "light" ? "black" : "white";
+    buttonContainer.style.marginTop = "10px";
+    buttonContainer.style.borderRadius = "2px";
+
+    return buttonContainer;
+  };
+
   const onMapLoad = (map: google.maps.Map) => {
     const bounds = new google.maps.LatLngBounds();
     map.fitBounds(bounds);
 
-    const buttonContainer = document.createElement("div");
-    buttonContainer.setAttribute("id", "map-options-button-container");
-    const button = renderToStaticMarkup(<MapOptionsButton />);
-    buttonContainer.onclick = () => console.log("Hello");
-    buttonContainer.innerHTML = button;
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(buttonContainer);
+    const infoButton = createContainer();
+
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(infoButton);
     setMap(map);
   };
   const onMapUnmount = () => {
@@ -108,9 +113,10 @@ const Map = () => {
         mapTypeControlOptions: {
           style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
         },
-        backgroundColor:
-          colorMode === "dark" ? "var(--chakra-colors-bg-panel)" : "white",
-        styles: colorMode === "dark" ? darkGoogleMapCss : undefined,
+        colorScheme:
+          colorMode === "dark"
+            ? google.maps.ColorScheme.DARK
+            : google.maps.ColorScheme.LIGHT,
       }}
     >
       <DirectionsService
