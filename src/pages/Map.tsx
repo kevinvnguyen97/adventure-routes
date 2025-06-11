@@ -1,3 +1,5 @@
+import { useColorMode } from "@components/ui";
+import { darkGoogleMapCss } from "@constants/google";
 import { useTrip } from "@hooks/trip";
 import {
   DirectionsRenderer,
@@ -9,12 +11,15 @@ import { useParams } from "react-router-dom";
 
 const Map = () => {
   const { tripId = "" } = useParams();
+  const { colorMode } = useColorMode();
 
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [directions, setDirections] = useState<
     google.maps.DirectionsResult | undefined
   >();
   const [isDirectionsRendered, setIsDirectionsRendered] = useState(false);
+
+  console.log("Map:", map);
 
   const { trip, isLoading } = useTrip(tripId);
   const { waypoints = [] } = trip || {};
@@ -65,6 +70,14 @@ const Map = () => {
       onLoad={onMapLoad}
       onUnmount={onMapUnmount}
       mapContainerStyle={{ width: "100%", height: "700px" }}
+      options={{
+        mapTypeControlOptions: {
+          style: google.maps.MapTypeControlStyle.DEFAULT,
+        },
+        backgroundColor:
+          colorMode === "dark" ? "var(--chakra-colors-bg-panel)" : "white",
+        styles: colorMode === "dark" ? darkGoogleMapCss : undefined,
+      }}
     >
       <DirectionsService
         options={{
