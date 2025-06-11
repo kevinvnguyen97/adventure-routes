@@ -8,6 +8,7 @@ import {
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { renderToString } from "react-dom/server";
+import { Box } from "@chakra-ui/react";
 
 const MapOptionsButton = () => {
   return (
@@ -102,41 +103,43 @@ const Map = () => {
     return <div>Loading...</div>;
   }
   return (
-    <GoogleMap
-      onLoad={onMapLoad}
-      onUnmount={onMapUnmount}
-      mapContainerStyle={{
-        width: "100%",
-        height: "calc(100vh - 100px)",
-      }}
-      options={{
-        mapTypeControlOptions: {
-          style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-        },
-        colorScheme:
-          colorMode === "dark"
-            ? google.maps.ColorScheme.DARK
-            : google.maps.ColorScheme.LIGHT,
-      }}
-    >
-      <DirectionsService
-        options={{
-          origin,
-          waypoints: stops,
-          destination,
-          travelMode: google.maps.TravelMode.DRIVING,
-          provideRouteAlternatives: true,
+    <Box data-state="open" _open={{ animation: "fade-in 1s ease-out" }}>
+      <GoogleMap
+        onLoad={onMapLoad}
+        onUnmount={onMapUnmount}
+        mapContainerStyle={{
+          width: "100%",
+          height: "calc(100vh - 100px)",
         }}
-        callback={directionsServiceCallback}
-      />
-      {directions?.routes.map((route, index) => (
-        <DirectionsRenderer
-          key={route.summary}
-          directions={directions}
-          routeIndex={index}
+        options={{
+          mapTypeControlOptions: {
+            style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+          },
+          colorScheme:
+            colorMode === "dark"
+              ? google.maps.ColorScheme.DARK
+              : google.maps.ColorScheme.LIGHT,
+        }}
+      >
+        <DirectionsService
+          options={{
+            origin,
+            waypoints: stops,
+            destination,
+            travelMode: google.maps.TravelMode.DRIVING,
+            provideRouteAlternatives: true,
+          }}
+          callback={directionsServiceCallback}
         />
-      ))}
-    </GoogleMap>
+        {directions?.routes.map((route, index) => (
+          <DirectionsRenderer
+            key={route.summary}
+            directions={directions}
+            routeIndex={index}
+          />
+        ))}
+      </GoogleMap>
+    </Box>
   );
 };
 
