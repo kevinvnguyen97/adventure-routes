@@ -1,4 +1,4 @@
-import { useColorMode } from "@components/ui";
+import { useColorMode, useColorModeValue } from "@components/ui";
 import { darkGoogleMapCss } from "@constants/google";
 import { useTrip } from "@hooks/trip";
 import {
@@ -8,6 +8,28 @@ import {
 } from "@react-google-maps/api";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { renderToStaticMarkup } from "react-dom/server";
+
+const MapOptionsButton = () => {
+  return (
+    <button
+      style={{
+        backgroundColor: "white",
+        color: "black",
+        padding: "11px 23px",
+        fontSize: "18px",
+        marginTop: "10px",
+        marginLeft: "10px",
+        cursor: "pointer",
+        fontWeight: "500",
+        borderRadius: "2px",
+        boxShadow: "rgba(0, 0, 0, 0.3) 0px 1px 4px -1px",
+      }}
+    >
+      Options
+    </button>
+  );
+};
 
 const Map = () => {
   const { tripId = "" } = useParams();
@@ -37,9 +59,15 @@ const Map = () => {
   const destination = waypoints[waypoints.length - 1];
 
   const onMapLoad = (map: google.maps.Map) => {
-    console.log("Map loaded:", map);
     const bounds = new google.maps.LatLngBounds();
     map.fitBounds(bounds);
+
+    const buttonContainer = document.createElement("div");
+    buttonContainer.setAttribute("id", "map-options-button-container");
+    const button = renderToStaticMarkup(<MapOptionsButton />);
+    buttonContainer.onclick = () => console.log("Hello");
+    buttonContainer.innerHTML = button;
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(buttonContainer);
     setMap(map);
   };
   const onMapUnmount = () => {
@@ -53,7 +81,10 @@ const Map = () => {
   ) => {
     if (isDirectionsRendered) {
       return;
-    } else if (status === "OK" && !isDirectionsRendered) {
+    } else if (
+      status === google.maps.DirectionsStatus.OK &&
+      !isDirectionsRendered
+    ) {
       console.log("Directions response:", response);
       setDirections(response as google.maps.DirectionsResult | undefined);
       setIsDirectionsRendered(true);
@@ -75,7 +106,7 @@ const Map = () => {
       }}
       options={{
         mapTypeControlOptions: {
-          style: google.maps.MapTypeControlStyle.DEFAULT,
+          style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
         },
         backgroundColor:
           colorMode === "dark" ? "var(--chakra-colors-bg-panel)" : "white",
