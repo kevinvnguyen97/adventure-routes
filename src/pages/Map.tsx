@@ -26,7 +26,7 @@ const MapOptionsButton = () => {
         boxShadow: "rgba(0, 0, 0, 0.3) 0px 1px 4px -1px",
       }}
     >
-      Options
+      Info
     </button>
   );
 };
