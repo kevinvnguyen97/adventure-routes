@@ -61,6 +61,16 @@ export const darkGoogleMapCss: google.maps.MapTypeStyle[] = [
     stylers: [{ color: "#ffffff" }],
   },
   {
+    featureType: "administrative.country",
+    elementType: "geometry.stroke",
+    stylers: [{ color: "#777777" }],
+  },
+  {
+    featureType: "administrative.province",
+    elementType: "geometry.stroke",
+    stylers: [{ color: "#777777" }],
+  },
+  {
     featureType: "poi",
     elementType: "labels.text.fill",
     stylers: [{ color: "#ffffff" }],

@@ -69,7 +69,10 @@ const Map = () => {
     <GoogleMap
       onLoad={onMapLoad}
       onUnmount={onMapUnmount}
-      mapContainerStyle={{ width: "100%", height: "700px" }}
+      mapContainerStyle={{
+        width: "100%",
+        height: "calc(100vh - 100px)",
+      }}
       options={{
         mapTypeControlOptions: {
           style: google.maps.MapTypeControlStyle.DEFAULT,
