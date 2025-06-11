@@ -12,11 +12,13 @@ import {
   VStack,
   HStack,
   ButtonGroup,
+  Button,
 } from "@chakra-ui/react";
 import { LuLogOut, LuSettings, LuMenu } from "react-icons/lu";
 import { useState } from "react";
 import { ColorModeButton, useColorModeValue } from "@components/ui";
 import { useAuth } from "@utils/auth";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type UseAvatarProps = AvatarRootProps & {
   fallbackProps?: AvatarFallbackProps;
@@ -75,10 +77,19 @@ const UserPopover = () => {
                       color="white"
                       _hover={{ _light: { bgColor: "orange.600" } }}
                     />
-                    <IconButton variant="ghost" color="white">
+                    <IconButton
+                      variant="ghost"
+                      color="white"
+                      _hover={{ _light: { bgColor: "orange.600" } }}
+                    >
                       <LuSettings />
                     </IconButton>
-                    <IconButton variant="ghost" color="white">
+                    <IconButton
+                      onClick={logoutUser}
+                      variant="ghost"
+                      color="white"
+                      _hover={{ color: "red" }}
+                    >
                       <LuLogOut />
                     </IconButton>
                   </ButtonGroup>
@@ -94,6 +105,7 @@ const UserPopover = () => {
 
 const NavigationBar = () => {
   const navBarBgColor = useColorModeValue("orange.500", "gray.900");
+  const navigate = useNavigate();
 
   return (
     <Box padding={5} bgColor={navBarBgColor}>
@@ -107,7 +119,20 @@ const NavigationBar = () => {
         >
           <LuMenu />
         </IconButton>
-        <Image src="/small_logo.png" width={20} height="auto" />
+        <HStack>
+          <Image src="/small_logo.png" width={20} height="auto" />
+          <Button
+            variant="ghost"
+            color="white"
+            smDown={{ display: "none" }}
+            sm={{ display: "block" }}
+            size="lg"
+            onClick={() => navigate("/")}
+            _hover={{ _light: { bgColor: "orange.600" } }}
+          >
+            Dashboard
+          </Button>
+        </HStack>
         <UserPopover />
       </Flex>
     </Box>
