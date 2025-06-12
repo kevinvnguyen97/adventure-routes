@@ -17,6 +17,7 @@ import { useColorModeValue } from "@components/ui/color-mode";
 import { useAuth } from "@utils/auth";
 import { useNavigate } from "react-router-dom";
 import UserAvatar from "@components/UserAvatar";
+import { Tooltip } from "@components/ui/tooltip";
 
 const UserPopover = () => {
   const { user, logoutUser } = useAuth();
@@ -59,22 +60,50 @@ const UserPopover = () => {
                 </HStack>
                 {user && (
                   <ButtonGroup>
-                    <IconButton
-                      onClick={() => navigate("settings")}
-                      variant="ghost"
-                      color="white"
-                      _hover={{ _light: { bgColor: "orange.600" } }}
+                    <Tooltip
+                      content="Settings"
+                      contentProps={{
+                        _dark: {
+                          color: "white",
+                          bgColor: "var(--chakra-colors-bg-panel)",
+                        },
+                        _light: {
+                          color: "white",
+                          bgColor: "orange.600",
+                        },
+                      }}
                     >
-                      <LuSettings />
-                    </IconButton>
-                    <IconButton
-                      onClick={logoutUser}
-                      variant="ghost"
-                      color="white"
-                      _hover={{ color: "red" }}
+                      <IconButton
+                        onClick={() => navigate("settings")}
+                        variant="ghost"
+                        color="white"
+                        _hover={{ _light: { bgColor: "orange.600" } }}
+                      >
+                        <LuSettings />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip
+                      content="Log Out"
+                      contentProps={{
+                        _dark: {
+                          color: "white",
+                          bgColor: "var(--chakra-colors-bg-panel)",
+                        },
+                        _light: {
+                          color: "white",
+                          bgColor: "orange.600",
+                        },
+                      }}
                     >
-                      <LuLogOut />
-                    </IconButton>
+                      <IconButton
+                        onClick={logoutUser}
+                        variant="ghost"
+                        color="white"
+                        _hover={{ color: "red" }}
+                      >
+                        <LuLogOut />
+                      </IconButton>
+                    </Tooltip>
                   </ButtonGroup>
                 )}
               </HStack>
