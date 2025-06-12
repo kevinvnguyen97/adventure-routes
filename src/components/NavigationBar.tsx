@@ -2,13 +2,10 @@ import {
   Box,
   Flex,
   IconButton,
-  Avatar,
   Image,
   Popover,
   Portal,
   Text,
-  type AvatarRootProps,
-  type AvatarFallbackProps,
   VStack,
   HStack,
   ButtonGroup,
@@ -16,25 +13,14 @@ import {
 } from "@chakra-ui/react";
 import { LuLogOut, LuSettings, LuMenu } from "react-icons/lu";
 import { useState } from "react";
-import { ColorModeButton, useColorModeValue } from "@components/ui";
+import { useColorModeValue } from "@components/ui/color-mode";
 import { useAuth } from "@utils/auth";
-import { useLocation, useNavigate } from "react-router-dom";
-
-type UseAvatarProps = AvatarRootProps & {
-  fallbackProps?: AvatarFallbackProps;
-};
-const UserAvatar = (props: UseAvatarProps) => {
-  const { fallbackProps, ...avatarRootProps } = props;
-  return (
-    <Avatar.Root {...avatarRootProps}>
-      <Avatar.Fallback {...fallbackProps} />
-      <Avatar.Image />
-    </Avatar.Root>
-  );
-};
+import { useNavigate } from "react-router-dom";
+import UserAvatar from "@components/UserAvatar";
 
 const UserPopover = () => {
   const { user, logoutUser } = useAuth();
+  const navigate = useNavigate();
   const [isUserPopoverOpen, setIsUserPopoverOpen] = useState(false);
 
   const fullName = [user?.firstName, user?.lastName].filter(Boolean).join(" ");
@@ -73,11 +59,8 @@ const UserPopover = () => {
                 </HStack>
                 {user && (
                   <ButtonGroup>
-                    <ColorModeButton
-                      color="white"
-                      _hover={{ _light: { bgColor: "orange.600" } }}
-                    />
                     <IconButton
+                      onClick={() => navigate("settings")}
                       variant="ghost"
                       color="white"
                       _hover={{ _light: { bgColor: "orange.600" } }}

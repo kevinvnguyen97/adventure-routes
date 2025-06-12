@@ -58,9 +58,7 @@ const Dashboard = () => {
                   }
                   refetchTrips={refetchTrips}
                 />
-                <Button onClick={() => navigate(`/map/${trip._id}`)}>
-                  Map
-                </Button>
+                <Button onClick={() => navigate(`map/${trip._id}`)}>Map</Button>
               </Wrap>
             </Card.Footer>
           </Card.Root>

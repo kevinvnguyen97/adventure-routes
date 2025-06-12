@@ -54,7 +54,7 @@ const Login = () => {
         <Button variant="solid" type="submit">
           Login
         </Button>
-        <Button variant="ghost" onClick={() => navigate("/register")}>
+        <Button variant="ghost" onClick={() => navigate("register")}>
           New user? Register here
         </Button>
       </VStack>

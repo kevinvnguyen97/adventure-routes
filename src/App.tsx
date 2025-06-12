@@ -8,6 +8,7 @@ import Dashboard from "@pages/Dashboard";
 import Register from "@pages/Register";
 import Map from "@pages/Map";
 import { useAuth } from "@utils/auth";
+import Settings from "@pages/Settings";
 
 const ProtectedRoute = () => {
   const { user, isUserDataLoading } = useAuth();
@@ -37,11 +38,12 @@ const App = () => {
       <Routes>
         <Route path="/" element={<ProtectedRoute />}>
           <Route index element={<Dashboard />} />
-          <Route path="/map/:tripId" element={<Map />} />
+          <Route path="map/:tripId" element={<Map />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
         <Route path="/" element={<NonProtectedRoute />}>
-          <Route index path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route index path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
