@@ -1,20 +1,9 @@
-import {
-  Badge,
-  Button,
-  Card,
-  HStack,
-  IconButton,
-  Input,
-  VStack,
-  Wrap,
-} from "@chakra-ui/react";
+import { Button, Input, SimpleGrid, VStack } from "@chakra-ui/react";
+import TripCard from "@components/TripCard";
 import TripFormDialog from "@components/TripFormDialog";
 import { useTrips } from "@hooks/trip";
-import { LuPencil } from "react-icons/lu";
-import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
   const { trips, refetchTrips, isLoading } = useTrips();
 
   if (isLoading) {
@@ -26,43 +15,33 @@ const Dashboard = () => {
       data-state="open"
       _open={{ animation: "fade-in 1s ease-out" }}
     >
-      <VStack width={{ smDown: "100%", sm: 400 }}>
-        <Input size="2xl" variant="subtle" placeholder="Search for Trip" />
+      <VStack>
+        <Input
+          width={{ smDown: "100%", sm: 400 }}
+          size="2xl"
+          variant="subtle"
+          placeholder="Search for Trip"
+        />
         <TripFormDialog
           triggerButton={<Button>Create a Trip</Button>}
           refetchTrips={refetchTrips}
         />
-        {trips.map((trip) => (
-          <Card.Root
-            bgColor={{ _light: "orange.500" }}
-            color="white"
-            variant="subtle"
-          >
-            <Card.Header fontWeight="bold" as={HStack}>
-              {trip.name}
-            </Card.Header>
-            <Card.Body>
-              <Card.Description>{trip.description}</Card.Description>
-            </Card.Body>
-            <Card.Footer>
-              <Wrap gap={0.5}>
-                {trip.activities?.map((activity) => (
-                  <Badge key={activity}>{activity}</Badge>
-                ))}
-                <TripFormDialog
-                  trip={trip}
-                  triggerButton={
-                    <IconButton>
-                      <LuPencil />
-                    </IconButton>
-                  }
-                  refetchTrips={refetchTrips}
-                />
-                <Button onClick={() => navigate(`map/${trip._id}`)}>Map</Button>
-              </Wrap>
-            </Card.Footer>
-          </Card.Root>
-        ))}
+        <SimpleGrid
+          columns={[1, 1, 2, 3, 4, 5]}
+          columnGap={3}
+          rowGap={3}
+          alignContent="center"
+          autoColumns="max-content"
+          width="100%"
+        >
+          {trips.map((trip) => (
+            <TripCard
+              key={trip._id.toString()}
+              trip={trip}
+              refetchTrips={refetchTrips}
+            />
+          ))}
+        </SimpleGrid>
       </VStack>
     </VStack>
   );
