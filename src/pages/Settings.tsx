@@ -7,7 +7,7 @@ const Settings = () => {
   const { user } = useAuth();
 
   return (
-    <VStack>
+    <VStack data-state="open" _open={{ animation: "fade-in 1s ease-out" }}>
       <UserAvatar
         fallbackProps={{ name: user?.username }}
         variant="subtle"
