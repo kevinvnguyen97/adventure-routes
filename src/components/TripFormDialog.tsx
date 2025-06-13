@@ -34,14 +34,15 @@ import PriceCategorySlider from "@components/PriceCategorySlider";
 import ActivityMultiSelect from "@components/ActivityMultiSelect";
 import WaypointTextField from "@components/WaypointTextField";
 import type Route from "@models/trip";
+import type { TripFormArgs } from "@hooks/trip";
 
 type TripFormDialogProps = {
   trip?: Route;
   triggerButton: JSX.Element;
-  refetchTrips: () => void;
+  upsertTrip: (args: TripFormArgs) => void;
 };
 const TripFormDialog = (props: TripFormDialogProps) => {
-  const { trip, triggerButton, refetchTrips } = props;
+  const { trip, triggerButton, upsertTrip } = props;
 
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState("");
@@ -135,70 +136,18 @@ const TripFormDialog = (props: TripFormDialogProps) => {
 
   const handleSubmit = async (event: FormEvent<HTMLDivElement>) => {
     event.preventDefault();
-    // Handle form submission logic here
-    console.log({
+
+    const formattedWaypoints = waypoints
+      .map((waypoint) => waypoint.text)
+      .filter(Boolean);
+    upsertTrip({
       name,
       description,
       priceCategory,
       activities,
-      waypoints,
+      waypoints: formattedWaypoints,
     });
-
-    if (trip) {
-      try {
-        const response = await fetch(`/api/trips/${trip._id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            description,
-            priceCategory,
-            activities,
-            waypoints: waypoints
-              .filter((waypoint) => !!waypoint.text)
-              .map((waypoint) => waypoint.text),
-          }),
-        });
-        if (!response.ok) {
-          throw new Error("Failed to update adventure route");
-        }
-        console.log("Adventure route updated successfully");
-        setIsOpen(false); // Close the dialog on success
-        refetchTrips();
-      } catch (error) {
-        console.error("Error updating adventure route:", error);
-      }
-    } else {
-      try {
-        const response = await fetch("/api/trips", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            description,
-            priceCategory,
-            activities,
-            waypoints: waypoints
-              .filter((waypoint) => !!waypoint.text)
-              .map((waypoint) => waypoint.text),
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to create adventure route");
-        }
-
-        console.log("Adventure route created successfully");
-        setIsOpen(false); // Close the dialog on success
-        refetchTrips();
-      } catch (error) {
-        console.error("Error creating adventure route:", error);
-      }
-    }
+    setIsOpen(false);
   };
 
   const resetFields = () => {

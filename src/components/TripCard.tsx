@@ -13,13 +13,15 @@ import { LuMap, LuPencil } from "react-icons/lu";
 import TripFormDialog from "@components/TripFormDialog";
 import type Trip from "@models/trip";
 import { useNavigate } from "react-router-dom";
+import type { TripFormArgs } from "@hooks/trip";
 
 type TripCardProps = {
   trip: Trip;
-  refetchTrips: () => void;
+  upsertTrip: (args: TripFormArgs) => void;
+  deleteTrip: () => void;
 };
 const TripCard = (props: TripCardProps) => {
-  const { trip, refetchTrips } = props;
+  const { trip, upsertTrip, deleteTrip } = props;
   const navigate = useNavigate();
   return (
     <Card.Root
@@ -65,6 +67,7 @@ const TripCard = (props: TripCardProps) => {
           height="100%"
         >
           <CloseButton
+            onClick={deleteTrip}
             color="white"
             colorPalette="red"
             _hover={{ bgColor: { _light: "white" }, color: "red" }}
@@ -79,7 +82,7 @@ const TripCard = (props: TripCardProps) => {
                 <LuPencil />
               </IconButton>
             }
-            refetchTrips={refetchTrips}
+            upsertTrip={upsertTrip}
           />
           <IconButton
             color="white"
