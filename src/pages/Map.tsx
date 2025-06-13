@@ -1,31 +1,15 @@
-import { useColorMode } from "@components/ui";
+import { useColorMode } from "@components/ui/color-mode";
 import { useTrip } from "@hooks/trip";
 import {
   DirectionsRenderer,
   DirectionsService,
   GoogleMap,
 } from "@react-google-maps/api";
+import { LuInfo } from "react-icons/lu";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { renderToString } from "react-dom/server";
-import { Box } from "@chakra-ui/react";
-
-const MapOptionsButton = () => {
-  return (
-    <button
-      style={{
-        padding: "11px 23px",
-        fontSize: "18px",
-        cursor: "pointer",
-        fontWeight: "500",
-        borderRadius: "2px",
-        boxShadow: "rgba(0, 0, 0, 0.3) 0px 1px 4px -1px",
-      }}
-    >
-      Info
-    </button>
-  );
-};
+import { Box, IconButton } from "@chakra-ui/react";
+import TripInfo from "@components/TripInfo";
 
 const Map = () => {
   const { tripId = "" } = useParams();
@@ -36,6 +20,7 @@ const Map = () => {
     google.maps.DirectionsResult | undefined
   >();
   const [isDirectionsRendered, setIsDirectionsRendered] = useState(false);
+  const [isInfoVisible, setIsInfoVisible] = useState(false);
 
   const { trip, isLoading } = useTrip(tripId);
   const { waypoints = [] } = trip || {};
@@ -52,28 +37,9 @@ const Map = () => {
           }));
   const destination = waypoints[waypoints.length - 1];
 
-  const createContainer = () => {
-    const buttonContainer = document.createElement("div");
-    buttonContainer.setAttribute("id", "map-options-button-container");
-    const button = renderToString(<MapOptionsButton />);
-    buttonContainer.onclick = () => console.log("Hello");
-    buttonContainer.innerHTML = button;
-    buttonContainer.style.backgroundColor =
-      colorMode === "light" ? "white" : "#444444";
-    buttonContainer.style.color = colorMode === "light" ? "black" : "white";
-    buttonContainer.style.marginTop = "10px";
-    buttonContainer.style.borderRadius = "2px";
-
-    return buttonContainer;
-  };
-
   const onMapLoad = (map: google.maps.Map) => {
     const bounds = new google.maps.LatLngBounds();
     map.fitBounds(bounds);
-
-    const infoButton = createContainer();
-
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(infoButton);
     setMap(map);
   };
   const onMapUnmount = () => {
@@ -103,7 +69,18 @@ const Map = () => {
     return <div>Loading...</div>;
   }
   return (
-    <Box data-state="open" _open={{ animation: "fade-in 1s ease-out" }}>
+    <Box
+      data-state="open"
+      _open={{ animation: "fade-in 1s ease-out" }}
+      display={{ _portrait: "block", _landscape: "flex" }}
+    >
+      <Box
+        transition={{ _portrait: "height 0.5s", _landscape: "width 0.5s" }}
+        width={{ _landscape: isInfoVisible ? 400 : 0 }}
+        height={{ _portrait: isInfoVisible ? 300 : 0 }}
+      >
+        {isInfoVisible && <TripInfo trip={trip!} />}
+      </Box>
       <GoogleMap
         onLoad={onMapLoad}
         onUnmount={onMapUnmount}
@@ -114,13 +91,25 @@ const Map = () => {
         options={{
           mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+            position: google.maps.ControlPosition.TOP_RIGHT,
           },
+          fullscreenControl: false,
           colorScheme:
             colorMode === "dark"
               ? google.maps.ColorScheme.DARK
               : google.maps.ColorScheme.LIGHT,
         }}
       >
+        <IconButton
+          zIndex={100000}
+          onClick={() => setIsInfoVisible(!isInfoVisible)}
+          left={2}
+          top={2}
+          bgColor={{ _light: "white", _dark: "#444444" }}
+          color={{ _light: "black", _dark: "white" }}
+        >
+          <LuInfo />
+        </IconButton>
         <DirectionsService
           options={{
             origin,
