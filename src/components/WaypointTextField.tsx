@@ -122,7 +122,7 @@ const WaypointTextField = (props: WaypointTextFieldProps) => {
             <IconButton
               onClick={removeWaypoint}
               variant="ghost"
-              color="red"
+              color="white"
               colorPalette="red"
               size="xs"
             >
@@ -132,7 +132,7 @@ const WaypointTextField = (props: WaypointTextFieldProps) => {
           <IconButton
             onClick={addWaypoint}
             variant="ghost"
-            color={{ _light: "green", _dark: "lightgreen" }}
+            color="white"
             colorPalette="green"
             size="xs"
           >
@@ -142,7 +142,7 @@ const WaypointTextField = (props: WaypointTextFieldProps) => {
             {...attributes}
             {...listeners}
             variant="ghost"
-            color={{ _light: "black", _dark: "white" }}
+            color="white"
             size="xs"
           >
             {isOrigin ? (
