@@ -30,7 +30,7 @@ const ClearWaypointInputButton = ({
       onClick={clearWaypointInput}
       variant="ghost"
       size="xs"
-      color="white"
+      color={{ _dark: "white" }}
     />
   );
 };
