@@ -222,6 +222,7 @@ const TripFormDialog = (props: TripFormDialogProps) => {
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Description"
                   variant="subtle"
+                  resize="none"
                 />
               </Field.Root>
               <PriceCategorySlider
