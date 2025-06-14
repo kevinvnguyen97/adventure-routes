@@ -1,5 +1,6 @@
-import { Box, Heading, Tabs } from "@chakra-ui/react";
+import { Badge, Box, Heading, Span, Tabs, Text, Wrap } from "@chakra-ui/react";
 import type Trip from "@models/trip";
+import { useState } from "react";
 import { LuInfo, LuMap, LuMessageCircle } from "react-icons/lu";
 
 type TripInfoProps = {
@@ -7,10 +8,18 @@ type TripInfoProps = {
 };
 const TripInfo = (props: TripInfoProps) => {
   const { trip } = props;
+  const { name, description, activities = [], waypoints } = trip;
+
+  const [tab, setTab] = useState("details");
+
   return (
     <Box paddingTop={5} color="white" paddingRight={5}>
-      <Heading>{trip!.name}</Heading>
-      <Tabs.Root variant="subtle">
+      <Heading>{name}</Heading>
+      <Tabs.Root
+        value={tab}
+        onValueChange={(e) => setTab(e.value)}
+        variant="subtle"
+      >
         <Tabs.List>
           <Tabs.Trigger
             value="details"
@@ -35,7 +44,32 @@ const TripInfo = (props: TripInfoProps) => {
           </Tabs.Trigger>
         </Tabs.List>
         <Tabs.ContentGroup>
-          <Tabs.Content value="details">Details</Tabs.Content>
+          <Tabs.Content value="details">
+            <Text>{description}</Text>
+            {waypoints.map((waypoint, i) => {
+              const isOrigin = i === 0;
+              const isDestination = i === waypoints.length - 1;
+
+              return (
+                <Text>
+                  <Span fontWeight="bold">
+                    {isOrigin
+                      ? "Origin"
+                      : isDestination
+                      ? "Destination"
+                      : "Stop"}{" "}
+                    {`(${String.fromCharCode(i + 65)}): `}
+                  </Span>
+                  <Span>{waypoint}</Span>
+                </Text>
+              );
+            })}
+            <Wrap gap={0.5}>
+              {activities.map((activity) => {
+                return <Badge key={activity}>{activity}</Badge>;
+              })}
+            </Wrap>
+          </Tabs.Content>
           <Tabs.Content value="directions">Directions</Tabs.Content>
           <Tabs.Content value="comments">Comments</Tabs.Content>
         </Tabs.ContentGroup>

@@ -79,7 +79,7 @@ const Map = () => {
         width={{ _landscape: isInfoVisible ? 400 : 0 }}
         height={{ _portrait: isInfoVisible ? 300 : 0 }}
       >
-        {isInfoVisible && <TripInfo trip={trip!} />}
+        <TripInfo trip={trip!} />
       </Box>
       <GoogleMap
         onLoad={onMapLoad}
