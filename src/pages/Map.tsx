@@ -8,12 +8,13 @@ import {
 import { LuInfo } from "react-icons/lu";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Box, IconButton } from "@chakra-ui/react";
+import { Box, Drawer, IconButton, useMediaQuery } from "@chakra-ui/react";
 import TripInfo from "@components/TripInfo";
 
 const Map = () => {
   const { tripId = "" } = useParams();
   const { colorMode } = useColorMode();
+  const [isLandscape] = useMediaQuery(["(orientation: landscape)"]);
 
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [directions, setDirections] = useState<
@@ -21,6 +22,7 @@ const Map = () => {
   >();
   const [isDirectionsRendered, setIsDirectionsRendered] = useState(false);
   const [isInfoVisible, setIsInfoVisible] = useState(false);
+  const [tab, setTab] = useState("details");
 
   const { trip, isLoading } = useTrip(tripId);
   const { waypoints = [] } = trip || {};
@@ -72,21 +74,34 @@ const Map = () => {
     <Box
       data-state="open"
       _open={{ animation: "fade-in 1s ease-out" }}
-      display={{ _portrait: "block", _landscape: "flex" }}
+      paddingTop={5}
+      display="flex"
     >
-      <Box
-        transition={{ _portrait: "height 0.5s", _landscape: "width 0.5s" }}
-        width={{ _landscape: isInfoVisible ? 400 : 0 }}
-        height={{ _portrait: isInfoVisible ? 300 : 0 }}
-      >
-        <TripInfo trip={trip!} />
-      </Box>
+      {isInfoVisible &&
+        (isLandscape ? (
+          <TripInfo trip={trip!} tab={tab} setTab={setTab} />
+        ) : (
+          <Drawer.Root
+            open={isInfoVisible}
+            onOpenChange={(e) => setIsInfoVisible(e.open)}
+            placement="start"
+          >
+            <Drawer.Backdrop />
+            <Drawer.Trigger />
+            <Drawer.Positioner>
+              <Drawer.Content bgColor="orange">
+                <Drawer.CloseTrigger />
+                <TripInfo trip={trip!} tab={tab} setTab={setTab} />
+              </Drawer.Content>
+            </Drawer.Positioner>
+          </Drawer.Root>
+        ))}
       <GoogleMap
         onLoad={onMapLoad}
         onUnmount={onMapUnmount}
         mapContainerStyle={{
           width: "100%",
-          height: "calc(100vh - 100px)",
+          height: "calc(100vh - 115px)",
         }}
         options={{
           mapTypeControlOptions: {
@@ -101,7 +116,6 @@ const Map = () => {
         }}
       >
         <IconButton
-          zIndex={100000}
           onClick={() => setIsInfoVisible(!isInfoVisible)}
           left={2}
           top={2}

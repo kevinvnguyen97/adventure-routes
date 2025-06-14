@@ -1,19 +1,18 @@
 import { Badge, Box, Heading, Span, Tabs, Text, Wrap } from "@chakra-ui/react";
 import type Trip from "@models/trip";
-import { useState } from "react";
 import { LuInfo, LuMap, LuMessageCircle } from "react-icons/lu";
 
 type TripInfoProps = {
   trip: Trip;
+  tab: string;
+  setTab: (tab: string) => void;
 };
 const TripInfo = (props: TripInfoProps) => {
-  const { trip } = props;
+  const { trip, tab, setTab } = props;
   const { name, description, activities = [], waypoints } = trip;
 
-  const [tab, setTab] = useState("details");
-
   return (
-    <Box paddingTop={5} color="white" paddingRight={5}>
+    <Box color="white" paddingRight={5}>
       <Heading>{name}</Heading>
       <Tabs.Root
         value={tab}
