@@ -34,7 +34,6 @@ const App = () => {
   return (
     <Box
       width="100%"
-      colorPalette="orange"
       data-state="open"
       _open={{ animation: "fade-in 1s ease-out" }}
     >

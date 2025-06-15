@@ -191,7 +191,6 @@ const TripFormDialog = (props: TripFormDialogProps) => {
           <Dialog.Content
             as="form"
             onSubmit={handleSubmit}
-            colorPalette="orange"
             bgColor={{ _light: "orange" }}
           >
             <Dialog.CloseTrigger asChild>

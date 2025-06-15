@@ -41,7 +41,6 @@ const UserPopover = () => {
       <Portal>
         <Popover.Positioner>
           <Popover.Content
-            colorPalette="orange"
             css={{
               "--popover-bg": { _light: "#F97316" },
             }}

@@ -19,7 +19,7 @@ const PriceCategorySlider = (props: PriceCategorySliderProps) => {
         max={3}
         thumbSize={{ width: 16, height: 16 }}
         variant="solid"
-        colorPalette="orange"
+        colorPalette={{ _light: "orange" }}
       >
         <Slider.Control>
           <Slider.Track>
