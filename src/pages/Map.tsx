@@ -111,12 +111,18 @@ const Map = () => {
             <Drawer.Positioner padding={5}>
               <Drawer.Content
                 bgColor={{ _light: "orange/60", _dark: "gray.950/60" }}
+                color="white"
                 backdropFilter="blur(5px)"
                 borderRadius={5}
               >
+                <Drawer.CloseTrigger>
+                  <CloseButton
+                    onClick={() => setIsInfoVisible(false)}
+                    color="white"
+                  />
+                </Drawer.CloseTrigger>
                 <Drawer.Header>
                   <Drawer.Title>{name}</Drawer.Title>
-                  <Drawer.CloseTrigger />
                 </Drawer.Header>
                 <Drawer.Body>
                   <TripTabs trip={trip!} tab={tab} setTab={setTab} />
