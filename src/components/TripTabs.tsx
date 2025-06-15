@@ -1,0 +1,82 @@
+import { Badge, Span, Tabs, Text, Wrap } from "@chakra-ui/react";
+import type Trip from "@models/trip";
+import { LuInfo, LuMap, LuMessageCircle, LuSettings } from "react-icons/lu";
+
+type TripTabsProps = {
+  trip: Trip;
+  tab: string;
+  setTab: (tab: string) => void;
+};
+const TripTabs = (props: TripTabsProps) => {
+  const { trip, tab, setTab } = props;
+  const { description, activities = [], waypoints } = trip;
+
+  return (
+    <Tabs.Root
+      value={tab}
+      onValueChange={(e) => setTab(e.value)}
+      variant="subtle"
+      fitted
+      size="lg"
+    >
+      <Tabs.List>
+        <Tabs.Trigger
+          value="details"
+          color="white"
+          bgColor={{ _selected: { _light: "orange.500" } }}
+        >
+          <LuInfo size={25} />
+        </Tabs.Trigger>
+        <Tabs.Trigger
+          value="directions"
+          color="white"
+          bgColor={{ _selected: { _light: "orange.500" } }}
+        >
+          <LuMap size={25} />
+        </Tabs.Trigger>
+        <Tabs.Trigger
+          value="comments"
+          color="white"
+          bgColor={{ _selected: { _light: "orange.500" } }}
+        >
+          <LuMessageCircle size={25} />
+        </Tabs.Trigger>
+        <Tabs.Trigger
+          value="settings"
+          color="white"
+          bgColor={{ _selected: { _light: "orange.500" } }}
+        >
+          <LuSettings size={25} />
+        </Tabs.Trigger>
+      </Tabs.List>
+      <Tabs.ContentGroup>
+        <Tabs.Content value="details">
+          <Text>{description}</Text>
+          {waypoints.map((waypoint, i) => {
+            const isOrigin = i === 0;
+            const isDestination = i === waypoints.length - 1;
+
+            return (
+              <Text>
+                <Span fontWeight="bold">
+                  {isOrigin ? "Origin" : isDestination ? "Destination" : "Stop"}{" "}
+                  {`(${String.fromCharCode(i + 65)}): `}
+                </Span>
+                <Span>{waypoint}</Span>
+              </Text>
+            );
+          })}
+          <Wrap gap={0.5}>
+            {activities.map((activity) => {
+              return <Badge key={activity}>{activity}</Badge>;
+            })}
+          </Wrap>
+        </Tabs.Content>
+        <Tabs.Content value="directions">Directions</Tabs.Content>
+        <Tabs.Content value="comments">Comments</Tabs.Content>
+        <Tabs.Content value="settings">Settings</Tabs.Content>
+      </Tabs.ContentGroup>
+    </Tabs.Root>
+  );
+};
+export default TripTabs;

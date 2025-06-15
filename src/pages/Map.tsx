@@ -8,8 +8,16 @@ import {
 import { LuInfo } from "react-icons/lu";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Drawer, IconButton, useMediaQuery } from "@chakra-ui/react";
-import TripInfo from "@components/TripInfo";
+import {
+  Box,
+  Card,
+  CloseButton,
+  Drawer,
+  HStack,
+  IconButton,
+  useMediaQuery,
+} from "@chakra-ui/react";
+import TripTabs from "@components/TripTabs";
 
 const Map = () => {
   const { tripId = "" } = useParams();
@@ -25,7 +33,7 @@ const Map = () => {
   const [tab, setTab] = useState("details");
 
   const { trip, isLoading } = useTrip(tripId);
-  const { waypoints = [] } = trip || {};
+  const { name, waypoints = [] } = trip || {};
   const origin = waypoints[0];
   const stops: google.maps.DirectionsWaypoint[] =
     waypoints.length <= 2
@@ -79,19 +87,40 @@ const Map = () => {
     >
       {isInfoVisible &&
         (isLandscape ? (
-          <TripInfo trip={trip!} tab={tab} setTab={setTab} />
+          <Card.Root variant="subtle" size="lg" width={500}>
+            <Card.Header as={HStack} justifyContent="space-between">
+              <Card.Title>{name}</Card.Title>
+              <CloseButton
+                color="white"
+                onClick={() => setIsInfoVisible(false)}
+              />
+            </Card.Header>
+            <Card.Body>
+              <TripTabs trip={trip!} tab={tab} setTab={setTab} />
+            </Card.Body>
+          </Card.Root>
         ) : (
           <Drawer.Root
             open={isInfoVisible}
             onOpenChange={(e) => setIsInfoVisible(e.open)}
             placement="start"
+            size="sm"
           >
             <Drawer.Backdrop />
             <Drawer.Trigger />
-            <Drawer.Positioner>
-              <Drawer.Content bgColor="orange">
-                <Drawer.CloseTrigger />
-                <TripInfo trip={trip!} tab={tab} setTab={setTab} />
+            <Drawer.Positioner padding={5}>
+              <Drawer.Content
+                bgColor={{ _light: "orange/60", _dark: "gray.950/60" }}
+                backdropFilter="blur(5px)"
+                borderRadius={5}
+              >
+                <Drawer.Header>
+                  <Drawer.Title>{name}</Drawer.Title>
+                  <Drawer.CloseTrigger />
+                </Drawer.Header>
+                <Drawer.Body>
+                  <TripTabs trip={trip!} tab={tab} setTab={setTab} />
+                </Drawer.Body>
               </Drawer.Content>
             </Drawer.Positioner>
           </Drawer.Root>
@@ -101,7 +130,8 @@ const Map = () => {
         onUnmount={onMapUnmount}
         mapContainerStyle={{
           width: "100%",
-          height: "calc(100vh - 115px)",
+          height: "calc(100vh - 120px)",
+          borderRadius: "10px",
         }}
         options={{
           mapTypeControlOptions: {
