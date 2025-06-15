@@ -119,7 +119,11 @@ const NavigationBar = () => {
   const navigate = useNavigate();
 
   return (
-    <Box padding={5} bgColor={navBarBgColor}>
+    <Box
+      padding={5}
+      bgColor={navBarBgColor}
+      borderRadius="var(--chakra-radii-l3)"
+    >
       <Flex h={5} alignItems="center" justifyContent="space-between">
         <IconButton
           variant="ghost"

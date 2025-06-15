@@ -18,6 +18,7 @@ import {
   useMediaQuery,
 } from "@chakra-ui/react";
 import TripTabs from "@components/TripTabs";
+import Loading from "@components/Loading";
 
 const Map = () => {
   const { tripId = "" } = useParams();
@@ -76,7 +77,7 @@ const Map = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   return (
     <Box
@@ -137,7 +138,7 @@ const Map = () => {
         mapContainerStyle={{
           width: "100%",
           height: "calc(100vh - 120px)",
-          borderRadius: "10px",
+          borderRadius: "0.375rem",
         }}
         options={{
           mapTypeControlOptions: {

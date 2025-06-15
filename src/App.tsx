@@ -36,6 +36,7 @@ const App = () => {
       width="100%"
       data-state="open"
       _open={{ animation: "fade-in 1s ease-out" }}
+      colorPalette={{ _light: "orange" }}
     >
       <NavigationBar />
       <Toaster />

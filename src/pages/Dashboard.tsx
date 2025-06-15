@@ -1,4 +1,5 @@
 import { Button, Input, SimpleGrid, VStack } from "@chakra-ui/react";
+import Loading from "@components/Loading";
 import TripCard from "@components/TripCard";
 import TripFormDialog from "@components/TripFormDialog";
 import { useTrips } from "@hooks/trip";
@@ -7,7 +8,7 @@ const Dashboard = () => {
   const { trips, isLoading, upsertTrip, deleteTrip } = useTrips();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   return (
     <VStack
