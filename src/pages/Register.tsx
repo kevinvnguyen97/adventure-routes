@@ -159,7 +159,7 @@ const Register = () => {
         <Button variant="solid" type="submit">
           Register
         </Button>
-        <Button variant="ghost" onClick={() => navigate("login")}>
+        <Button variant="ghost" onClick={() => navigate("/login")}>
           Existing user? Login here
         </Button>
       </VStack>

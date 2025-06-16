@@ -14,7 +14,7 @@ const ProtectedRoute = () => {
   const { user, isUserDataLoading } = useAuth();
 
   if (!user && !isUserDataLoading) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" replace />;
   }
 
   return <Outlet />;
@@ -23,8 +23,8 @@ const ProtectedRoute = () => {
 const NonProtectedRoute = () => {
   const { user, isUserDataLoading } = useAuth();
 
-  if (user && !isUserDataLoading) {
-    return <Navigate to="/" />;
+  if (!!user && !isUserDataLoading) {
+    return <Navigate to="/" replace />;
   }
 
   return <Outlet />;
@@ -41,13 +41,13 @@ const App = () => {
       <NavigationBar />
       <Toaster />
       <Routes>
-        <Route path="/" element={<ProtectedRoute />}>
+        <Route element={<ProtectedRoute />}>
           <Route index element={<Dashboard />} />
           <Route path="map/:tripId" element={<Map />} />
           <Route path="settings" element={<Settings />} />
         </Route>
-        <Route path="/" element={<NonProtectedRoute />}>
-          <Route index path="login" element={<Login />} />
+        <Route element={<NonProtectedRoute />}>
+          <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
