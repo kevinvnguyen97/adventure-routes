@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { LuLogOut, LuSettings, LuMenu } from "react-icons/lu";
 import { useState } from "react";
-import { useColorModeValue } from "@components/ui/color-mode";
+import { ColorModeButton, useColorModeValue } from "@components/ui/color-mode";
 import { useAuth } from "@utils/auth";
 import { useNavigate } from "react-router-dom";
 import UserAvatar from "@components/UserAvatar";
@@ -57,54 +57,61 @@ const UserPopover = () => {
                     <Text>{user?.username}</Text>
                   </VStack>
                 </HStack>
-                {user && (
-                  <ButtonGroup>
-                    <Tooltip
-                      content="Settings"
-                      contentProps={{
-                        _dark: {
-                          color: "white",
-                          bgColor: "var(--chakra-colors-bg-panel)",
-                        },
-                        _light: {
-                          color: "white",
-                          bgColor: "orange.600",
-                        },
-                      }}
-                    >
-                      <IconButton
-                        onClick={() => navigate("settings")}
-                        variant="ghost"
-                        color="white"
-                        _hover={{ _light: { bgColor: "orange.600" } }}
+                <ButtonGroup>
+                  <ColorModeButton
+                    variant="ghost"
+                    color="white"
+                    _hover={{ _light: { bgColor: "orange.600" } }}
+                  />
+                  {user && (
+                    <>
+                      <Tooltip
+                        content="Settings"
+                        contentProps={{
+                          _dark: {
+                            color: "white",
+                            bgColor: "var(--chakra-colors-bg-panel)",
+                          },
+                          _light: {
+                            color: "white",
+                            bgColor: "bg",
+                          },
+                        }}
                       >
-                        <LuSettings />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip
-                      content="Log Out"
-                      contentProps={{
-                        _dark: {
-                          color: "white",
-                          bgColor: "var(--chakra-colors-bg-panel)",
-                        },
-                        _light: {
-                          color: "white",
-                          bgColor: "orange.600",
-                        },
-                      }}
-                    >
-                      <IconButton
-                        onClick={logoutUser}
-                        variant="ghost"
-                        color="white"
-                        _hover={{ color: "red" }}
+                        <IconButton
+                          onClick={() => navigate("settings")}
+                          variant="ghost"
+                          color="white"
+                          _hover={{ _light: { bgColor: "orange.600" } }}
+                        >
+                          <LuSettings />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip
+                        content="Log Out"
+                        contentProps={{
+                          _dark: {
+                            color: "white",
+                            bgColor: "var(--chakra-colors-bg-panel)",
+                          },
+                          _light: {
+                            color: "white",
+                            bgColor: "orange.600",
+                          },
+                        }}
                       >
-                        <LuLogOut />
-                      </IconButton>
-                    </Tooltip>
-                  </ButtonGroup>
-                )}
+                        <IconButton
+                          onClick={logoutUser}
+                          variant="ghost"
+                          color="white"
+                          _hover={{ color: "red" }}
+                        >
+                          <LuLogOut />
+                        </IconButton>
+                      </Tooltip>
+                    </>
+                  )}
+                </ButtonGroup>
               </HStack>
             </Popover.Body>
           </Popover.Content>
@@ -143,7 +150,10 @@ const NavigationBar = () => {
             sm={{ display: "block" }}
             size="lg"
             onClick={() => navigate("/")}
-            _hover={{ _light: { bgColor: "orange.600" } }}
+            _hover={{
+              _light: { bgColor: "orange.600" },
+              _dark: { bgColor: "gray.800" },
+            }}
           >
             Dashboard
           </Button>
