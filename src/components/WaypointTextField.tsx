@@ -115,6 +115,7 @@ const WaypointTextField = (props: WaypointTextFieldProps) => {
             placeholder="Enter address or place of interest"
             variant="subtle"
             width="100%"
+            colorPalette="orange"
           />
         </InputGroup>
         <ButtonGroup gap={0}>
@@ -123,8 +124,8 @@ const WaypointTextField = (props: WaypointTextFieldProps) => {
               onClick={removeWaypoint}
               variant="ghost"
               color="white"
-              colorPalette="red"
               size="xs"
+              _hover={{ bgColor: { _light: "orange.600" } }}
             >
               <LuMinus />
             </IconButton>
@@ -133,8 +134,8 @@ const WaypointTextField = (props: WaypointTextFieldProps) => {
             onClick={addWaypoint}
             variant="ghost"
             color="white"
-            colorPalette="green"
             size="xs"
+            _hover={{ bgColor: { _light: "orange.600" } }}
           >
             <LuPlus />
           </IconButton>
@@ -144,6 +145,7 @@ const WaypointTextField = (props: WaypointTextFieldProps) => {
             variant="ghost"
             color="white"
             size="xs"
+            _hover={{ bgColor: { _light: "orange.600" } }}
           >
             {isOrigin ? (
               <LuArrowDown />

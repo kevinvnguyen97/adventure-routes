@@ -51,10 +51,19 @@ const Login = () => {
             type="password"
           />
         </Field.Root>
-        <Button variant="solid" type="submit">
+        <Button
+          variant="solid"
+          type="submit"
+          colorPalette="orange"
+          color="white"
+        >
           Login
         </Button>
-        <Button variant="ghost" onClick={() => navigate("/register")}>
+        <Button
+          variant="ghost"
+          color="orange.fg"
+          onClick={() => navigate("/register")}
+        >
           New user? Register here
         </Button>
       </VStack>

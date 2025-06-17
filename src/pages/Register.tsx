@@ -156,10 +156,19 @@ const Register = () => {
             />
           )}
         </Field.Root>
-        <Button variant="solid" type="submit">
+        <Button
+          variant="solid"
+          type="submit"
+          colorPalette="orange"
+          color="white"
+        >
           Register
         </Button>
-        <Button variant="ghost" onClick={() => navigate("/login")}>
+        <Button
+          variant="ghost"
+          color="orange.fg"
+          onClick={() => navigate("/login")}
+        >
           Existing user? Login here
         </Button>
       </VStack>

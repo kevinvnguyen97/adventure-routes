@@ -195,7 +195,11 @@ const TripFormDialog = (props: TripFormDialogProps) => {
             backdropFilter="blur(5px)"
           >
             <Dialog.CloseTrigger asChild>
-              <CloseButton color="white" _hover={{ color: "red" }} />
+              <CloseButton
+                color="white"
+                colorPalette="red"
+                _hover={{ bgColor: { _light: "white" }, color: "red" }}
+              />
             </Dialog.CloseTrigger>
             <Dialog.Header>
               <Dialog.Title color="white">
@@ -212,6 +216,7 @@ const TripFormDialog = (props: TripFormDialogProps) => {
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Name"
                   variant="subtle"
+                  colorPalette="orange"
                 />
               </Field.Root>
               <Field.Root orientation="horizontal">
@@ -223,6 +228,7 @@ const TripFormDialog = (props: TripFormDialogProps) => {
                   placeholder="Description"
                   variant="subtle"
                   resize="none"
+                  colorPalette="orange"
                 />
               </Field.Root>
               <PriceCategorySlider
@@ -275,7 +281,14 @@ const TripFormDialog = (props: TripFormDialogProps) => {
                   Cancel
                 </Button>
               </Dialog.ActionTrigger>
-              <Button type="submit">{trip ? "Save" : "Create"}</Button>
+              <Button
+                type="submit"
+                variant="solid"
+                colorPalette="orange"
+                color="white"
+              >
+                {trip ? "Save" : "Create"}
+              </Button>
             </Dialog.Footer>
           </Dialog.Content>
         </Dialog.Positioner>

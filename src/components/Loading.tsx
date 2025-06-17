@@ -13,10 +13,8 @@ const Loading = () => {
         value={null}
         size="lg"
         position="absolute"
-        left={0}
-        top={0}
-        right={0}
-        bottom={0}
+        left={"50%"}
+        bottom={"50%"}
       >
         <ProgressCircle.Circle>
           <ProgressCircle.Track />

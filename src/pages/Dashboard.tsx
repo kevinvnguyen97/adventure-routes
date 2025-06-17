@@ -24,7 +24,11 @@ const Dashboard = () => {
         placeholder="Search for Trip"
       />
       <TripFormDialog
-        triggerButton={<Button>Create a Trip</Button>}
+        triggerButton={
+          <Button colorPalette="orange" color="white">
+            Create a Trip
+          </Button>
+        }
         upsertTrip={(tripFields) => upsertTrip({ tripForm: tripFields })}
       />
       <SimpleGrid

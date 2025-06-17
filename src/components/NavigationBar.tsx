@@ -39,15 +39,11 @@ const UserPopover = () => {
         />
       </Popover.Trigger>
       <Portal>
-        <Popover.Positioner>
+        <Popover.Positioner paddingTop={2}>
           <Popover.Content
-            css={{
-              "--popover-bg": { _light: "#F97316" },
-            }}
+            bgColor={{ _light: "orange.600/60", _dark: "gray.900/60" }}
+            backdropFilter="blur(5px)"
           >
-            <Popover.Arrow>
-              <Popover.ArrowTip borderColor={{ _light: "orange.600" }} />
-            </Popover.Arrow>
             <Popover.Body display="flex" flexDirection="column" color="white">
               <HStack justifyContent="space-between">
                 <HStack gap={2} alignItems="center">

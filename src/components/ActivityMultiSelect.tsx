@@ -54,6 +54,7 @@ const ActivityMultiSelect = (props: ActivityMultiSelectProps) => {
           multiple
           variant="subtle"
           display="flex"
+          colorPalette="orange"
         >
           <Combobox.Control>
             <Combobox.Input placeholder="Select activities" />
@@ -63,9 +64,16 @@ const ActivityMultiSelect = (props: ActivityMultiSelectProps) => {
             </Combobox.IndicatorGroup>
           </Combobox.Control>
           <Combobox.Positioner>
-            <Combobox.Content>
+            <Combobox.Content
+              bgColor={{ _light: "whiteAlpha.950/60", _dark: "gray.800/60" }}
+              backdropFilter="blur(5px)"
+            >
               {activityCollection.items.map((activity) => (
-                <Combobox.Item item={activity} key={activity.value}>
+                <Combobox.Item
+                  item={activity}
+                  key={activity.value}
+                  _hover={{ bgColor: { _light: "white" } }}
+                >
                   <HStack>
                     {activity.icon}
                     <Text>{activity.label}</Text>

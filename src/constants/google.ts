@@ -5,8 +5,12 @@ export const autocompleteCss: Record<string, SystemStyleObject> = {
   // Entire container for the autocomplete dropdown
   ".pac-container": {
     zIndex: "100000 !important",
-    backgroundColor: { _dark: "var(--chakra-colors-bg-panel) !important" },
+    bgColor: {
+      _light: "whiteAlpha.950/60 !important",
+      _dark: "gray.800/60 !important",
+    },
     color: { _dark: "white !important" },
+    backdropFilter: "blur(5px)",
     fontFamily: "Inter, sans-serif !important",
     transition: "0.25s ease !important",
     marginTop: "8px !important",

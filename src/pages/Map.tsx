@@ -85,14 +85,23 @@ const Map = () => {
       _open={{ animation: "fade-in 1s ease-out" }}
       paddingTop={5}
       display="flex"
+      gap={5}
     >
       {isInfoVisible &&
         (isLandscape ? (
-          <Card.Root variant="subtle" size="lg" width={500}>
+          <Card.Root
+            variant="subtle"
+            size="lg"
+            width={500}
+            bgColor={{ _light: "orange.500" }}
+            color="white"
+          >
             <Card.Header as={HStack} justifyContent="space-between">
               <Card.Title>{name}</Card.Title>
               <CloseButton
                 color="white"
+                colorPalette="red"
+                _hover={{ bgColor: { _light: "white" }, color: "red" }}
                 onClick={() => setIsInfoVisible(false)}
               />
             </Card.Header>
@@ -118,8 +127,10 @@ const Map = () => {
               >
                 <Drawer.CloseTrigger>
                   <CloseButton
-                    onClick={() => setIsInfoVisible(false)}
                     color="white"
+                    colorPalette="red"
+                    _hover={{ bgColor: { _light: "white" }, color: "red" }}
+                    onClick={() => setIsInfoVisible(false)}
                   />
                 </Drawer.CloseTrigger>
                 <Drawer.Header>
