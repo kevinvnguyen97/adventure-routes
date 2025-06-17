@@ -29,7 +29,6 @@ const Map = () => {
   const [directions, setDirections] = useState<
     google.maps.DirectionsResult | undefined
   >();
-  const [isDirectionsLoaded, setIsDirectionsLoaded] = useState(false);
   const [isTripRendered, setIsTripRendered] = useState(false);
   const [isInfoVisible, setIsInfoVisible] = useState(false);
   const [tab, setTab] = useState("details");
@@ -63,15 +62,11 @@ const Map = () => {
     response: google.maps.DirectionsResult | null,
     status: google.maps.DirectionsStatus
   ) => {
-    if (isDirectionsLoaded) {
+    if (directions) {
       return;
-    } else if (
-      status === google.maps.DirectionsStatus.OK &&
-      !isDirectionsLoaded
-    ) {
+    } else if (status === google.maps.DirectionsStatus.OK && !directions) {
       console.log("Directions response:", response);
       setDirections(response as google.maps.DirectionsResult | undefined);
-      setIsDirectionsLoaded(true);
     } else {
       console.error("Error fetching directions:", status);
     }
