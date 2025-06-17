@@ -9,6 +9,7 @@ import Register from "@pages/Register";
 import Map from "@pages/Map";
 import { useAuth } from "@utils/auth";
 import Settings from "@pages/Settings";
+import Loading from "@components/Loading";
 
 const ProtectedRoute = () => {
   const { user, isUserDataLoading } = useAuth();
@@ -50,6 +51,7 @@ const App = () => {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
         </Route>
+        <Route path="loading-test" element={<Loading />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Box>
