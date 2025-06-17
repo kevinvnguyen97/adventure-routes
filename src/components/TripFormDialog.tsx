@@ -231,13 +231,13 @@ const TripFormDialog = (props: TripFormDialogProps) => {
                   colorPalette="orange"
                 />
               </Field.Root>
-              <PriceCategorySlider
-                priceCategory={priceCategory}
-                setPriceCategory={setPriceCategory}
-              />
               <ActivityMultiSelect
                 activities={activities}
                 setActivities={setActivities}
+              />
+              <PriceCategorySlider
+                priceCategory={priceCategory}
+                setPriceCategory={setPriceCategory}
               />
               <DndContext
                 collisionDetection={closestCorners}
