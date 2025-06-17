@@ -29,7 +29,8 @@ const Map = () => {
   const [directions, setDirections] = useState<
     google.maps.DirectionsResult | undefined
   >();
-  const [isDirectionsRendered, setIsDirectionsRendered] = useState(false);
+  const [isDirectionsLoaded, setIsDirectionsLoaded] = useState(false);
+  const [isTripRendered, setIsTripRendered] = useState(false);
   const [isInfoVisible, setIsInfoVisible] = useState(false);
   const [tab, setTab] = useState("details");
 
@@ -62,18 +63,22 @@ const Map = () => {
     response: google.maps.DirectionsResult | null,
     status: google.maps.DirectionsStatus
   ) => {
-    if (isDirectionsRendered) {
+    if (isDirectionsLoaded) {
       return;
     } else if (
       status === google.maps.DirectionsStatus.OK &&
-      !isDirectionsRendered
+      !isDirectionsLoaded
     ) {
       console.log("Directions response:", response);
       setDirections(response as google.maps.DirectionsResult | undefined);
-      setIsDirectionsRendered(true);
+      setIsDirectionsLoaded(true);
     } else {
       console.error("Error fetching directions:", status);
     }
+  };
+
+  const onDirectionsRendererOnload = () => {
+    setIsTripRendered(true);
   };
 
   if (isLoading) {
@@ -172,6 +177,7 @@ const Map = () => {
         >
           <LuInfo />
         </IconButton>
+        {!isTripRendered && <Loading />}
         <DirectionsService
           options={{
             origin,
@@ -187,6 +193,7 @@ const Map = () => {
             key={route.summary}
             directions={directions}
             routeIndex={index}
+            onLoad={onDirectionsRendererOnload}
           />
         ))}
       </GoogleMap>
