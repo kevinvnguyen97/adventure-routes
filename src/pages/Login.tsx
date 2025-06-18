@@ -11,8 +11,14 @@ const Login = () => {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const isFormValid = [usernameOrEmail, password].every(Boolean);
+
   const loginSubmit = async (event: FormEvent<HTMLDivElement>) => {
     event.preventDefault();
+
+    if (!isFormValid) {
+      return;
+    }
 
     loginUser({ usernameOrEmail, password });
   };
@@ -56,6 +62,7 @@ const Login = () => {
           type="submit"
           colorPalette="orange"
           color="white"
+          disabled={!isFormValid}
         >
           Login
         </Button>

@@ -22,10 +22,9 @@ export const connectToDatabase = async () => {
   const commentsCollection: Collection<Comment> =
     db.collection<Comment>("comments");
 
-  usersCollection.createIndex(
-    { id: 1, username: 1, email: 1 },
-    { unique: true }
-  );
+  usersCollection.createIndex({ id: 1 });
+  usersCollection.createIndex({ username: 1 }, { unique: true });
+  usersCollection.createIndex({ email: 1 }, { unique: true });
   tripsCollection.createIndex({ id: 1 });
   commentsCollection.createIndex({ id: 1 });
 

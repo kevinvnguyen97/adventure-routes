@@ -91,7 +91,25 @@ usersRouter.post("/register", async (req: Request, res: Response) => {
   } catch (error) {
     const userError = error as MongoServerError;
     console.error("USER ERROR:", userError);
-    res.status(400).send(userError.errmsg);
+    switch (userError.code) {
+      // Duplicate user
+      case 11000:
+        if (userError.keyPattern.email && userError.keyPattern.username) {
+          res
+            .status(400)
+            .send(
+              `User with email ${email} and username ${username} already exists`
+            );
+        } else if (userError.keyPattern.email) {
+          res.status(400).send(`User with email ${email} already exists`);
+        } else {
+          res.status(400).send(`User with username ${username} already exists`);
+        }
+        break;
+      default:
+        res.status(400).send(userError.errmsg);
+        break;
+    }
   }
 });
 

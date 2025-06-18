@@ -13,12 +13,16 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
-    if (response.status === 200) {
-      const user = (await response.json()) as unknown as UserWithoutPassword;
-      setUser(user);
-      setIsUserDataLoading(false);
-    } else {
-      setIsUserDataLoading(false);
+    switch (response.status) {
+      case 200: {
+        const user = (await response.json()) as unknown as UserWithoutPassword;
+        setUser(user);
+        setIsUserDataLoading(false);
+        break;
+      }
+      default:
+        setIsUserDataLoading(false);
+        break;
     }
   }, [setUser, setIsUserDataLoading]);
 
@@ -77,8 +81,20 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       switch (response.status) {
         case 200:
           await fetchUser();
+          toaster.create({
+            title: `Code ${response.status} (${response.statusText})`,
+            description: await response.text(),
+            type: "success",
+            closable: true,
+          });
           break;
         default:
+          toaster.create({
+            title: `Error ${response.status} (${response.statusText})`,
+            description: await response.text(),
+            type: "error",
+            closable: true,
+          });
           console.error("Register does not work");
           break;
       }
@@ -90,11 +106,29 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logoutUser = async () => {
     try {
-      await fetch("/api/users/logout", {
+      const response = await fetch("/api/users/logout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
       });
-      setUser(undefined);
+      switch (response.status) {
+        case 200:
+          setUser(undefined);
+          toaster.create({
+            title: `Code ${response.status} (${response.statusText})`,
+            description: await response.text(),
+            type: "success",
+            closable: true,
+          });
+          break;
+        default:
+          toaster.create({
+            title: `Error ${response.status} (${response.statusText})`,
+            description: await response.text(),
+            type: "error",
+            closable: true,
+          });
+          break;
+      }
     } catch (error) {
       const logoutError = error as Error;
       console.error("Logout failed:", logoutError.message);

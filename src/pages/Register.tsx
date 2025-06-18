@@ -12,6 +12,7 @@ import {
   PasswordStrengthMeter,
 } from "@components/ui/password-input";
 import { useAuth } from "@utils/auth";
+import { checkIsEmailValid } from "@utils/email";
 import {
   checkIsPasswordRequirementsMet,
   getPasswordStrength,
@@ -33,9 +34,13 @@ const Register = () => {
 
   const arePasswordsMatched = password === reEnterPassword;
 
+  const isFormValid = [arePasswordsMatched, checkIsEmailValid(email)].every(
+    Boolean
+  );
+
   const checkIsPasswordValid = (passwordString: string) => {
     return (
-      checkIsPasswordRequirementsMet(passwordString) || arePasswordsMatched
+      checkIsPasswordRequirementsMet(passwordString) && arePasswordsMatched
     );
   };
 
@@ -50,6 +55,10 @@ const Register = () => {
 
   const registerSubmit = async (event: FormEvent<HTMLDivElement>) => {
     event.preventDefault();
+
+    if (!isFormValid) {
+      return;
+    }
 
     registerUser({ firstName, lastName, email, username, password });
   };
@@ -94,7 +103,7 @@ const Register = () => {
             />
           </Field.Root>
         </HStack>
-        <Field.Root required>
+        <Field.Root required invalid={!!email && !checkIsEmailValid(email)}>
           <Field.Label color="white">
             Email <Field.RequiredIndicator />
           </Field.Label>
@@ -103,6 +112,7 @@ const Register = () => {
             onChange={(e) => setEmail(e.target.value.trim())}
             variant="subtle"
           />
+          <Field.ErrorText>Email must be valid</Field.ErrorText>
         </Field.Root>
         <Field.Root required>
           <Field.Label color="white">
@@ -114,7 +124,10 @@ const Register = () => {
             variant="subtle"
           />
         </Field.Root>
-        <Field.Root required invalid={!checkIsPasswordValid(password)}>
+        <Field.Root
+          required
+          invalid={!!password && !checkIsPasswordValid(password)}
+        >
           <Field.Label color="white">
             Password <Field.RequiredIndicator />
           </Field.Label>
@@ -135,7 +148,10 @@ const Register = () => {
             />
           )}
         </Field.Root>
-        <Field.Root required invalid={!checkIsPasswordValid(reEnterPassword)}>
+        <Field.Root
+          required
+          invalid={!!reEnterPassword && !checkIsPasswordValid(reEnterPassword)}
+        >
           <Field.Label color="white">
             Re-Enter Password <Field.RequiredIndicator />
           </Field.Label>
@@ -161,6 +177,7 @@ const Register = () => {
           type="submit"
           colorPalette="orange"
           color="white"
+          disabled={!isFormValid}
         >
           Register
         </Button>
