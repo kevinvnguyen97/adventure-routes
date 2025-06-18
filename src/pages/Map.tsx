@@ -19,6 +19,7 @@ import {
 } from "@chakra-ui/react";
 import TripTabs from "@components/TripTabs";
 import Loading from "@components/Loading";
+import { RouteColors } from "@constants/google";
 
 const Map = () => {
   const { tripId = "" } = useParams();
@@ -189,6 +190,14 @@ const Map = () => {
             directions={directions}
             routeIndex={index}
             onLoad={onDirectionsRendererOnload}
+            options={{
+              polylineOptions: {
+                strokeColor: RouteColors[index],
+                strokeWeight: 5,
+                strokeOpacity: 0.6,
+                geodesic: true,
+              },
+            }}
           />
         ))}
       </GoogleMap>
