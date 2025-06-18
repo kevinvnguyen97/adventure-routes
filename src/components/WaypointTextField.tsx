@@ -115,7 +115,6 @@ const WaypointTextField = (props: WaypointTextFieldProps) => {
             placeholder="Enter address or place of interest"
             variant="subtle"
             width="100%"
-            colorPalette="orange"
           />
         </InputGroup>
         <ButtonGroup gap={0}>

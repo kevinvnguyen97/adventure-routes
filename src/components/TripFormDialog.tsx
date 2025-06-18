@@ -216,7 +216,6 @@ const TripFormDialog = (props: TripFormDialogProps) => {
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Name"
                   variant="subtle"
-                  colorPalette="orange"
                 />
               </Field.Root>
               <Field.Root orientation="horizontal">
@@ -228,7 +227,6 @@ const TripFormDialog = (props: TripFormDialogProps) => {
                   placeholder="Description"
                   variant="subtle"
                   resize="none"
-                  colorPalette="orange"
                 />
               </Field.Root>
               <ActivityMultiSelect

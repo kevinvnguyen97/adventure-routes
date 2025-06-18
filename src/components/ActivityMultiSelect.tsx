@@ -54,7 +54,6 @@ const ActivityMultiSelect = (props: ActivityMultiSelectProps) => {
           multiple
           variant="subtle"
           display="flex"
-          colorPalette="orange"
         >
           <Combobox.Control>
             <Combobox.Input placeholder="Select activities" />
