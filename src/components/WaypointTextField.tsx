@@ -41,6 +41,7 @@ type WaypointTextFieldProps = {
   isOrigin?: boolean;
   isDestination?: boolean;
   hasMoreWaypoints?: boolean;
+  isMaxWaypointsReached?: boolean;
   addWaypoint: () => void;
   removeWaypoint: () => void;
   onWaypointChange: (newWaypointValue: string) => void;
@@ -52,6 +53,7 @@ const WaypointTextField = (props: WaypointTextFieldProps) => {
     isOrigin,
     isDestination,
     hasMoreWaypoints,
+    isMaxWaypointsReached,
     addWaypoint,
     removeWaypoint,
     onWaypointChange,
@@ -129,15 +131,17 @@ const WaypointTextField = (props: WaypointTextFieldProps) => {
               <LuMinus />
             </IconButton>
           )}
-          <IconButton
-            onClick={addWaypoint}
-            variant="ghost"
-            color="white"
-            size="xs"
-            _hover={{ bgColor: { _light: "orange.600" } }}
-          >
-            <LuPlus />
-          </IconButton>
+          {!isMaxWaypointsReached && (
+            <IconButton
+              onClick={addWaypoint}
+              variant="ghost"
+              color="white"
+              size="xs"
+              _hover={{ bgColor: { _light: "orange.600" } }}
+            >
+              <LuPlus />
+            </IconButton>
+          )}
           <IconButton
             {...attributes}
             {...listeners}
