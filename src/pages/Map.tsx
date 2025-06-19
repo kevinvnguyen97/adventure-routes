@@ -8,34 +8,25 @@ import {
 import { LuInfo } from "react-icons/lu";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  Box,
-  Card,
-  CloseButton,
-  Drawer,
-  HStack,
-  IconButton,
-  useMediaQuery,
-} from "@chakra-ui/react";
-import TripTabs from "@components/TripTabs";
+import { Box, IconButton } from "@chakra-ui/react";
 import Loading from "@components/Loading";
 import { RouteColors } from "@constants/google";
+import TripDetails from "@components/TripDetails";
 
 const Map = () => {
   const { tripId = "" } = useParams();
   const { colorMode } = useColorMode();
-  const [isLandscape] = useMediaQuery(["(orientation: landscape)"]);
 
   const [map, setMap] = useState<google.maps.Map | null>(null);
+  console.log("Map:", map);
   const [directions, setDirections] = useState<
     google.maps.DirectionsResult | undefined
   >();
   const [isTripRendered, setIsTripRendered] = useState(false);
   const [isInfoVisible, setIsInfoVisible] = useState(false);
-  const [tab, setTab] = useState("details");
 
   const { trip, isLoading } = useTrip(tripId);
-  const { name, waypoints = [] } = trip || {};
+  const { waypoints = [] } = trip || {};
   const origin = waypoints[0];
   const stops: google.maps.DirectionsWaypoint[] =
     waypoints.length <= 2
@@ -55,7 +46,6 @@ const Map = () => {
     setMap(map);
   };
   const onMapUnmount = () => {
-    console.log("Map unmounted");
     setMap(null);
   };
 
@@ -88,62 +78,11 @@ const Map = () => {
       display="flex"
       gap={5}
     >
-      {isInfoVisible &&
-        (isLandscape ? (
-          <Card.Root
-            variant="subtle"
-            size="lg"
-            width={500}
-            bgColor={{ _light: "orange.500" }}
-            color="white"
-          >
-            <Card.Header as={HStack} justifyContent="space-between">
-              <Card.Title>{name}</Card.Title>
-              <CloseButton
-                color="white"
-                colorPalette="red"
-                _hover={{ bgColor: { _light: "white" }, color: "red" }}
-                onClick={() => setIsInfoVisible(false)}
-              />
-            </Card.Header>
-            <Card.Body>
-              <TripTabs trip={trip!} tab={tab} setTab={setTab} />
-            </Card.Body>
-          </Card.Root>
-        ) : (
-          <Drawer.Root
-            open={isInfoVisible}
-            onOpenChange={(e) => setIsInfoVisible(e.open)}
-            placement="start"
-            size="sm"
-          >
-            <Drawer.Backdrop />
-            <Drawer.Trigger />
-            <Drawer.Positioner padding={5}>
-              <Drawer.Content
-                bgColor={{ _light: "orange/60", _dark: "gray.950/60" }}
-                color="white"
-                backdropFilter="blur(5px)"
-                borderRadius={5}
-              >
-                <Drawer.CloseTrigger>
-                  <CloseButton
-                    color="white"
-                    colorPalette="red"
-                    _hover={{ bgColor: { _light: "white" }, color: "red" }}
-                    onClick={() => setIsInfoVisible(false)}
-                  />
-                </Drawer.CloseTrigger>
-                <Drawer.Header>
-                  <Drawer.Title>{name}</Drawer.Title>
-                </Drawer.Header>
-                <Drawer.Body>
-                  <TripTabs trip={trip!} tab={tab} setTab={setTab} />
-                </Drawer.Body>
-              </Drawer.Content>
-            </Drawer.Positioner>
-          </Drawer.Root>
-        ))}
+      <TripDetails
+        trip={trip!}
+        isInfoVisible={isInfoVisible}
+        setIsInfoVisible={setIsInfoVisible}
+      />
       <GoogleMap
         onLoad={onMapLoad}
         onUnmount={onMapUnmount}
