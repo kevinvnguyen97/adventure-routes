@@ -255,7 +255,7 @@ const TripFormDialog = (props: TripFormDialogProps) => {
                         isOrigin={index === 0}
                         isDestination={index === waypoints.length - 1}
                         hasMoreWaypoints={waypoints.length > 2}
-                        isMaxWaypointsReached={waypoints.length >= 28}
+                        isMaxWaypointsReached={waypoints.length > 26}
                         addWaypoint={() => addWaypoint(index)}
                         removeWaypoint={() => removeWaypoint(waypoint.id)}
                         onWaypointChange={(newWaypointValue) =>
