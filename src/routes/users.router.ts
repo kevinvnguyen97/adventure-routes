@@ -124,13 +124,17 @@ usersRouter.post("/login", async (req: Request, res: Response) => {
       $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
     })) as unknown as User;
 
+    if (!user) {
+      res.status(404).send(`User not found`);
+    }
+
     const isPasswordValid = await validatePassword({
       password,
       hashedPassword: user?.password,
     });
 
-    if (!password || !user || !isPasswordValid) {
-      res.status(401).send("Invalid credentials");
+    if (!password || !isPasswordValid) {
+      res.status(401).send("Incorrect password");
       return;
     }
 
