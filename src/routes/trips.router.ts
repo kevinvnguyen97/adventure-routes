@@ -12,10 +12,19 @@ export const tripsRouter = Router();
 tripsRouter.use(ExpressJson());
 
 // Get
-tripsRouter.get("/", async (_req: Request, res: Response) => {
+tripsRouter.get("/", async (req: Request, res: Response) => {
+  const user = req.session.user;
+
+  if (!user) {
+    res.status(403).send("Cannot retrieve trip data. Must be logged in");
+    return;
+  }
+
+  const query = { userId: new ObjectId(user._id) };
+
   try {
     const trips = (await collections.trips
-      ?.find({})
+      ?.find(query)
       .toArray()) as unknown as Trip[];
     res.status(200).send(trips);
   } catch (error) {
@@ -41,7 +50,14 @@ tripsRouter.get("/:id", async (req: Request, res: Response) => {
 
 // Post
 tripsRouter.post("/", async (req: Request, res: Response) => {
-  const newTrip = req.body as Trip;
+  const user = req.session.user;
+
+  if (!user) {
+    res.status(403).send("Cannot create trip. Must be logged in");
+    return;
+  }
+
+  const newTrip = { ...req.body, userId: user._id } as Trip;
 
   try {
     const result = await collections.trips?.insertOne(newTrip);
@@ -61,6 +77,13 @@ tripsRouter.post("/", async (req: Request, res: Response) => {
 
 // Put
 tripsRouter.put("/:id", async (req: Request, res: Response) => {
+  const user = req.session.user;
+
+  if (!user) {
+    res.status(403).send("Cannot update trip. Must be logged in");
+    return;
+  }
+
   const tripId = req.params.id;
 
   try {
@@ -84,6 +107,12 @@ tripsRouter.put("/:id", async (req: Request, res: Response) => {
 
 // Delete
 tripsRouter.delete("/:id", async (req: Request, res: Response) => {
+  const user = req.session.user;
+
+  if (!user) {
+    res.status(403).send("Cannot delete trip. Must be logged in");
+  }
+
   const tripId = req.params.id;
 
   try {

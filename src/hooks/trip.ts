@@ -69,6 +69,9 @@ export const useTrips = () => {
           waypoints,
         }),
       });
+      switch (response.status) {
+        case 200:
+      }
       if (!response.ok) {
         throw new Error("Failed to update adventure route");
       }

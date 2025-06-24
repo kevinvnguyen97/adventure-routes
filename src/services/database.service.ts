@@ -1,11 +1,11 @@
 import { Collection, Db, MongoClient } from "mongodb";
 import env from "@constants/env";
-import type Route from "@models/trip";
+import type Trip from "@models/trip";
 import type User from "@models/user";
 
 type tripDBCollections = {
   users?: Collection<User>;
-  trips?: Collection<Route>;
+  trips?: Collection<Trip>;
   comments?: Collection<Comment>;
 };
 export const collections: tripDBCollections = {};
@@ -18,7 +18,7 @@ export const connectToDatabase = async () => {
   const db: Db = client.db("adventure-routes");
 
   const usersCollection: Collection<User> = db.collection<User>("users");
-  const tripsCollection: Collection<Route> = db.collection<Route>("trips");
+  const tripsCollection: Collection<Trip> = db.collection<Trip>("trips");
   const commentsCollection: Collection<Comment> =
     db.collection<Comment>("comments");
 
