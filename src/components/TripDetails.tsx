@@ -22,14 +22,16 @@ const TripDetails = (props: TripDetailsProps) => {
 
   const { name } = trip;
 
-  if (isLandscape && isInfoVisible) {
+  if (isLandscape) {
     return (
       <Card.Root
         variant="subtle"
         size="lg"
-        width={500}
         bgColor={{ _light: "orange.500" }}
         color="white"
+        width={isInfoVisible ? 500 : 0}
+        data-state="open"
+        transition="width 0.5s ease"
       >
         <Card.Header as={HStack} justifyContent="space-between">
           <Card.Title>{name}</Card.Title>

@@ -172,7 +172,7 @@ const Map = () => {
       _open={{ animation: "fade-in 1s ease-out" }}
       paddingTop={5}
       display="flex"
-      gap={5}
+      gap={isInfoVisible ? 5 : 0}
     >
       <TripDetails
         trip={trip!}
