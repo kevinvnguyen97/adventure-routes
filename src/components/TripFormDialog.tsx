@@ -10,6 +10,7 @@ import {
 import {
   createRef,
   useEffect,
+  useLayoutEffect,
   useState,
   type FormEvent,
   type JSX,
@@ -62,7 +63,7 @@ const TripFormDialog = (props: TripFormDialogProps) => {
 
   const descriptionTextAreaRef = createRef<HTMLTextAreaElement>();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (descriptionTextAreaRef.current) {
       descriptionTextAreaRef.current.style.resize = "none";
       descriptionTextAreaRef.current.style.height = "auto";
