@@ -1,4 +1,5 @@
 import type Trip from "@models/trip";
+import { toaster } from "@utils/toaster";
 import { useCallback, useEffect, useState } from "react";
 
 export type TripFormArgs = {
@@ -71,11 +72,22 @@ export const useTrips = () => {
       });
       switch (response.status) {
         case 200:
+          toaster.create({
+            title: `Code ${response.status} (${response.statusText})`,
+            description: `Trip "${name}" updated successfully`,
+            type: "success",
+            closable: true,
+          });
+          break;
+        default:
+          toaster.create({
+            title: `Error ${response.status} (${response.statusText})`,
+            description: "Trip cannot be updated",
+            type: "error",
+            closable: true,
+          });
+          break;
       }
-      if (!response.ok) {
-        throw new Error("Failed to update adventure route");
-      }
-      console.log("Adventure route updated successfully");
     } else {
       const response = await fetch("/api/trips", {
         method: "POST",
@@ -91,10 +103,24 @@ export const useTrips = () => {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to create adventure route");
+      switch (response.status) {
+        case 200:
+          toaster.create({
+            title: `Code ${response.status} (${response.statusText})`,
+            description: `Trip "${name}" updated successfully`,
+            type: "success",
+            closable: true,
+          });
+          break;
+        default:
+          toaster.create({
+            title: `Error ${response.status} (${response.statusText})`,
+            description: "Trip cannot be updated",
+            type: "error",
+            closable: true,
+          });
+          break;
       }
-      console.log("Adventure route created successfully");
     }
     refetchTrips();
   };
@@ -106,11 +132,24 @@ export const useTrips = () => {
         "Content-Type": "application/json",
       },
     });
-
-    if (!response.ok) {
-      throw new Error("Failed to delete trip");
+    switch (response.status) {
+      case 200:
+        toaster.create({
+          title: `Code ${response.status} (${response.statusText})`,
+          description: `Trip deleted successfully`,
+          type: "success",
+          closable: true,
+        });
+        break;
+      default:
+        toaster.create({
+          title: `Error ${response.status} (${response.statusText})`,
+          description: "Trip cannot be deleted",
+          type: "error",
+          closable: true,
+        });
+        break;
     }
-    console.log("Trip deleted successfully");
     refetchTrips();
   };
 
@@ -118,5 +157,5 @@ export const useTrips = () => {
     refetchTrips();
   }, [refetchTrips]);
 
-  return { trips, isLoading, upsertTrip, deleteTrip, refetchTrips };
+  return { trips, isLoading, upsertTrip, deleteTrip };
 };

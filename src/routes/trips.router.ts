@@ -120,7 +120,7 @@ tripsRouter.delete("/:id", async (req: Request, res: Response) => {
     const result = await collections.trips?.deleteOne(query);
 
     if (result && result.deletedCount) {
-      res.status(202).send(`Successfully deleted route with id ${tripId}`);
+      res.status(200).send(`Successfully deleted route with id ${tripId}`);
     } else if (!result) {
       res.status(400).send(`Failed to remove route with id ${tripId}`);
     } else if (!result.deletedCount) {
