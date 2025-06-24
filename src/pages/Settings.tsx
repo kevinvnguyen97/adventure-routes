@@ -2,9 +2,14 @@ import { VStack, Text } from "@chakra-ui/react";
 import { ColorModeButton } from "@components/ui/color-mode";
 import UserAvatar from "@components/UserAvatar";
 import { useAuth } from "@utils/auth";
+import { useLayoutEffect } from "react";
 
 const Settings = () => {
   const { user } = useAuth();
+
+  useLayoutEffect(() => {
+    window.document.title = "Settings - Adventure Routes";
+  }, []);
 
   return (
     <VStack data-state="open" _open={{ animation: "fade-in 1s ease-out" }}>

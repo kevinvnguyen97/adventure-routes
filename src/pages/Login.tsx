@@ -1,7 +1,7 @@
 import { Input, Image, Button, VStack, Field } from "@chakra-ui/react";
 import { PasswordInput } from "@components/ui/password-input";
 import { useAuth } from "@utils/auth";
-import { useState, type FormEvent } from "react";
+import { useLayoutEffect, useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -22,6 +22,10 @@ const Login = () => {
 
     loginUser({ usernameOrEmail, password });
   };
+
+  useLayoutEffect(() => {
+    window.document.title = "Login - Adventure Routes";
+  }, []);
 
   return (
     <VStack

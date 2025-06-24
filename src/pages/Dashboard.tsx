@@ -3,9 +3,14 @@ import Loading from "@components/Loading";
 import TripCard from "@components/TripCard";
 import TripFormDialog from "@components/TripFormDialog";
 import { useTrips } from "@hooks/trip";
+import { useLayoutEffect } from "react";
 
 const Dashboard = () => {
   const { trips, isLoading, upsertTrip, deleteTrip } = useTrips();
+
+  useLayoutEffect(() => {
+    window.document.title = "Dashboard - Adventure Routes";
+  }, []);
 
   if (isLoading) {
     return <Loading />;

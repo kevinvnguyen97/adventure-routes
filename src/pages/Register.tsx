@@ -17,7 +17,7 @@ import {
   checkIsPasswordRequirementsMet,
   getPasswordStrength,
 } from "@utils/password";
-import { useState, type FormEvent } from "react";
+import { useLayoutEffect, useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -62,6 +62,10 @@ const Register = () => {
 
     registerUser({ firstName, lastName, email, username, password });
   };
+
+  useLayoutEffect(() => {
+    window.document.title = "Register - Adventure Routes";
+  }, []);
 
   return (
     <VStack

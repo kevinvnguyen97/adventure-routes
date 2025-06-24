@@ -6,7 +6,7 @@ import {
   GoogleMap,
 } from "@react-google-maps/api";
 import { LuInfo } from "react-icons/lu";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Box, IconButton } from "@chakra-ui/react";
 import Loading from "@components/Loading";
@@ -156,6 +156,12 @@ const Map = () => {
   const onDirectionsRendererOnload = () => {
     setIsTripRendered(true);
   };
+
+  useLayoutEffect(() => {
+    if (trip) {
+      window.document.title = `${trip.name} - Adventure Routes`;
+    }
+  }, [trip]);
 
   if (isLoading) {
     return <Loading />;
