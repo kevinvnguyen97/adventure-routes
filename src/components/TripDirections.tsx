@@ -1,4 +1,6 @@
-import { Accordion, Box, Span } from "@chakra-ui/react";
+import { Accordion, Box, Span, VStack } from "@chakra-ui/react";
+import RoadSign from "@components/RoadSign";
+import { RouteColors } from "@constants/google";
 
 type TripDirectionsProps = {
   routes: google.maps.DirectionsRoute[];
@@ -6,50 +8,69 @@ type TripDirectionsProps = {
 const TripDirections = (props: TripDirectionsProps) => {
   const { routes } = props;
   return (
-    <Accordion.Root id="route" collapsible variant="subtle" unmountOnExit>
-      {routes.map(({ summary, legs }) => (
-        <Accordion.Item value={summary}>
-          <Accordion.ItemTrigger>
-            <Span flex={1}>Via {summary}</Span>
-            <Accordion.ItemIndicator />
-          </Accordion.ItemTrigger>
-          <Accordion.ItemContent>
-            <Accordion.ItemBody>
-              <Accordion.Root
-                id={summary}
-                collapsible
-                variant="subtle"
-                unmountOnExit
-              >
-                {legs.map(({ steps }, index) => {
-                  const stepBeginningLetter = String.fromCharCode(index + 65);
-                  const stepEndLetter =
-                    index === 27 ? "AA" : String.fromCharCode(index + 66);
-                  return (
-                    <Accordion.Item value={index.toString()}>
-                      <Accordion.ItemTrigger>
-                        <Span flex={1}>
-                          {stepBeginningLetter} to {stepEndLetter}
-                        </Span>
-                        <Accordion.ItemIndicator />
-                      </Accordion.ItemTrigger>
-                      <Accordion.ItemContent>
-                        <Accordion.ItemBody>
-                          {steps.map(({ instructions }) => (
-                            <Box
-                              dangerouslySetInnerHTML={{ __html: instructions }}
-                            />
-                          ))}
-                        </Accordion.ItemBody>
-                      </Accordion.ItemContent>
-                    </Accordion.Item>
-                  );
-                })}
-              </Accordion.Root>
-            </Accordion.ItemBody>
-          </Accordion.ItemContent>
-        </Accordion.Item>
-      ))}
+    <Accordion.Root
+      id="route"
+      collapsible
+      variant="subtle"
+      unmountOnExit
+      size="lg"
+      as={VStack}
+      gap={2}
+    >
+      {routes.map(({ summary, legs }, routeIndex) => {
+        const roadSignColor = RouteColors[routeIndex];
+        return (
+          <Accordion.Item value={summary} width="100%">
+            <Accordion.ItemTrigger padding={0}>
+              <RoadSign
+                bgColor={roadSignColor}
+                signText={`Via ${summary}`}
+                width="100%"
+              />
+              <Accordion.ItemIndicator />
+            </Accordion.ItemTrigger>
+            <Accordion.ItemContent>
+              <Accordion.ItemBody>
+                <Accordion.Root
+                  id={summary}
+                  collapsible
+                  variant="subtle"
+                  unmountOnExit
+                >
+                  {legs.map(({ steps }, index) => {
+                    const stepBeginningLetter = String.fromCharCode(index + 65);
+                    const stepEndLetter =
+                      index === 27 ? "AA" : String.fromCharCode(index + 66);
+                    return (
+                      <Accordion.Item value={index.toString()}>
+                        <Accordion.ItemTrigger>
+                          <Span flex={1}>
+                            {stepBeginningLetter} to {stepEndLetter}
+                          </Span>
+                          <Accordion.ItemIndicator />
+                        </Accordion.ItemTrigger>
+                        <Accordion.ItemContent>
+                          <Accordion.ItemBody>
+                            <VStack gap={2}>
+                              {steps.map(({ instructions }) => (
+                                <RoadSign
+                                  bgColor={roadSignColor}
+                                  signText={instructions}
+                                  width="100%"
+                                />
+                              ))}
+                            </VStack>
+                          </Accordion.ItemBody>
+                        </Accordion.ItemContent>
+                      </Accordion.Item>
+                    );
+                  })}
+                </Accordion.Root>
+              </Accordion.ItemBody>
+            </Accordion.ItemContent>
+          </Accordion.Item>
+        );
+      })}
     </Accordion.Root>
   );
 };
