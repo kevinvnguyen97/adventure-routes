@@ -13,12 +13,13 @@ type TripDetailsProps = {
   trip: Trip;
   isInfoVisible: boolean;
   setIsInfoVisible: (isInfoVisible: boolean) => void;
+  routes: google.maps.DirectionsRoute[];
 };
 const TripDetails = (props: TripDetailsProps) => {
   const [isLandscape] = useMediaQuery(["(orientation: landscape)"]);
   const [tab, setTab] = useState("details");
 
-  const { trip, isInfoVisible, setIsInfoVisible } = props;
+  const { trip, isInfoVisible, setIsInfoVisible, routes } = props;
 
   const { name } = trip;
 
@@ -29,7 +30,7 @@ const TripDetails = (props: TripDetailsProps) => {
         size="lg"
         bgColor={{ _light: "orange.500" }}
         color="white"
-        width={isInfoVisible ? 500 : 0}
+        width={isInfoVisible ? 600 : 0}
         data-state="open"
         transition="width 0.5s ease"
       >
@@ -43,7 +44,7 @@ const TripDetails = (props: TripDetailsProps) => {
           />
         </Card.Header>
         <Card.Body>
-          <TripTabs trip={trip} tab={tab} setTab={setTab} />
+          <TripTabs trip={trip} tab={tab} setTab={setTab} routes={routes} />
         </Card.Body>
       </Card.Root>
     );
@@ -76,7 +77,7 @@ const TripDetails = (props: TripDetailsProps) => {
             <Drawer.Title>{name}</Drawer.Title>
           </Drawer.Header>
           <Drawer.Body>
-            <TripTabs trip={trip} tab={tab} setTab={setTab} />
+            <TripTabs trip={trip} tab={tab} setTab={setTab} routes={routes} />
           </Drawer.Body>
         </Drawer.Content>
       </Drawer.Positioner>

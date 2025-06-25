@@ -1,14 +1,16 @@
 import { Badge, Span, Tabs, Text, Wrap } from "@chakra-ui/react";
 import type Trip from "@models/trip";
 import { LuInfo, LuMap, LuMessageCircle, LuSettings } from "react-icons/lu";
+import TripDirections from "@components/TripDirections";
 
 type TripTabsProps = {
   trip: Trip;
   tab: string;
   setTab: (tab: string) => void;
+  routes: google.maps.DirectionsRoute[];
 };
 const TripTabs = (props: TripTabsProps) => {
-  const { trip, tab, setTab } = props;
+  const { trip, tab, setTab, routes } = props;
   const { description, activities = [], waypoints } = trip;
 
   return (
@@ -72,7 +74,9 @@ const TripTabs = (props: TripTabsProps) => {
             })}
           </Wrap>
         </Tabs.Content>
-        <Tabs.Content value="directions">Directions</Tabs.Content>
+        <Tabs.Content value="directions">
+          <TripDirections routes={routes} />
+        </Tabs.Content>
         <Tabs.Content value="comments">Comments</Tabs.Content>
         <Tabs.Content value="settings">Settings</Tabs.Content>
       </Tabs.ContentGroup>

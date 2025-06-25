@@ -28,6 +28,8 @@ const Map = () => {
   const [areRouteAlternativesAllowed, setAreRouteAlternativesAllowed] =
     useState(true);
 
+  const { routes = [] } = directions || {};
+
   const { trip, isLoading } = useTrip(tripId);
   const { name = "", waypoints = [] } = trip || {};
   const origin = waypoints[0];
@@ -178,6 +180,7 @@ const Map = () => {
         trip={trip!}
         isInfoVisible={isInfoVisible}
         setIsInfoVisible={setIsInfoVisible}
+        routes={routes}
       />
       <GoogleMap
         onLoad={onMapLoad}
