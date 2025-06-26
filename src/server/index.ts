@@ -13,8 +13,10 @@ app.use(
   session({
     secret: "my-secret",
     resave: false,
-    cookie: { secure: false, maxAge: 3600000 },
+    // Logout after 30 minutes of inactivity
+    cookie: { secure: false, maxAge: 1800000 },
     saveUninitialized: false,
+    rolling: true,
   })
 );
 app.set("json spaces", 2);
