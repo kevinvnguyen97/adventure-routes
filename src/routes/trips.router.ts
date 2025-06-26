@@ -57,7 +57,7 @@ tripsRouter.post("/", async (req: Request, res: Response) => {
     return;
   }
 
-  const newTrip = { ...req.body, userId: user._id } as Trip;
+  const newTrip = { ...req.body, userId: new ObjectId(user._id) } as Trip;
 
   try {
     const result = await collections.trips?.insertOne(newTrip);

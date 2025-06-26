@@ -104,10 +104,10 @@ export const useTrips = () => {
       });
 
       switch (response.status) {
-        case 200:
+        case 201:
           toaster.create({
             title: `Code ${response.status} (${response.statusText})`,
-            description: `Trip "${name}" updated successfully`,
+            description: `Trip "${name}" created successfully`,
             type: "success",
             closable: true,
           });
