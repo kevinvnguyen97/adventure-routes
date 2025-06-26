@@ -1,6 +1,7 @@
-import { Accordion, Box, Span, VStack } from "@chakra-ui/react";
+import { Accordion, Span, VStack } from "@chakra-ui/react";
 import RoadSign from "@components/RoadSign";
 import { RouteColors } from "@constants/google";
+import { formatDirections } from "@utils/directions";
 
 type TripDirectionsProps = {
   routes: google.maps.DirectionsRoute[];
@@ -24,7 +25,7 @@ const TripDirections = (props: TripDirectionsProps) => {
             <Accordion.ItemTrigger padding={0}>
               <RoadSign
                 bgColor={roadSignColor}
-                signText={`Via ${summary}`}
+                signText={`Via ${formatDirections(summary)}`}
                 width="100%"
               />
               <Accordion.ItemIndicator />
@@ -55,7 +56,7 @@ const TripDirections = (props: TripDirectionsProps) => {
                               {steps.map(({ instructions }) => (
                                 <RoadSign
                                   bgColor={roadSignColor}
-                                  signText={instructions}
+                                  signText={formatDirections(instructions)}
                                   width="100%"
                                 />
                               ))}
