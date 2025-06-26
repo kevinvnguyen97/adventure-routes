@@ -74,7 +74,7 @@ const TripTabs = (props: TripTabsProps) => {
             })}
           </Wrap>
         </Tabs.Content>
-        <Tabs.Content value="directions" overflow="scroll">
+        <Tabs.Content value="directions">
           <TripDirections routes={routes} />
         </Tabs.Content>
         <Tabs.Content value="comments">Comments</Tabs.Content>

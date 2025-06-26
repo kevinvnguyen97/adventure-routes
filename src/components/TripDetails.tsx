@@ -34,6 +34,7 @@ const TripDetails = (props: TripDetailsProps) => {
         data-state="open"
         transition="width 0.5s ease"
         height="calc(100vh - 120px)"
+        overflowY="scroll"
       >
         <Card.Header as={HStack} justifyContent="space-between">
           <Card.Title>{name}</Card.Title>

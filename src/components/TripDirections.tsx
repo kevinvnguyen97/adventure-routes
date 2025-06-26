@@ -21,7 +21,7 @@ const TripDirections = (props: TripDirectionsProps) => {
       {routes.map(({ summary, legs }, routeIndex) => {
         const roadSignColor = RouteColors[routeIndex];
         return (
-          <Accordion.Item value={summary} width="100%">
+          <Accordion.Item value={summary} width="100%" bgColor="transparent">
             <Accordion.ItemTrigger padding={0}>
               <RoadSign
                 bgColor={roadSignColor}
@@ -43,8 +43,11 @@ const TripDirections = (props: TripDirectionsProps) => {
                     const stepEndLetter =
                       index === 27 ? "AA" : String.fromCharCode(index + 66);
                     return (
-                      <Accordion.Item value={index.toString()}>
-                        <Accordion.ItemTrigger>
+                      <Accordion.Item
+                        value={index.toString()}
+                        bgColor="transparent"
+                      >
+                        <Accordion.ItemTrigger paddingLeft={0} paddingRight={0}>
                           <Span flex={1}>
                             {stepBeginningLetter} to {stepEndLetter}
                           </Span>

@@ -222,7 +222,7 @@ const Map = () => {
           }}
           callback={directionsServiceCallback}
         />
-        {directions?.routes.map((route, index) => (
+        {routes.map((route, index) => (
           <DirectionsRenderer
             key={route.summary}
             directions={directions}
