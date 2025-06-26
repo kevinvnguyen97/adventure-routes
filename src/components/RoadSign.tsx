@@ -15,6 +15,8 @@ const RoadSign = (props: RoadSignProps) => {
       borderRadius={10}
       width={width}
       color={getContrastTextColor(bgColor)}
+      fontFamily="Highway Gothic Wide"
+      letterSpacing={2}
     >
       <Box
         borderWidth={2}
