@@ -2,6 +2,8 @@ import { Accordion, Span, VStack } from "@chakra-ui/react";
 import RoadSign from "@components/RoadSign";
 import { RouteColors } from "@constants/google";
 import { formatDirections } from "@utils/directions";
+import { formatImperialDistance, getTotalDistance } from "@utils/distance";
+import { formatDuration, getTotalDuration } from "@utils/duration";
 
 type TripDirectionsProps = {
   routes: google.maps.DirectionsRoute[];
@@ -20,6 +22,12 @@ const TripDirections = (props: TripDirectionsProps) => {
     >
       {routes.map(({ summary, legs }, routeIndex) => {
         const roadSignColor = RouteColors[routeIndex];
+
+        const totalDistance = getTotalDistance(legs);
+        const totalDuration = getTotalDuration(legs);
+        const formattedDistance = formatImperialDistance(totalDistance);
+        const formattedDuration = formatDuration(totalDuration);
+
         return (
           <Accordion.Item value={summary} width="100%" bgColor="transparent">
             <Accordion.ItemTrigger padding={0}>
@@ -27,6 +35,8 @@ const TripDirections = (props: TripDirectionsProps) => {
                 bgColor={roadSignColor}
                 signText={`Via ${formatDirections(summary)}`}
                 width="100%"
+                distance={formattedDistance}
+                duration={formattedDuration}
               />
               <Accordion.ItemIndicator />
             </Accordion.ItemTrigger>
@@ -42,6 +52,7 @@ const TripDirections = (props: TripDirectionsProps) => {
                     const stepBeginningLetter = String.fromCharCode(index + 65);
                     const stepEndLetter =
                       index === 27 ? "AA" : String.fromCharCode(index + 66);
+
                     return (
                       <Accordion.Item
                         value={index.toString()}
@@ -56,13 +67,19 @@ const TripDirections = (props: TripDirectionsProps) => {
                         <Accordion.ItemContent>
                           <Accordion.ItemBody>
                             <VStack gap={2}>
-                              {steps.map(({ instructions }) => (
-                                <RoadSign
-                                  bgColor={roadSignColor}
-                                  signText={formatDirections(instructions)}
-                                  width="100%"
-                                />
-                              ))}
+                              {steps.map(
+                                ({ instructions, duration, distance }) => {
+                                  return (
+                                    <RoadSign
+                                      bgColor={roadSignColor}
+                                      signText={formatDirections(instructions)}
+                                      width="100%"
+                                      duration={duration!.text}
+                                      distance={distance!.text}
+                                    />
+                                  );
+                                }
+                              )}
                             </VStack>
                           </Accordion.ItemBody>
                         </Accordion.ItemContent>
