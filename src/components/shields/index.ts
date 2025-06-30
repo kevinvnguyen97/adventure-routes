@@ -9,6 +9,7 @@ export { OntarioRouteShield } from "./OntarioRouteShield";
 export { USRouteShield } from "./USRouteShield";
 export { WisconsinRouteShield } from "./WisconsinRouteShield";
 export { IndianaRouteShield } from "./IndianaRouteShield";
+export { IowaRouteShield } from "./IowaRouteShield";
 
 export type RouteShieldProps = {
   routeNumber: string;

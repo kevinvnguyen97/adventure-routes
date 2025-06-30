@@ -11,6 +11,7 @@ import {
   WisconsinRouteShield,
   CaliforniaRouteShield,
   IndianaRouteShield,
+  IowaRouteShield,
 } from "@components/shields";
 
 export const formatDirections = (directionInstructions: string) => {
@@ -37,6 +38,12 @@ export const formatDirections = (directionInstructions: string) => {
       const cleanedRouteNumber = term.replaceAll("HI-", "");
       return renderToStaticMarkup(
         <HawaiiRouteShield routeNumber={cleanedRouteNumber} />
+      );
+    }
+    if (term.includes("IA-")) {
+      const cleanedRouteNumber = term.replaceAll("IA-", "");
+      return renderToStaticMarkup(
+        <IowaRouteShield routeNumber={cleanedRouteNumber} />
       );
     }
     // Render Illinois route shields
@@ -68,7 +75,7 @@ export const formatDirections = (directionInstructions: string) => {
       );
     }
     // Render US route shields
-    if (term.includes("US-")) {
+    if (term.includes("US-") && !term.includes("BUS")) {
       const cleanedRouteNumber = term.replaceAll("US-", "");
       return renderToStaticMarkup(
         <USRouteShield routeNumber={cleanedRouteNumber} />
