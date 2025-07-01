@@ -95,7 +95,14 @@ const TripDetails = (props: TripDetailsProps) => {
             <Drawer.Title>{name}</Drawer.Title>
           </Drawer.Header>
           <Drawer.Body>
-            <TripTabs trip={trip} tab={tab} setTab={setTab} routes={routes} />
+            <TripTabs
+              trip={trip}
+              tab={tab}
+              setTab={setTab}
+              routes={routes}
+              areRoutesSelected={areRoutesSelected}
+              setAreRoutesSelected={setAreRoutesSelected}
+            />
           </Drawer.Body>
         </Drawer.Content>
       </Drawer.Positioner>
