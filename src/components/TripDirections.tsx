@@ -1,4 +1,4 @@
-import { Accordion, Span, VStack } from "@chakra-ui/react";
+import { Accordion, Checkbox, Span, VStack } from "@chakra-ui/react";
 import RoadSign from "@components/RoadSign";
 import { RouteColors } from "@constants/google";
 import { formatDirections } from "@utils/directions";
@@ -7,9 +7,19 @@ import { formatDuration, getTotalDuration } from "@utils/duration";
 
 type TripDirectionsProps = {
   routes: google.maps.DirectionsRoute[];
+  areRoutesSelected: boolean[];
+  setAreRoutesSelected: (areRoutesSelected: boolean[]) => void;
 };
 const TripDirections = (props: TripDirectionsProps) => {
-  const { routes } = props;
+  const { routes, areRoutesSelected, setAreRoutesSelected } = props;
+
+  const onRouteChecked = (routeIndex: number) => {
+    const newSelectedRoutes = areRoutesSelected.map((routeSelected, i) =>
+      i === routeIndex ? !routeSelected : routeSelected
+    );
+    setAreRoutesSelected(newSelectedRoutes);
+  };
+
   return (
     <Accordion.Root
       id="route"
@@ -31,13 +41,25 @@ const TripDirections = (props: TripDirectionsProps) => {
         return (
           <Accordion.Item value={summary} width="100%" bgColor="transparent">
             <Accordion.ItemTrigger padding={0}>
-              <RoadSign
-                bgColor={roadSignColor}
-                signText={`Via ${formatDirections(summary)}`}
+              <Checkbox.Root
+                variant="subtle"
                 width="100%"
-                distance={formattedDistance}
-                duration={formattedDuration}
-              />
+                onClick={(e) => e.stopPropagation()}
+                checked={areRoutesSelected[routeIndex]}
+                onCheckedChange={() => onRouteChecked(routeIndex)}
+              >
+                <Checkbox.HiddenInput />
+                <Checkbox.Control />
+                <Checkbox.Label width="100%">
+                  <RoadSign
+                    bgColor={roadSignColor}
+                    signText={`Via ${formatDirections(summary)}`}
+                    width="100%"
+                    distance={formattedDistance}
+                    duration={formattedDuration}
+                  />
+                </Checkbox.Label>
+              </Checkbox.Root>
               <Accordion.ItemIndicator />
             </Accordion.ItemTrigger>
             <Accordion.ItemContent>

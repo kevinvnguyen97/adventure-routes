@@ -8,9 +8,12 @@ type TripTabsProps = {
   tab: string;
   setTab: (tab: string) => void;
   routes: google.maps.DirectionsRoute[];
+  areRoutesSelected: boolean[];
+  setAreRoutesSelected: (areRoutesSelected: boolean[]) => void;
 };
 const TripTabs = (props: TripTabsProps) => {
-  const { trip, tab, setTab, routes } = props;
+  const { trip, tab, setTab, routes, areRoutesSelected, setAreRoutesSelected } =
+    props;
   const { description, activities = [], waypoints } = trip;
 
   return (
@@ -75,7 +78,11 @@ const TripTabs = (props: TripTabsProps) => {
           </Wrap>
         </Tabs.Content>
         <Tabs.Content value="directions">
-          <TripDirections routes={routes} />
+          <TripDirections
+            routes={routes}
+            areRoutesSelected={areRoutesSelected}
+            setAreRoutesSelected={setAreRoutesSelected}
+          />
         </Tabs.Content>
         <Tabs.Content value="comments">Comments</Tabs.Content>
         <Tabs.Content value="settings">Settings</Tabs.Content>

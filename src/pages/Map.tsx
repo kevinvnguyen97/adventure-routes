@@ -24,6 +24,7 @@ const Map = () => {
     google.maps.DirectionsResult | undefined
   >();
   const [isTripRendered, setIsTripRendered] = useState(false);
+  const [areRoutesSelected, setAreRoutesSelected] = useState<boolean[]>([]);
   const [isInfoVisible, setIsInfoVisible] = useState(false);
   const [areRouteAlternativesAllowed, setAreRouteAlternativesAllowed] =
     useState(true);
@@ -65,6 +66,7 @@ const Map = () => {
       // Directions successfully fetched
       case google.maps.DirectionsStatus.OK:
         setDirections(response as google.maps.DirectionsResult);
+        setAreRoutesSelected(response!.routes.map(() => false));
         toaster.create({
           title: "Success",
           description: `Routes found successfully for trip "${name}"`,
@@ -181,6 +183,8 @@ const Map = () => {
         isInfoVisible={isInfoVisible}
         setIsInfoVisible={setIsInfoVisible}
         routes={routes}
+        areRoutesSelected={areRoutesSelected}
+        setAreRoutesSelected={setAreRoutesSelected}
       />
       <GoogleMap
         onLoad={onMapLoad}
@@ -222,22 +226,30 @@ const Map = () => {
           }}
           callback={directionsServiceCallback}
         />
-        {routes.map((route, index) => (
-          <DirectionsRenderer
-            key={route.summary}
-            directions={directions}
-            routeIndex={index}
-            onLoad={onDirectionsRendererOnload}
-            options={{
-              polylineOptions: {
-                strokeColor: RouteColors[index],
-                strokeWeight: 5,
-                strokeOpacity: 0.6,
-                geodesic: true,
-              },
-            }}
-          />
-        ))}
+        {routes.map((route, routeIndex) => {
+          const isRouteSelected = areRoutesSelected.find(
+            (_, i) => i === routeIndex
+          );
+
+          return (
+            isRouteSelected && (
+              <DirectionsRenderer
+                key={route.summary}
+                directions={directions}
+                routeIndex={routeIndex}
+                onLoad={onDirectionsRendererOnload}
+                options={{
+                  polylineOptions: {
+                    strokeColor: RouteColors[routeIndex],
+                    strokeWeight: 5,
+                    strokeOpacity: 0.6,
+                    geodesic: true,
+                  },
+                }}
+              />
+            )
+          );
+        })}
       </GoogleMap>
     </Box>
   );

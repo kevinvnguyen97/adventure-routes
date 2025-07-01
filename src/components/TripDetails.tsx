@@ -14,12 +14,21 @@ type TripDetailsProps = {
   isInfoVisible: boolean;
   setIsInfoVisible: (isInfoVisible: boolean) => void;
   routes: google.maps.DirectionsRoute[];
+  areRoutesSelected: boolean[];
+  setAreRoutesSelected: (areRoutesSelected: boolean[]) => void;
 };
 const TripDetails = (props: TripDetailsProps) => {
   const [isLandscape] = useMediaQuery(["(orientation: landscape)"]);
   const [tab, setTab] = useState("details");
 
-  const { trip, isInfoVisible, setIsInfoVisible, routes } = props;
+  const {
+    trip,
+    isInfoVisible,
+    setIsInfoVisible,
+    routes,
+    areRoutesSelected,
+    setAreRoutesSelected,
+  } = props;
 
   const { name } = trip;
 
@@ -46,7 +55,14 @@ const TripDetails = (props: TripDetailsProps) => {
           />
         </Card.Header>
         <Card.Body>
-          <TripTabs trip={trip} tab={tab} setTab={setTab} routes={routes} />
+          <TripTabs
+            trip={trip}
+            tab={tab}
+            setTab={setTab}
+            routes={routes}
+            areRoutesSelected={areRoutesSelected}
+            setAreRoutesSelected={setAreRoutesSelected}
+          />
         </Card.Body>
       </Card.Root>
     );
