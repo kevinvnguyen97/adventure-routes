@@ -8,15 +8,17 @@ import {
 import { LuInfo } from "react-icons/lu";
 import { useLayoutEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Box, IconButton } from "@chakra-ui/react";
+import { Box, IconButton, useMediaQuery } from "@chakra-ui/react";
 import Loading from "@components/Loading";
 import { RouteColors } from "@constants/google";
-import TripDetails from "@components/TripDetails";
 import { toaster } from "@utils/toaster";
+import TripDetailsCard from "@components/TripDetailsCard";
+import TripDetailsDrawer from "@components/TripDetailsDrawer";
 
 const Map = () => {
   const { tripId = "" } = useParams();
   const { colorMode } = useColorMode();
+  const [isLandscape] = useMediaQuery(["(orientation: landscape)"]);
 
   const [map, setMap] = useState<google.maps.Map | null>(null);
   console.log("Map:", map);
@@ -28,6 +30,7 @@ const Map = () => {
   const [isInfoVisible, setIsInfoVisible] = useState(false);
   const [areRouteAlternativesAllowed, setAreRouteAlternativesAllowed] =
     useState(true);
+  const [tab, setTab] = useState("details");
 
   const { routes = [] } = directions || {};
 
@@ -66,7 +69,7 @@ const Map = () => {
       // Directions successfully fetched
       case google.maps.DirectionsStatus.OK:
         setDirections(response as google.maps.DirectionsResult);
-        setAreRoutesSelected(response!.routes.map(() => false));
+        setAreRoutesSelected(response!.routes.map(() => true));
         toaster.create({
           title: "Success",
           description: `Routes found successfully for trip "${name}"`,
@@ -178,14 +181,29 @@ const Map = () => {
       display="flex"
       gap={isInfoVisible ? 5 : 0}
     >
-      <TripDetails
-        trip={trip!}
-        isInfoVisible={isInfoVisible}
-        setIsInfoVisible={setIsInfoVisible}
-        routes={routes}
-        areRoutesSelected={areRoutesSelected}
-        setAreRoutesSelected={setAreRoutesSelected}
-      />
+      {isLandscape ? (
+        <TripDetailsCard
+          trip={trip!}
+          isInfoVisible={isInfoVisible}
+          setIsInfoVisible={setIsInfoVisible}
+          routes={routes}
+          areRoutesSelected={areRoutesSelected}
+          setAreRoutesSelected={setAreRoutesSelected}
+          tab={tab}
+          setTab={setTab}
+        />
+      ) : (
+        <TripDetailsDrawer
+          trip={trip!}
+          isInfoVisible={isInfoVisible}
+          setIsInfoVisible={setIsInfoVisible}
+          routes={routes}
+          areRoutesSelected={areRoutesSelected}
+          setAreRoutesSelected={setAreRoutesSelected}
+          tab={tab}
+          setTab={setTab}
+        />
+      )}
       <GoogleMap
         onLoad={onMapLoad}
         onUnmount={onMapUnmount}
