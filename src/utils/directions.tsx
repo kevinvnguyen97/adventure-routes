@@ -116,6 +116,7 @@ export const formatDirections = (directionInstructions: string) => {
     .replaceAll("US Hwy ", "US-")
     .replaceAll("U. S. Hwy ", "US-")
     .replaceAll("US ", "US-")
+    .replaceAll("US-Hwy ", "US-")
     .replaceAll("Florida's Tpke", "Florida-Tpke")
     .replaceAll("Florida's Turnpike", "Florida-Tpke")
     // Add spaces to html tags so that they are properly split
