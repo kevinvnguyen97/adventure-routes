@@ -69,6 +69,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     firstName: string;
     lastName: string;
     email: string;
+    phoneNumber: string;
     username: string;
     password: string;
   }) => {

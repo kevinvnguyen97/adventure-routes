@@ -5,6 +5,7 @@ export default interface User {
   firstName: string;
   lastName: string;
   username: string;
+  phoneNumber: string;
   password: string;
   email: string;
   profilePictureUrl?: string;

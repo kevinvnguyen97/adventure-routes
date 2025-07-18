@@ -29,6 +29,7 @@ const Register = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [reEnterPassword, setReEnterPassword] = useState("");
 
@@ -60,7 +61,14 @@ const Register = () => {
       return;
     }
 
-    registerUser({ firstName, lastName, email, username, password });
+    registerUser({
+      firstName,
+      lastName,
+      email,
+      username,
+      phoneNumber,
+      password,
+    });
   };
 
   useLayoutEffect(() => {
@@ -126,6 +134,17 @@ const Register = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value.trim())}
             variant="subtle"
+          />
+        </Field.Root>
+        <Field.Root required>
+          <Field.Label color="white">
+            Phone Number <Field.RequiredIndicator />
+          </Field.Label>
+          <Input
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value.trim())}
+            variant="subtle"
+            type="tel"
           />
         </Field.Root>
         <Field.Root

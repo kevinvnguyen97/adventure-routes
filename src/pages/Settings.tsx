@@ -1,4 +1,4 @@
-import { VStack, Text, HStack, Table, IconButton } from "@chakra-ui/react";
+import { VStack, Table, IconButton } from "@chakra-ui/react";
 import UserAvatar from "@components/UserAvatar";
 import { useAuth } from "@utils/auth";
 import { useLayoutEffect } from "react";

@@ -25,6 +25,7 @@ export const connectToDatabase = async () => {
   usersCollection.createIndex({ id: 1 });
   usersCollection.createIndex({ username: 1 }, { unique: true });
   usersCollection.createIndex({ email: 1 }, { unique: true });
+  usersCollection.createIndex({ phoneNumber: 1 }, { unique: true });
   tripsCollection.createIndex({ id: 1 });
   commentsCollection.createIndex({ id: 1 });
 
