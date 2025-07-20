@@ -160,3 +160,36 @@ usersRouter.post("/logout", async (req: Request, res: Response) => {
     res.status(200).send("Logout successful");
   });
 });
+
+// Put
+usersRouter.put("/profile", async (req: Request, res: Response) => {
+  const user = req.session?.user;
+
+  if (!user) {
+    res.status(401).send("User access denied. Not logged in");
+    return;
+  }
+
+  const updatedUser = req.body as Partial<User>;
+
+  if (updatedUser.password) {
+    updatedUser.password = await getHashedPassword(updatedUser.password);
+  }
+
+  try {
+    const result = await collections.users?.updateOne(
+      { _id: user._id },
+      { $set: updatedUser }
+    );
+
+    if (result?.modifiedCount === 1) {
+      res.status(200).send("User profile updated successfully");
+    } else {
+      res.status(400).send("Failed to update user profile");
+    }
+  } catch (error) {
+    const userError = error as MongoServerError;
+    console.error("Update user error:", userError);
+    res.status(500).send(userError.errmsg);
+  }
+});
