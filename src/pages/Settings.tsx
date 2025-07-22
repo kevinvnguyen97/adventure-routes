@@ -7,7 +7,7 @@ import { LuPencil } from "react-icons/lu";
 const Settings = () => {
   const { user } = useAuth();
 
-  const { firstName, lastName, username, email } = user || {};
+  const { firstName, lastName, username, email, phoneNumber } = user || {};
 
   const name = [firstName, lastName].filter(Boolean).join(" ");
 
@@ -57,7 +57,7 @@ const Settings = () => {
         </Table.Row>
         <Table.Row>
           <Table.Cell fontWeight="bold">Phone Number</Table.Cell>
-          <Table.Cell>(708)000-0000</Table.Cell>
+          <Table.Cell>{phoneNumber}</Table.Cell>
           <Table.Cell>
             <IconButton variant="subtle">
               <LuPencil />
