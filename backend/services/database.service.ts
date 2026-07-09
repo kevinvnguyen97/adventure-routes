@@ -1,5 +1,4 @@
 import { Collection, Db, MongoClient } from "mongodb";
-import env from "@constants/env";
 import type Trip from "@models/trip";
 import type User from "@models/user";
 
@@ -11,7 +10,7 @@ type tripDBCollections = {
 export const collections: tripDBCollections = {};
 
 export const connectToDatabase = async () => {
-  const client: MongoClient = new MongoClient(env.VITE_DB_CONNECTION_STRING!);
+  const client: MongoClient = new MongoClient(process.env.DB_CONNECTION_STRING as string);
 
   await client.connect();
 

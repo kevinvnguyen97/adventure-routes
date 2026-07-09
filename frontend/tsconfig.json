@@ -1,18 +1,17 @@
 {
   "compilerOptions": {
     "paths": {
-      "@components/*": ["components/*"],
-      "@constants/*": ["constants/*"],
-      "@hooks/*": ["hooks/*"],
-      "@models/*": ["models/*"],
-      "@pages/*": ["pages/*"],
-      "@providers/*": ["providers/*"],
-      "@routes/*": ["routes/*"],
-      "@services/*": ["services/*"],
-      "@utils/*": ["utils/*"]
+      "@components/*": ["./frontend/src/components/*"],
+      "@constants/*": ["./frontend/src/constants/*"],
+      "@hooks/*": ["./frontend/src/hooks/*"],
+      "@models/*": ["./frontend/src/models/*"],
+      "@pages/*": ["./frontend/src/pages/*"],
+      "@providers/*": ["./frontend/src/providers/*"],
+      "@routes/*": ["./frontend/src/routes/*"],
+      "@services/*": ["./frontend/src/services/*"],
+      "@utils/*": ["./frontend/src/utils/*"]
     },
     "esModuleInterop": true,
-    "baseUrl": "src"
   },
   "files": [],
   "references": [

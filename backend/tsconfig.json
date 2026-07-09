@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "paths": {
+            "@services/*": ["./services/*"],
+            "@routes/*": ["./routes/*"],
+            "@models/*": ["../shared/src/models/*"]
+        },
+        "esModuleInterop": true,
+    },
+}

@@ -54,12 +54,12 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [react()],
     resolve: {
-      alias: SECTIONS.map((section) => ({
+      alias: [...SECTIONS.map((section) => ({
         find: `@${section}`,
         replacement: fileURLToPath(
           new URL(`./src/${section}`, import.meta.url)
         ),
-      })),
+      })), {"find": "@models", "replacement": fileURLToPath(new URL("../shared/src/models", import.meta.url))}],
     },
   };
 });
