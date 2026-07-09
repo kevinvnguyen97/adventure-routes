@@ -17,7 +17,7 @@ import {
   checkIsPasswordRequirementsMet,
   getPasswordStrength,
 } from "@utils/password";
-import { useLayoutEffect, useState, type FormEvent } from "react";
+import { useLayoutEffect, useState, type SubmitEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -54,7 +54,7 @@ const Register = () => {
     }
   };
 
-  const registerSubmit = async (event: FormEvent<HTMLDivElement>) => {
+  const registerSubmit = async (event: SubmitEvent<HTMLDivElement>) => {
     event.preventDefault();
 
     if (!isFormValid) {

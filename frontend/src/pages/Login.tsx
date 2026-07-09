@@ -1,7 +1,7 @@
 import { Input, Image, Button, VStack, Field } from "@chakra-ui/react";
 import { PasswordInput } from "@components/ui/password-input";
 import { useAuth } from "@utils/auth";
-import { useLayoutEffect, useState, type FormEvent } from "react";
+import { useLayoutEffect, useState, type SubmitEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -13,7 +13,7 @@ const Login = () => {
 
   const isFormValid = [usernameOrEmail, password].every(Boolean);
 
-  const loginSubmit = async (event: FormEvent<HTMLDivElement>) => {
+  const loginSubmit = async (event: SubmitEvent<HTMLDivElement>) => {
     event.preventDefault();
 
     if (!isFormValid) {

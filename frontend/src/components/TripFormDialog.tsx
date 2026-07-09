@@ -12,7 +12,7 @@ import {
   useEffect,
   useLayoutEffect,
   useState,
-  type FormEvent,
+  type SubmitEvent,
   type JSX,
 } from "react";
 import {
@@ -135,7 +135,7 @@ const TripFormDialog = (props: TripFormDialogProps) => {
     setWaypoints(updatedWaypoints);
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLDivElement>) => {
+  const handleSubmit = async (event: SubmitEvent<HTMLDivElement>) => {
     event.preventDefault();
 
     const formattedWaypoints = waypoints
