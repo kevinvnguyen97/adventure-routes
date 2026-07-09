@@ -1,4 +1,4 @@
 import "dotenv/config";
 
-const env = import.meta.env ? import.meta.env : process.env;
+const env = import.meta.env;
 export default env;

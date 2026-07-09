@@ -10,6 +10,7 @@ type tripDBCollections = {
 export const collections: tripDBCollections = {};
 
 export const connectToDatabase = async () => {
+  console.log("Connecting to database...", process.env.DB_CONNECTION_STRING);
   const client: MongoClient = new MongoClient(process.env.DB_CONNECTION_STRING as string);
 
   await client.connect();
