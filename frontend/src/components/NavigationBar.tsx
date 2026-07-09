@@ -70,7 +70,7 @@ const UserPopover = () => {
                           },
                           _light: {
                             color: "white",
-                            bgColor: "bg",
+                            bgColor: "orange.600",
                           },
                         }}
                       >

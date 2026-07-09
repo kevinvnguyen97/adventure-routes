@@ -27,8 +27,8 @@ const Settings = () => {
         _hover={{ cursor: "pointer" }}
         size="2xl"
       />
-      <Table.Root width={500} variant="outline" size="lg">
-        <Table.Row>
+      <Table.Root width={500} variant="line" size="lg" color="white">
+        <Table.Row bgColor="transparent">
           <Table.Cell fontWeight="bold">Name</Table.Cell>
           <Table.Cell>{name}</Table.Cell>
           <Table.Cell>
@@ -37,7 +37,7 @@ const Settings = () => {
             </IconButton>
           </Table.Cell>
         </Table.Row>
-        <Table.Row>
+        <Table.Row bgColor="transparent">
           <Table.Cell fontWeight="bold">Username</Table.Cell>
           <Table.Cell>{username}</Table.Cell>
           <Table.Cell>
@@ -46,7 +46,7 @@ const Settings = () => {
             </IconButton>
           </Table.Cell>
         </Table.Row>
-        <Table.Row>
+        <Table.Row bgColor="transparent">
           <Table.Cell fontWeight="bold">Email</Table.Cell>
           <Table.Cell>{email}</Table.Cell>
           <Table.Cell>
@@ -55,7 +55,7 @@ const Settings = () => {
             </IconButton>
           </Table.Cell>
         </Table.Row>
-        <Table.Row>
+        <Table.Row bgColor="transparent">
           <Table.Cell fontWeight="bold">Phone Number</Table.Cell>
           <Table.Cell>{phoneNumber}</Table.Cell>
           <Table.Cell>
@@ -64,7 +64,7 @@ const Settings = () => {
             </IconButton>
           </Table.Cell>
         </Table.Row>
-        <Table.Row>
+        <Table.Row bgColor="transparent">
           <Table.Cell fontWeight="bold">Password</Table.Cell>
           <Table.Cell>********</Table.Cell>
           <Table.Cell>
