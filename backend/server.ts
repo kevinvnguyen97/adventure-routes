@@ -9,7 +9,7 @@ import { tripsRouter } from "@routes/trips.router";
 import { usersRouter } from "@routes/users.router";
 
 const app = express();
-const port = 8080;
+const port = 8081;
 app.use(cors.default());
 app.use(
   session({
