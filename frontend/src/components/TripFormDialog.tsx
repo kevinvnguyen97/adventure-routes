@@ -25,6 +25,7 @@ import {
   useSensors,
   type DragEndEvent,
 } from "@dnd-kit/core";
+import { restrictToFirstScrollableAncestor, restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
   arrayMove,
   SortableContext,
@@ -242,6 +243,7 @@ const TripFormDialog = (props: TripFormDialogProps) => {
                 collisionDetection={closestCorners}
                 onDragEnd={handleDragEnd}
                 sensors={sensors}
+                modifiers={[restrictToVerticalAxis, restrictToFirstScrollableAncestor]}
               >
                 <SortableContext
                   items={waypoints}
