@@ -10,7 +10,7 @@
     "mongodb": "^7.4.0"
   },
   "scripts": {
-    "start": "npx tsx ./server"
+    "start": "npx tsx server"
   },
   "devDependencies": {
     "express": "^5.2.1"

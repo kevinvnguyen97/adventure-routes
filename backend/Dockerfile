@@ -6,7 +6,7 @@ RUN npm install
 RUN npm install -g typescript ts-node
 
 COPY . .
-RUN npm run build
+RUN npm run start
 
 EXPOSE 8081
 
