@@ -98,7 +98,7 @@ export const formatDirections = (directionInstructions: string) => {
         .replaceAll("I-", "")
         .replaceAll("H-", "H")
         .replaceAll(",", "")
-        .replaceAll("BL", "");
+        .replaceAll("BL", "").replaceAll("Exp", "");
       const isBusinessRoute = term.includes("BL") || term.includes("BUS");
       return renderToStaticMarkup(
         <InterstateShield

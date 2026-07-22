@@ -17,15 +17,14 @@ export const InterstateShield = (props: InterstateShieldProps) => {
       }}
     >
       <img
-        src={`/images/${
-          routeNumber.length > 2
-            ? isBusinessRoute
-              ? "Interstate_Business_Shield_Wide"
-              : "Interstate_Shield_Wide"
-            : isBusinessRoute
+        src={`/images/${routeNumber.length > 2
+          ? isBusinessRoute
+            ? "Interstate_Business_Shield_Wide"
+            : "Interstate_Shield_Wide"
+          : isBusinessRoute
             ? "Interstate_Business_Shield"
             : "Interstate_Shield"
-        }.png`}
+          }.png`}
         height="30px"
         width={routeNumber.length > 2 ? "40px" : "30px"}
       />
@@ -33,16 +32,15 @@ export const InterstateShield = (props: InterstateShieldProps) => {
         style={{
           position: "absolute",
           left: "50%",
-          top: "50%",
+          top: routeNumber.length > 2 ? "55%" : "50%",
           transform: "translate(-50%, -43%)",
           color: "white",
-          fontFamily: `${
-            routeNumber.length > 3
-              ? "Highway Gothic Condensed"
-              : routeNumber.length > 2
+          fontFamily: `${routeNumber.length > 3
+            ? "Highway Gothic Condensed"
+            : routeNumber.length > 2
               ? "Highway Gothic Narrow"
               : "Highway Gothic"
-          } !important`,
+            } !important`,
           fontSize: "18px",
           letterSpacing: "0.5px",
           textAlign: "center",
