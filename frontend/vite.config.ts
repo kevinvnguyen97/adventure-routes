@@ -20,9 +20,14 @@ export default defineConfig(({ mode }) => {
 
   return {
     server: {
+      host: true,
+      port: 5173,
+      watch: {
+        usePolling: true,
+      },
       proxy: {
         "/api": {
-          target: "http://localhost:8081/",
+          target: "http://adventure-routes-backend:8081/",
           changeOrigin: true,
           secure: false,
           ws: true,

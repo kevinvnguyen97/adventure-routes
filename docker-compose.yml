@@ -1,26 +1,44 @@
-version: '3.8'
-
 services:
   backend:
+    container_name: adventure-routes-backend
     build:
       context: ./backend
       dockerfile: Dockerfile
     ports:
       - "8081:8081"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - ./shared:/app/shared
     environment:
       - NODE_ENV=development
-      - PORT=8081
-      - DB_CONNECTION_STRING=mongodb://localhost:27017/adventure-routes
-    depends_on:
-      - db
+      - DB_CONNECTION_STRING=mongodb://admin:password@mongodb:27017/adventure-routes?authSource=admin
+
   frontend:
+    container_name: adventure-routes-frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
       - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - ./shared:/app/shared
     environment:
       - NODE_ENV=development
-      - REACT_APP_API_URL=http://localhost:5173
-    depends_on:
-      - backend
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_DATABASE=adventure-routes
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:

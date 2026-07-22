@@ -1,14 +1,19 @@
-FROM node:24-alpine AS build
+# Use a lightweight Node base image
+FROM node:24-alpine AS development
+
 WORKDIR /app
+
+# Copy dependency files for frontend
 COPY package*.json ./
+
+# To access files outside the frontend context, we handle the root context in compose,
+# but for separate builds, we ensure the shared folder is mounted or explicitly copied.
 RUN npm install
 
+# Copy frontend source code
 COPY . .
-RUN npm run build
 
-FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 5173
 
-EXPOSE 82
-
-CMD ["nginx", "-g", "daemon off;"]
+# Run Vite dev server and expose it to the network
+CMD ["npm", "run", "dev", "--", "--host"]
