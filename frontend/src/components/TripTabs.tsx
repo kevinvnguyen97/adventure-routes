@@ -1,7 +1,16 @@
-import { Badge, Span, Tabs, Text, Wrap } from "@chakra-ui/react";
+import {
+  Badge,
+  Span,
+  Tabs,
+  Text,
+  Wrap,
+  Separator,
+  HStack,
+} from "@chakra-ui/react";
 import type Trip from "@models/trip";
 import { LuInfo, LuMap, LuMessageCircle, LuSettings } from "react-icons/lu";
 import TripDirections from "@components/TripDirections";
+import { defaultActivities } from "@constants/activities";
 
 type TripTabsProps = {
   trip: Trip;
@@ -56,7 +65,8 @@ const TripTabs = (props: TripTabsProps) => {
       </Tabs.List>
       <Tabs.ContentGroup>
         <Tabs.Content value="details">
-          <Text>{description}</Text>
+          <Text fontSize={18}>{description}</Text>
+          <Separator />
           {waypoints.map((waypoint, i) => {
             const isOrigin = i === 0;
             const isDestination = i === waypoints.length - 1;
@@ -72,8 +82,19 @@ const TripTabs = (props: TripTabsProps) => {
             );
           })}
           <Wrap gap={0.5}>
-            {activities.map((activity) => {
-              return <Badge key={activity}>{activity}</Badge>;
+            {activities.map((activity, i) => {
+              const activityIcon = defaultActivities.find(
+                (defaultActivity) => defaultActivity.text === activity,
+              )?.icon;
+
+              return (
+                <Badge key={activity}>
+                  <HStack>
+                    {activityIcon}
+                    <Text>{activity}</Text>
+                  </HStack>
+                </Badge>
+              );
             })}
           </Wrap>
         </Tabs.Content>

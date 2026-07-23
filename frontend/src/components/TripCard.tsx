@@ -8,12 +8,14 @@ import {
   ButtonGroup,
   CloseButton,
   Span,
+  Text,
 } from "@chakra-ui/react";
 import { LuMap, LuPencil } from "react-icons/lu";
 import TripFormDialog from "@components/TripFormDialog";
 import type Trip from "@models/trip";
 import { useNavigate } from "react-router-dom";
 import type { TripFormArgs } from "@hooks/trip";
+import { defaultActivities } from "@constants/activities";
 
 type TripCardProps = {
   trip: Trip;
@@ -54,9 +56,19 @@ const TripCard = (props: TripCardProps) => {
           </Card.Body>
           <Card.Footer>
             <Wrap gap={0.5}>
-              {trip.activities?.map((activity) => (
-                <Badge key={activity}>{activity}</Badge>
-              ))}
+              {trip.activities?.map((activity, i) => {
+                const activityIcon = defaultActivities.find(
+                  (defaultActivity) => defaultActivity.text === activity,
+                )?.icon;
+                return (
+                  <Badge key={activity}>
+                    <HStack>
+                      {activityIcon}
+                      <Text>{activity}</Text>
+                    </HStack>
+                  </Badge>
+                );
+              })}
             </Wrap>
           </Card.Footer>
         </Box>
