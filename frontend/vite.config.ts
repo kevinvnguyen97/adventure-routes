@@ -20,14 +20,14 @@ export default defineConfig(({ mode }) => {
 
   return {
     server: {
-      host: TransformStreamDefaultController,
+      host: "0.0.0.0",
       port: 5173,
       watch: {
         usePolling: true,
       },
       proxy: {
         "/api": {
-          target: "http://adventure-routes-backend:8081",
+          target: "http://backend:8081",
           changeOrigin: true,
           secure: false,
           rewrite: (path) => path.replace(/^\/api/, ""),
