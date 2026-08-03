@@ -20,17 +20,16 @@ export default defineConfig(({ mode }) => {
 
   return {
     server: {
-      host: true,
+      host: TransformStreamDefaultController,
       port: 5173,
       watch: {
         usePolling: true,
       },
       proxy: {
         "/api": {
-          target: "http://adventure-routes-backend:8081/",
+          target: "http://adventure-routes-backend:8081",
           changeOrigin: true,
           secure: false,
-          ws: true,
           rewrite: (path) => path.replace(/^\/api/, ""),
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           configure: (proxy, _options) => {
@@ -47,7 +46,7 @@ export default defineConfig(({ mode }) => {
               console.log(
                 "Received Response from the Target:",
                 proxyRes.statusCode,
-                req.url
+                req.url,
               );
             });
           },
@@ -59,12 +58,20 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [react()],
     resolve: {
-      alias: [...SECTIONS.map((section) => ({
-        find: `@${section}`,
-        replacement: fileURLToPath(
-          new URL(`./src/${section}`, import.meta.url)
-        ),
-      })), {"find": "@models", "replacement": fileURLToPath(new URL("../shared/src/models", import.meta.url))}],
+      alias: [
+        ...SECTIONS.map((section) => ({
+          find: `@${section}`,
+          replacement: fileURLToPath(
+            new URL(`./src/${section}`, import.meta.url),
+          ),
+        })),
+        {
+          find: "@models",
+          replacement: fileURLToPath(
+            new URL("../shared/src/models", import.meta.url),
+          ),
+        },
+      ],
     },
   };
 });
