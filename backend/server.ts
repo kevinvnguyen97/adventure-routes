@@ -9,7 +9,7 @@ import { tripsRouter } from "@routes/trips.router";
 import { usersRouter } from "@routes/users.router";
 
 const app = express();
-const port = 8081;
+const port = 8088;
 app.use(cors.default());
 app.use(
   session({
@@ -19,7 +19,7 @@ app.use(
     cookie: { secure: false, maxAge: 1800000 },
     saveUninitialized: false,
     rolling: true,
-  })
+  }),
 );
 app.set("json spaces", 2);
 
