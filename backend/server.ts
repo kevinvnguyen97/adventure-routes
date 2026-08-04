@@ -10,6 +10,7 @@ import { usersRouter } from "@routes/users.router";
 
 const app = express();
 const port = 8088;
+const host = "0.0.0.0";
 app.use(cors.default());
 app.use(
   session({
@@ -30,9 +31,12 @@ const startDatabase = async () => {
     app.use("/trips", tripsRouter);
     app.use("/users", usersRouter);
 
-    app.listen(port, () => {
-      console.log(`Server started at http://localhost:${port}`);
+    const server = app.listen(port, host, () => {
+      console.log(`Server started at http://{host}:${port}`);
     });
+
+    console.log("Database connection established successfully.");
+    console.log(server.address());
   } catch (error) {
     console.error("Database connection failed:", error);
     process.exit();

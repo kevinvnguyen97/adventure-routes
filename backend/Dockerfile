@@ -7,6 +7,6 @@ RUN npm install -g typescript ts-node
 
 COPY . .
 
-EXPOSE 8081
+EXPOSE 8088
 
 CMD ["npm", "run", "dev"]

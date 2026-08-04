@@ -12,7 +12,6 @@ services:
       - ./shared:/app/shared
     environment:
       - NODE_ENV=development
-      - DB_CONNECTION_STRING=mongodb://admin:password@mongodb:27017/adventure-routes?authSource=admin
 
   frontend:
     container_name: adventure-routes-frontend
@@ -33,10 +32,8 @@ services:
     container_name: mongodb
     ports:
       - "27017:27017"
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=password
-      - MONGO_INITDB_DATABASE=adventure-routes
+    env_file:
+      - ./backend/.env
     volumes:
       - mongo_data:/data/db
 

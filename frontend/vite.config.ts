@@ -25,9 +25,10 @@ export default defineConfig(({ mode }) => {
       watch: {
         usePolling: true,
       },
+      allowedHosts: ["adventure-routes.com"],
       proxy: {
         "/api": {
-          target: "http://adventure-routes-backend:8088",
+          target: "http://adventure-routes-backend:3000/",
           changeOrigin: true,
           secure: false,
           rewrite: (path) => path.replace(/^\/api/, ""),
