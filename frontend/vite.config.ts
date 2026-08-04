@@ -28,7 +28,7 @@ export default defineConfig(({ mode }) => {
       allowedHosts: ["adventure-routes.com"],
       proxy: {
         "/api": {
-          target: "http://adventure-routes-backend:3000/",
+          target: "http://adventure-routes-backend:8088/",
           changeOrigin: true,
           secure: false,
           rewrite: (path) => path.replace(/^\/api/, ""),
