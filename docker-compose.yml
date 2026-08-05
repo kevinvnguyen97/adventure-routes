@@ -1,5 +1,6 @@
 services:
   backend:
+    image: kevinvnguyen97/adventure-routes-backend
     container_name: adventure-routes-backend
     build:
       context: ./backend
@@ -10,10 +11,9 @@ services:
       - ./backend:/app
       - /app/node_modules
       - ./shared:/app/shared
-    environment:
-      - NODE_ENV=development
 
   frontend:
+    image: kevinvnguyen97/adventure-routes-frontend
     container_name: adventure-routes-frontend
     build:
       context: ./frontend
@@ -24,8 +24,6 @@ services:
       - ./frontend:/app
       - /app/node_modules
       - ./shared:/app/shared
-    environment:
-      - NODE_ENV=development
 
   mongodb:
     image: mongo:latest
