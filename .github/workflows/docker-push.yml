@@ -23,7 +23,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
         with:
-          driver: kubernetes
+          driver: docker-container
 
       - name: Build images and push
         run: docker compose build --push
