@@ -20,7 +20,7 @@ import UserAvatar from "@components/UserAvatar";
 import { Tooltip } from "@components/ui/tooltip";
 
 const UserPopover = () => {
-  const { user, logoutUser } = useAuth();
+  const { user, signOutUser } = useAuth();
   const navigate = useNavigate();
   const [isUserPopoverOpen, setIsUserPopoverOpen] = useState(false);
 
@@ -84,7 +84,7 @@ const UserPopover = () => {
                         </IconButton>
                       </Tooltip>
                       <Tooltip
-                        content="Log Out"
+                        content="Sign Out"
                         contentProps={{
                           _dark: {
                             color: "white",
@@ -97,7 +97,7 @@ const UserPopover = () => {
                         }}
                       >
                         <IconButton
-                          onClick={logoutUser}
+                          onClick={signOutUser}
                           variant="ghost"
                           color="white"
                           _hover={{ color: "red" }}

@@ -26,13 +26,13 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [setUser, setIsUserDataLoading]);
 
-  const loginUser = async (args: {
+  const signInUser = async (args: {
     usernameOrEmail: string;
     password: string;
   }) => {
     const { usernameOrEmail, password } = args;
     try {
-      const response = await fetch("/api/users/login", {
+      const response = await fetch("/api/users/sign-in", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -56,12 +56,12 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
             type: "error",
             closable: true,
           });
-          console.error("Login does not work");
+          console.error("Sign in does not work");
           break;
       }
     } catch (error) {
-      const loginError = error as Error;
-      console.error("Login failed:", loginError);
+      const signInError = error as Error;
+      console.error("Sign in failed:", signInError);
     }
   };
 
@@ -105,9 +105,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const logoutUser = async () => {
+  const signOutUser = async () => {
     try {
-      const response = await fetch("/api/users/logout", {
+      const response = await fetch("/api/users/sign-out", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
       });
@@ -131,8 +131,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
           break;
       }
     } catch (error) {
-      const logoutError = error as Error;
-      console.error("Logout failed:", logoutError.message);
+      const signOutError = error as Error;
+      console.error("Sign out failed:", signOutError.message);
     }
   };
 
@@ -143,8 +143,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const contextValue = {
     user,
     isUserDataLoading,
-    loginUser,
-    logoutUser,
+    signInUser,
+    signOutUser,
     registerUser,
   };
 

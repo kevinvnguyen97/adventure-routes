@@ -16,7 +16,7 @@ app.use(
   session({
     secret: "my-secret",
     resave: false,
-    // Logout after 30 minutes of inactivity
+    // Sign out after 30 minutes of inactivity
     cookie: { secure: false, maxAge: 1800000 },
     saveUninitialized: false,
     rolling: true,

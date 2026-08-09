@@ -4,27 +4,27 @@ import { useAuth } from "@utils/auth";
 import { useLayoutEffect, useState, type SubmitEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const SignIn = () => {
   const navigate = useNavigate();
-  const { loginUser } = useAuth();
+  const { signInUser } = useAuth();
 
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const isFormValid = [usernameOrEmail, password].every(Boolean);
 
-  const loginSubmit = async (event: SubmitEvent<HTMLDivElement>) => {
+  const signInSubmit = async (event: SubmitEvent<HTMLDivElement>) => {
     event.preventDefault();
 
     if (!isFormValid) {
       return;
     }
 
-    loginUser({ usernameOrEmail, password });
+    signInUser({ usernameOrEmail, password });
   };
 
   useLayoutEffect(() => {
-    window.document.title = "Login - Adventure Routes";
+    window.document.title = "Sign In - Adventure Routes";
   }, []);
 
   return (
@@ -36,7 +36,7 @@ const Login = () => {
       <Image src="./large_logo.png" width={450} height="auto" />
       <VStack
         as="form"
-        onSubmit={loginSubmit}
+        onSubmit={signInSubmit}
         width={{ smDown: "100%", sm: 400 }}
         gap={3}
       >
@@ -68,7 +68,7 @@ const Login = () => {
           color="white"
           disabled={!isFormValid}
         >
-          Login
+          Sign In
         </Button>
         <Button
           variant="ghost"
@@ -82,4 +82,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignIn;
