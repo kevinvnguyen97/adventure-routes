@@ -100,7 +100,7 @@ usersRouter.post("/register", async (req: Request, res: Response) => {
           res
             .status(400)
             .send(
-              `User with email ${email} and username ${username} already exists`
+              `User with email ${email} and username ${username} already exists`,
             );
         } else if (userError.keyPattern.email) {
           res.status(400).send(`User with email ${email} already exists`);
@@ -115,7 +115,7 @@ usersRouter.post("/register", async (req: Request, res: Response) => {
   }
 });
 
-usersRouter.post("/login", async (req: Request, res: Response) => {
+usersRouter.post("/sign-in", async (req: Request, res: Response) => {
   const { usernameOrEmail, password } = req.body as {
     usernameOrEmail: string;
     password: string;
@@ -143,21 +143,21 @@ usersRouter.post("/login", async (req: Request, res: Response) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _passwordToOmit, ...userWithoutPassword } = user;
     req.session.user = userWithoutPassword as UserWithoutPassword;
-    res.status(200).send(`Login successful! Welcome back, ${user?.username}`);
+    res.status(200).send(`Sign in successful! Welcome back, ${user?.username}`);
   } catch (error) {
     const userError = error as MongoServerError;
-    console.error("Login error:", userError);
+    console.error("Sign in error:", userError);
     res.status(400).send(userError.errmsg);
   }
 });
 
-usersRouter.post("/logout", async (req: Request, res: Response) => {
+usersRouter.post("/sign-out", async (req: Request, res: Response) => {
   req.session.destroy((error) => {
     if (error) {
       console.error("Error destroying session:", error);
-      return res.status(500).send("Logout failed");
+      return res.status(500).send("Sign out failed");
     }
-    res.status(200).send("Logout successful");
+    res.status(200).send("Sign out successful");
   });
 });
 
@@ -179,7 +179,7 @@ usersRouter.put("/profile", async (req: Request, res: Response) => {
   try {
     const result = await collections.users?.updateOne(
       { _id: user._id },
-      { $set: updatedUser }
+      { $set: updatedUser },
     );
 
     if (result?.modifiedCount === 1) {

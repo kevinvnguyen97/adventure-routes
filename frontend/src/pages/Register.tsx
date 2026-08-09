@@ -36,7 +36,7 @@ const Register = () => {
   const arePasswordsMatched = password === reEnterPassword;
 
   const isFormValid = [arePasswordsMatched, checkIsEmailValid(email)].every(
-    Boolean
+    Boolean,
   );
 
   const checkIsPasswordValid = (passwordString: string) => {
@@ -207,9 +207,9 @@ const Register = () => {
         <Button
           variant="ghost"
           color="orange.fg"
-          onClick={() => navigate("/login")}
+          onClick={() => navigate("/sign-in")}
         >
-          Existing user? Login here
+          Existing user? Sign in here
         </Button>
       </VStack>
     </VStack>

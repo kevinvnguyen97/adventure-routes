@@ -3,7 +3,7 @@ import { Navigate, Routes, Route, Outlet } from "react-router-dom";
 
 import NavigationBar from "@components/NavigationBar";
 import { Toaster } from "@components/ui/toaster";
-import Login from "@pages/Login";
+import SignIn from "@pages/SignIn";
 import Dashboard from "@pages/Dashboard";
 import Register from "@pages/Register";
 import Map from "@pages/Map";
@@ -15,7 +15,7 @@ const ProtectedRoute = () => {
   const { user, isUserDataLoading } = useAuth();
 
   if (!user && !isUserDataLoading) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/sign-in" replace />;
   }
 
   return <Outlet />;
@@ -48,7 +48,7 @@ const App = () => {
           <Route path="settings" element={<Settings />} />
         </Route>
         <Route element={<NonProtectedRoute />}>
-          <Route path="login" element={<Login />} />
+          <Route path="sign-in" element={<SignIn />} />
           <Route path="register" element={<Register />} />
         </Route>
         <Route path="loading-test" element={<Loading />} />
