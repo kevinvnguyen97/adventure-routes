@@ -14,7 +14,7 @@ const host = "0.0.0.0";
 app.use(cors.default());
 app.use(
   session({
-    secret: "my-secret",
+    secret: process.env.SESSION_SECRET!,
     resave: false,
     // Sign out after 30 minutes of inactivity
     cookie: { secure: false, maxAge: 1800000 },
