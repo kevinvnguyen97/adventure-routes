@@ -86,7 +86,7 @@ usersRouter.post("/register", async (req: Request, res: Response) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password: _passwordToOmit, ...userWithoutPassword } = newUser;
       req.session.user = userWithoutPassword as UserWithoutPassword;
-      res.status(200).send(`User created successfully! Welcome, ${username}`);
+      res.status(201).send(`User created successfully! Welcome, ${username}`);
     } else {
       res.status(500).send(`Failed to create user`);
     }

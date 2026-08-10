@@ -80,7 +80,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         body: JSON.stringify(args),
       });
       switch (response.status) {
-        case 200:
+        case 201:
           await fetchUser();
           toaster.create({
             title: `Code ${response.status} (${response.statusText})`,
