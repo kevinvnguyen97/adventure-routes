@@ -10,5 +10,6 @@ This project is a monorepo, containing three main parts:
 ## Running the Application
 Build Containers:
 ```docker compose build```
+
 Start the Application:
 ```docker compose up```
