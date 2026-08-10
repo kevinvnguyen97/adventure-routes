@@ -14,5 +14,6 @@ This project is a monorepo, containing three main parts:
 
 Build Containers:
 `docker compose build`
+
 Start the Application:
 `docker compose up`
