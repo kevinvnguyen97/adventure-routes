@@ -29,8 +29,8 @@ function getDevMenuHint() {
 export default function HomeScreen() {
   return (
     <ThemedView style={styles.container} lightColor="orange" darkColor="black">
-      <StatusBar barStyle="light-content" />
       <SafeAreaView style={styles.safeArea}>
+        <ThemedText>Hello</ThemedText>
         {Platform.OS === "web" && <WebBadge />}
       </SafeAreaView>
     </ThemedView>
