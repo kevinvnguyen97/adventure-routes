@@ -13,12 +13,17 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { useTheme } from "@/hooks/use-theme";
 
-export default function SignIn() {
+export default function Register() {
   const navigate = useRouter();
   const theme = useTheme();
 
-  const [usernameOrEmail, setUsernameOrEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [reEnterPassword, setReEnterPassword] = useState("");
 
   const textInputStyle: StyleProp<TextStyle> = [
     styles.textInput,
@@ -28,7 +33,6 @@ export default function SignIn() {
   return (
     <ThemedView
       style={{
-        flex: 1,
         paddingLeft: 20,
         paddingRight: 20,
       }}
@@ -42,12 +46,36 @@ export default function SignIn() {
           }}
           resizeMode="contain"
         />
+        <ThemedView style={{ flexDirection: "row", gap: 10 }}>
+          <TextInput
+            placeholder="First Name"
+            style={[textInputStyle, { flex: 1 }]}
+            value={firstName}
+            onChangeText={setFirstName}
+          />
+          <TextInput
+            placeholder="Last Name"
+            style={[textInputStyle, { flex: 1 }]}
+            value={lastName}
+            onChangeText={setLastName}
+          />
+        </ThemedView>
         <TextInput
-          placeholder="Username or Email"
+          placeholder="Email"
           style={textInputStyle}
-          value={usernameOrEmail}
-          onChangeText={setUsernameOrEmail}
+          value={email}
+          onChangeText={setEmail}
           keyboardType="email-address"
+          inputMode="email"
+        />
+        <TextInput placeholder="Username" style={textInputStyle} />
+        <TextInput
+          placeholder="Phone Number"
+          style={textInputStyle}
+          value={phoneNumber}
+          onChangeText={setPhoneNumber}
+          keyboardType="phone-pad"
+          inputMode="tel"
         />
         <TextInput
           placeholder="Password"
@@ -56,6 +84,11 @@ export default function SignIn() {
           value={password}
           onChangeText={setPassword}
         />
+        <TextInput
+          placeholder="Re-Enter Password"
+          style={textInputStyle}
+          secureTextEntry
+        />
         <Pressable
           style={({ pressed }) => [
             styles.button,
@@ -63,17 +96,17 @@ export default function SignIn() {
           ]}
           onPress={() => console.log("Hello")}
         >
-          <ThemedText>Sign In</ThemedText>
+          <ThemedText>Register</ThemedText>
         </Pressable>
         <Pressable
           style={{ alignSelf: "center", padding: 20 }}
-          onPress={() => navigate.navigate("/register")}
+          onPress={() => navigate.navigate("/sign-in")}
         >
           <ThemedText
             themeColor="text"
             style={{ color: "red", fontWeight: "bold" }}
           >
-            New user? Register here
+            Existing user? Sign in here
           </ThemedText>
         </Pressable>
       </SafeAreaView>
@@ -83,6 +116,7 @@ export default function SignIn() {
 
 const styles = {
   textInput: {
+    backgroundColor: "white",
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,

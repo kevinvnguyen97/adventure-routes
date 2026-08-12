@@ -19,7 +19,7 @@ function RootNavigator() {
       <Stack
         screenOptions={{
           headerShown: false,
-          // contentStyle: { backgroundColor: theme.colors.background },
+          animation: "fade",
         }}
       >
         <Stack.Protected guard={false}>
@@ -27,6 +27,9 @@ function RootNavigator() {
         </Stack.Protected>
         <Stack.Protected guard={true}>
           <Stack.Screen name="sign-in" />
+        </Stack.Protected>
+        <Stack.Protected guard={true}>
+          <Stack.Screen name="register" />
         </Stack.Protected>
       </Stack>
     </ThemeProvider>
