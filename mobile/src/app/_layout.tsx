@@ -3,8 +3,6 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar, useColorScheme } from "react-native";
 
 import { AnimatedSplashOverlay } from "@/components/animated-icon";
-import AppTabs from "@/components/app-tabs";
-import { ThemedText } from "@/components/themed-text";
 import { SessionProvider } from "@/context/auth";
 
 SplashScreen.preventAutoHideAsync();
@@ -22,13 +20,13 @@ function RootNavigator() {
           animation: "fade",
         }}
       >
-        <Stack.Protected guard={false}>
+        <Stack.Protected guard={true}>
           <Stack.Screen name="(app)" />
         </Stack.Protected>
-        <Stack.Protected guard={true}>
+        <Stack.Protected guard={false}>
           <Stack.Screen name="sign-in" />
         </Stack.Protected>
-        <Stack.Protected guard={true}>
+        <Stack.Protected guard={false}>
           <Stack.Screen name="register" />
         </Stack.Protected>
       </Stack>
