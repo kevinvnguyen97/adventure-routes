@@ -65,7 +65,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const registerUser = async (args: {
+  const signUpUser = async (args: {
     firstName: string;
     lastName: string;
     email: string;
@@ -74,7 +74,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     password: string;
   }) => {
     try {
-      const response = await fetch("/api/users/register", {
+      const response = await fetch("/api/users/sign-up", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(args),
@@ -96,12 +96,12 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
             type: "error",
             closable: true,
           });
-          console.error("Register does not work");
+          console.error("Sign up does not work");
           break;
       }
     } catch (error) {
-      const registerError = error as Error;
-      console.error("Register failed:", registerError.message);
+      const signUpError = error as Error;
+      console.error("Sign up failed:", signUpError.message);
     }
   };
 
@@ -145,7 +145,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     isUserDataLoading,
     signInUser,
     signOutUser,
-    registerUser,
+    signUpUser,
   };
 
   return (

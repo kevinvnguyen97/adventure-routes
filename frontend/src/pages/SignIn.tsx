@@ -73,9 +73,9 @@ const SignIn = () => {
         <Button
           variant="ghost"
           color="orange.fg"
-          onClick={() => navigate("/register")}
+          onClick={() => navigate("/sign-up")}
         >
-          New user? Register here
+          New user? Sign up here
         </Button>
       </VStack>
     </VStack>

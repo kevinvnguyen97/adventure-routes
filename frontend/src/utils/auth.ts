@@ -5,7 +5,7 @@ type AuthTokenValues = {
   user?: UserWithoutPassword;
   isUserDataLoading: boolean;
   signInUser: (args: { usernameOrEmail: string; password: string }) => void;
-  registerUser: (args: {
+  signUpUser: (args: {
     firstName: string;
     lastName: string;
     email: string;
@@ -19,7 +19,7 @@ export const AuthContext = createContext<AuthTokenValues>({
   user: undefined,
   isUserDataLoading: true,
   signInUser: () => {},
-  registerUser: () => {},
+  signUpUser: () => {},
   signOutUser: () => {},
 });
 export const useAuth = () => {

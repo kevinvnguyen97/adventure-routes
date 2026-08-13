@@ -56,7 +56,7 @@ usersRouter.get("/", async (_req: Request, res: Response) => {
 });
 
 // Post
-usersRouter.post("/register", async (req: Request, res: Response) => {
+usersRouter.post("/sign-up", async (req: Request, res: Response) => {
   const { email, username, phoneNumber, firstName, lastName, password } =
     req.body as User;
   const hashedPassword = await getHashedPassword(password);
