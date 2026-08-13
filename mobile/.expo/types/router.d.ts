@@ -14,14 +14,6 @@ declare module "expo-router" {
         | {
             pathname: Router.ExternalPathString;
             params?: Router.UnknownInputParams;
-          }
-        | { pathname: `/register`; params?: Router.UnknownInputParams }
-        | { pathname: `/sign-in`; params?: Router.UnknownInputParams }
-        | { pathname: `/_sitemap`; params?: Router.UnknownInputParams }
-        | { pathname: `${"/(app)"}` | `/`; params?: Router.UnknownInputParams }
-        | {
-            pathname: `${"/(app)"}/settings` | `/settings`;
-            params?: Router.UnknownInputParams;
           };
       hrefOutputParams:
         | {
@@ -31,39 +23,16 @@ declare module "expo-router" {
         | {
             pathname: Router.ExternalPathString;
             params?: Router.UnknownOutputParams;
-          }
-        | { pathname: `/register`; params?: Router.UnknownOutputParams }
-        | { pathname: `/sign-in`; params?: Router.UnknownOutputParams }
-        | { pathname: `/_sitemap`; params?: Router.UnknownOutputParams }
-        | { pathname: `${"/(app)"}` | `/`; params?: Router.UnknownOutputParams }
-        | {
-            pathname: `${"/(app)"}/settings` | `/settings`;
-            params?: Router.UnknownOutputParams;
           };
       href:
         | Router.RelativePathString
         | Router.ExternalPathString
-        | `/register${`?${string}` | `#${string}` | ""}`
-        | `/sign-in${`?${string}` | `#${string}` | ""}`
-        | `/_sitemap${`?${string}` | `#${string}` | ""}`
-        | `${"/(app)"}${`?${string}` | `#${string}` | ""}`
-        | `/${`?${string}` | `#${string}` | ""}`
-        | `${"/(app)"}/settings${`?${string}` | `#${string}` | ""}`
-        | `/settings${`?${string}` | `#${string}` | ""}`
         | {
             pathname: Router.RelativePathString;
             params?: Router.UnknownInputParams;
           }
         | {
             pathname: Router.ExternalPathString;
-            params?: Router.UnknownInputParams;
-          }
-        | { pathname: `/register`; params?: Router.UnknownInputParams }
-        | { pathname: `/sign-in`; params?: Router.UnknownInputParams }
-        | { pathname: `/_sitemap`; params?: Router.UnknownInputParams }
-        | { pathname: `${"/(app)"}` | `/`; params?: Router.UnknownInputParams }
-        | {
-            pathname: `${"/(app)"}/settings` | `/settings`;
             params?: Router.UnknownInputParams;
           };
     }
