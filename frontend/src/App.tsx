@@ -5,7 +5,7 @@ import NavigationBar from "@components/NavigationBar";
 import { Toaster } from "@components/ui/toaster";
 import SignIn from "@pages/SignIn";
 import Dashboard from "@pages/Dashboard";
-import Register from "@pages/Register";
+import SignUp from "@pages/SignUp";
 import Map from "@pages/Map";
 import { useAuth } from "@utils/auth";
 import Settings from "@pages/Settings";
@@ -49,7 +49,7 @@ const App = () => {
         </Route>
         <Route element={<NonProtectedRoute />}>
           <Route path="sign-in" element={<SignIn />} />
-          <Route path="register" element={<Register />} />
+          <Route path="sign-up" element={<SignUp />} />
         </Route>
         <Route path="loading-test" element={<Loading />} />
         <Route path="*" element={<Navigate to="/" replace />} />

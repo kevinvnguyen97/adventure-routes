@@ -20,9 +20,9 @@ import {
 import { useLayoutEffect, useState, type SubmitEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Register = () => {
+const SignUp = () => {
   const navigate = useNavigate();
-  const { registerUser } = useAuth();
+  const { signUpUser } = useAuth();
 
   // const [profilePictureUrl, setProfilePictureUrl] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -54,14 +54,14 @@ const Register = () => {
     }
   };
 
-  const registerSubmit = async (event: SubmitEvent<HTMLDivElement>) => {
+  const signUpSubmit = async (event: SubmitEvent<HTMLDivElement>) => {
     event.preventDefault();
 
     if (!isFormValid) {
       return;
     }
 
-    registerUser({
+    signUpUser({
       firstName,
       lastName,
       email,
@@ -72,7 +72,7 @@ const Register = () => {
   };
 
   useLayoutEffect(() => {
-    window.document.title = "Register - Adventure Routes";
+    window.document.title = "Sign Up - Adventure Routes";
   }, []);
 
   return (
@@ -84,7 +84,7 @@ const Register = () => {
       <Image src="./large_logo.png" width={450} height="auto" />
       <VStack
         as="form"
-        onSubmit={registerSubmit}
+        onSubmit={signUpSubmit}
         width={{ smDown: "100%", sm: 400 }}
         gap={3}
       >
@@ -202,7 +202,7 @@ const Register = () => {
           color="white"
           disabled={!isFormValid}
         >
-          Register
+          Sign Up
         </Button>
         <Button
           variant="ghost"
@@ -216,4 +216,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default SignUp;
