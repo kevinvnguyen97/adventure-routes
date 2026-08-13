@@ -86,9 +86,16 @@ usersRouter.post("/sign-up", async (req: Request, res: Response) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password: _passwordToOmit, ...userWithoutPassword } = newUser;
       req.session.user = userWithoutPassword as UserWithoutPassword;
-      res.status(201).send(`User created successfully! Welcome, ${username}`);
+      // res.status(201).send(`User created successfully! Welcome, ${username}`);
+      res.status(201).json({
+        success: true,
+        sessionId: req.sessionID,
+        message: `User created successfully! Welcome, ${username}`,
+      });
     } else {
-      res.status(500).send(`Failed to create user`);
+      res
+        .status(500)
+        .json({ success: false, message: "Failed to create user" });
     }
   } catch (error) {
     const userError = error as MongoServerError;
@@ -127,7 +134,9 @@ usersRouter.post("/sign-in", async (req: Request, res: Response) => {
     })) as unknown as User;
 
     if (!user) {
-      res.status(404).send(`User not found`);
+      // res.status(404).send(`User not found`);
+      res.status(404).json({ success: false, message: "User not found" });
+      return;
     }
 
     const isPasswordValid = await validatePassword({
@@ -136,18 +145,29 @@ usersRouter.post("/sign-in", async (req: Request, res: Response) => {
     });
 
     if (!password || !isPasswordValid) {
-      res.status(401).send("Incorrect password");
+      // res.status(401).send("Incorrect password");
+      res.status(401).json({ success: false, message: "Incorrect password" });
       return;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _passwordToOmit, ...userWithoutPassword } = user;
     req.session.user = userWithoutPassword as UserWithoutPassword;
-    res.status(200).send(`Sign in successful! Welcome back, ${user?.username}`);
+    // res.status(200).send(`Sign in successful! Welcome back, ${user?.username}`);
+    res.status(200).json({
+      success: true,
+      sessionId: req.sessionID,
+      message: `Sign in successful! Welcome back, ${user.username}`,
+    });
   } catch (error) {
     const userError = error as MongoServerError;
     console.error("Sign in error:", userError);
-    res.status(400).send(userError.errmsg);
+    // res.status(400).send(userError.errmsg);
+    res.status(400).json({
+      success: false,
+      sessionId: req.sessionID,
+      message: userError.errmsg,
+    });
   }
 });
 

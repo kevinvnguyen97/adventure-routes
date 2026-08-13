@@ -3,6 +3,12 @@ import { AuthContext } from "@utils/auth";
 import type { UserWithoutPassword } from "@models/user";
 import { toaster } from "@utils/toaster";
 
+type AuthResponse = {
+  success: boolean;
+  sessionId?: string;
+  message: string;
+};
+
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserWithoutPassword | undefined>(undefined);
   const [isUserDataLoading, setIsUserDataLoading] = useState(true);
@@ -39,25 +45,19 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         },
         body: JSON.stringify({ usernameOrEmail, password }),
       });
-      switch (response.status) {
-        case 200:
-          await fetchUser();
-          toaster.create({
-            title: `Code ${response.status} (${response.statusText})`,
-            description: await response.text(),
-            type: "success",
-            closable: true,
-          });
-          break;
-        default:
-          toaster.create({
-            title: `Error ${response.status} (${response.statusText})`,
-            description: await response.text(),
-            type: "error",
-            closable: true,
-          });
-          console.error("Sign in does not work");
-          break;
+      const responseJSON = (await response.json()) as AuthResponse;
+
+      toaster.create({
+        title: `${responseJSON.success ? "Code" : "Error"} ${response.status} ${response.statusText}`,
+        description: responseJSON.message,
+        type: responseJSON.success ? "success" : "error",
+        closable: true,
+      });
+
+      if (responseJSON.success) {
+        await fetchUser();
+      } else {
+        console.error("Sign up does not work");
       }
     } catch (error) {
       const signInError = error as Error;
@@ -79,25 +79,19 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(args),
       });
-      switch (response.status) {
-        case 201:
-          await fetchUser();
-          toaster.create({
-            title: `Code ${response.status} (${response.statusText})`,
-            description: await response.text(),
-            type: "success",
-            closable: true,
-          });
-          break;
-        default:
-          toaster.create({
-            title: `Error ${response.status} (${response.statusText})`,
-            description: await response.text(),
-            type: "error",
-            closable: true,
-          });
-          console.error("Sign up does not work");
-          break;
+      const responseJSON = (await response.json()) as AuthResponse;
+
+      toaster.create({
+        title: `${responseJSON.success ? "Code" : "Error"} ${response.status} ${response.statusText}`,
+        description: responseJSON.message,
+        type: responseJSON.success ? "success" : "error",
+        closable: true,
+      });
+
+      if (responseJSON.success) {
+        await fetchUser();
+      } else {
+        console.error("Sign up does not work");
       }
     } catch (error) {
       const signUpError = error as Error;
