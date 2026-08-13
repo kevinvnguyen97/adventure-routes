@@ -1,9 +1,9 @@
-import { use, createContext, type PropsWithChildren } from "react";
+import { use, createContext, type PropsWithChildren, useState } from "react";
 
 const AuthContext = createContext<{
-  signIn: () => void;
+  signIn: (args: { usernameOrEmail: string; password: string }) => void;
   signOut: () => void;
-  session?: string | null;
+  sessionId: string;
   isLoading: boolean;
 } | null>(null);
 
@@ -18,14 +18,37 @@ export const useSession = () => {
 };
 
 export const SessionProvider = ({ children }: PropsWithChildren) => {
+  const signIn = async (args: {
+    usernameOrEmail: string;
+    password: string;
+  }) => {
+    try {
+      const response = await fetch(
+        `${process.env.EXPO_PUBLIC_BACKEND_URL}/users/sign-in`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(args),
+        },
+      );
+      switch (response.status) {
+        case 200:
+          console.log("Signed in successfully");
+          break;
+        default:
+          console.error("Sign in error");
+      }
+    } catch (error) {
+      console.error("Sign in error:", error);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
-        signIn: () => {
-          // Perform sign-in logic here
-        },
+        signIn,
         signOut: () => {},
-        session: "",
+        sessionId: "",
         isLoading: false,
       }}
     >

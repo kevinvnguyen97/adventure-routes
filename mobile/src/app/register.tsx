@@ -33,6 +33,7 @@ export default function Register() {
   return (
     <ThemedView
       style={{
+        flex: 1,
         paddingLeft: 20,
         paddingRight: 20,
       }}

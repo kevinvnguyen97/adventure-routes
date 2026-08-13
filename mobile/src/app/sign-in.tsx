@@ -12,9 +12,11 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { useTheme } from "@/hooks/use-theme";
+import { useSession } from "@/context/auth";
 
 export default function SignIn() {
   const navigate = useRouter();
+  const { signIn } = useSession();
   const theme = useTheme();
 
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
@@ -24,6 +26,10 @@ export default function SignIn() {
     styles.textInput,
     { backgroundColor: theme.backgroundElement, color: theme.fieldText },
   ];
+
+  const signInUser = () => {
+    signIn({ usernameOrEmail, password });
+  };
 
   return (
     <ThemedView
@@ -48,6 +54,7 @@ export default function SignIn() {
           value={usernameOrEmail}
           onChangeText={setUsernameOrEmail}
           keyboardType="email-address"
+          autoCapitalize="none"
         />
         <TextInput
           placeholder="Password"
@@ -55,13 +62,14 @@ export default function SignIn() {
           secureTextEntry
           value={password}
           onChangeText={setPassword}
+          autoCapitalize="none"
         />
         <Pressable
           style={({ pressed }) => [
             styles.button,
             pressed ? styles.pressedButton : {},
           ]}
-          onPress={() => console.log("Hello")}
+          onPress={signInUser}
         >
           <ThemedText>Sign In</ThemedText>
         </Pressable>
