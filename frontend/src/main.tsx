@@ -10,8 +10,8 @@ import Loading from "@components/Loading";
 
 createRoot(document.getElementById("root")!).render(
   <Provider>
-    <AuthProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
         <LoadScript
           googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
           libraries={googleLibraries}
@@ -19,7 +19,7 @@ createRoot(document.getElementById("root")!).render(
         >
           <App />
         </LoadScript>
-      </BrowserRouter>
-    </AuthProvider>
-  </Provider>
+      </AuthProvider>
+    </BrowserRouter>
+  </Provider>,
 );
