@@ -1,4 +1,19 @@
-import { use, createContext, type PropsWithChildren, useState } from "react";
+import usersApi from "@/services/usersApi";
+import {
+  use,
+  createContext,
+  type PropsWithChildren,
+  useState,
+  useEffect,
+} from "react";
+import * as SecureStore from "expo-secure-store";
+import { AxiosError } from "axios";
+
+type AuthResponse = {
+  sessionId?: string;
+  message: string;
+  success: boolean;
+};
 
 const AuthContext = createContext<{
   signIn: (args: { usernameOrEmail: string; password: string }) => void;
@@ -18,28 +33,27 @@ export const useSession = () => {
 };
 
 export const SessionProvider = ({ children }: PropsWithChildren) => {
+  const [sessionId, setSessionId] = useState("");
+
   const signIn = async (args: {
     usernameOrEmail: string;
     password: string;
   }) => {
     try {
-      const response = await fetch(
-        `${process.env.EXPO_PUBLIC_BACKEND_URL}/users/sign-in`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(args),
-        },
-      );
-      switch (response.status) {
-        case 200:
-          console.log("Signed in successfully");
-          break;
-        default:
-          console.error("Sign in error");
+      const signInResponse = await usersApi.signIn(args);
+      const signInData = signInResponse.data as AuthResponse;
+      if (signInData.success) {
+        setSessionId(signInData.sessionId!);
+        console.log("Sign in successful");
       }
     } catch (error) {
-      console.error("Sign in error:", error);
+      const axiosError = error as AxiosError;
+      console.error(
+        "Sign in error:",
+        axiosError.code,
+        axiosError.cause,
+        axiosError.message,
+      );
     }
   };
 
@@ -48,7 +62,7 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
       value={{
         signIn,
         signOut: () => {},
-        sessionId: "",
+        sessionId,
         isLoading: false,
       }}
     >

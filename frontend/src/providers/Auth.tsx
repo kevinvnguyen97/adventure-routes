@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { AuthContext } from "@utils/auth";
 import type { UserWithoutPassword } from "@models/user";
 import { toaster } from "@utils/toaster";
+import { useNavigate } from "react-router-dom";
 
 type AuthResponse = {
   success: boolean;
@@ -12,6 +13,8 @@ type AuthResponse = {
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserWithoutPassword | undefined>(undefined);
   const [isUserDataLoading, setIsUserDataLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   const fetchUser = useCallback(async () => {
     setIsUserDataLoading(true);
@@ -89,7 +92,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
 
       if (responseJSON.success) {
-        await fetchUser();
+        navigate("/");
       } else {
         console.error("Sign up does not work");
       }

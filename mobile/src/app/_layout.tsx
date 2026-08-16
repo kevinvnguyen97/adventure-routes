@@ -3,13 +3,15 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar, useColorScheme } from "react-native";
 
 import { AnimatedSplashOverlay } from "@/components/animated-icon";
-import { SessionProvider } from "@/context/auth";
+import { SessionProvider, useSession } from "@/context/auth";
 
 SplashScreen.preventAutoHideAsync();
 
 function RootNavigator() {
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? DarkTheme : DefaultTheme;
+
+  const { sessionId } = useSession();
 
   return (
     <ThemeProvider value={theme}>
@@ -20,13 +22,13 @@ function RootNavigator() {
           animation: "fade",
         }}
       >
-        <Stack.Protected guard={false}>
+        <Stack.Protected guard={!!sessionId}>
           <Stack.Screen name="(app)" />
         </Stack.Protected>
-        <Stack.Protected guard={true}>
+        <Stack.Protected guard={!sessionId}>
           <Stack.Screen name="sign-in" />
         </Stack.Protected>
-        <Stack.Protected guard={true}>
+        <Stack.Protected guard={!sessionId}>
           <Stack.Screen name="register" />
         </Stack.Protected>
       </Stack>

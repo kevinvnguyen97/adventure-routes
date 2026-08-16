@@ -84,13 +84,9 @@ usersRouter.post("/sign-up", async (req: Request, res: Response) => {
 
     if (result) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password: _passwordToOmit, ...userWithoutPassword } = newUser;
-      req.session.user = userWithoutPassword as UserWithoutPassword;
-      // res.status(201).send(`User created successfully! Welcome, ${username}`);
       res.status(201).json({
         success: true,
-        sessionId: req.sessionID,
-        message: `User created successfully! Welcome, ${username}`,
+        message: `User ${username} created successfully!`,
       });
     } else {
       res
@@ -134,7 +130,6 @@ usersRouter.post("/sign-in", async (req: Request, res: Response) => {
     })) as unknown as User;
 
     if (!user) {
-      // res.status(404).send(`User not found`);
       res.status(404).json({ success: false, message: "User not found" });
       return;
     }
@@ -153,7 +148,6 @@ usersRouter.post("/sign-in", async (req: Request, res: Response) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _passwordToOmit, ...userWithoutPassword } = user;
     req.session.user = userWithoutPassword as UserWithoutPassword;
-    // res.status(200).send(`Sign in successful! Welcome back, ${user?.username}`);
     res.status(200).json({
       success: true,
       sessionId: req.sessionID,
