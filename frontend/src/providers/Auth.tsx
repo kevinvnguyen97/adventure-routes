@@ -10,6 +10,21 @@ type AuthResponse = {
   message: string;
 };
 
+type GetProfileResponse = {
+  message: string;
+  success: boolean;
+  user?: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    username: string;
+    phoneNumber: string;
+    email: string;
+    profilePictureUrl?: string;
+  };
+  sessionId?: string;
+};
+
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserWithoutPassword | undefined>(undefined);
   const [isUserDataLoading, setIsUserDataLoading] = useState(true);
@@ -18,20 +33,21 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchUser = useCallback(async () => {
     setIsUserDataLoading(true);
-    const response = await fetch("/api/users/profile", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-    switch (response.status) {
-      case 200: {
-        const user = (await response.json()) as unknown as UserWithoutPassword;
+
+    try {
+      const response = await fetch("/api/users/profile", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      const responseJSON = (await response.json()) as GetProfileResponse;
+
+      if (responseJSON.success) {
+        const user = responseJSON.user;
         setUser(user);
-        setIsUserDataLoading(false);
-        break;
       }
-      default:
-        setIsUserDataLoading(false);
-        break;
+      setIsUserDataLoading(false);
+    } catch (error) {
+      console.error("Cannot get profile:", error);
     }
   }, [setUser, setIsUserDataLoading]);
 

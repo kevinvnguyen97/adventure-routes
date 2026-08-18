@@ -15,6 +15,21 @@ type AuthResponse = {
   success: boolean;
 };
 
+type GetProfileResponse = {
+  message: string;
+  success: boolean;
+  user?: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    username: string;
+    phoneNumber: string;
+    email: string;
+    profilePictureUrl?: string;
+  };
+  sessionId?: string;
+};
+
 const AuthContext = createContext<{
   signIn: (args: { usernameOrEmail: string; password: string }) => void;
   signOut: () => void;
@@ -35,15 +50,33 @@ export const useSession = () => {
 export const SessionProvider = ({ children }: PropsWithChildren) => {
   const [sessionId, setSessionId] = useState("");
 
+  const getProfile = async () => {
+    try {
+      const { data } = await usersApi.getProfile();
+
+      const { success, user, sessionId } = data as GetProfileResponse;
+
+      if (success) {
+        setSessionId(sessionId!);
+      }
+    } catch (error) {
+      console.error("Get profile error:", error);
+    }
+  };
+
+  useEffect(() => {
+    getProfile();
+  }, [getProfile]);
+
   const signIn = async (args: {
     usernameOrEmail: string;
     password: string;
   }) => {
     try {
-      const signInResponse = await usersApi.signIn(args);
-      const signInData = signInResponse.data as AuthResponse;
-      if (signInData.success) {
-        setSessionId(signInData.sessionId!);
+      const { data } = await usersApi.signIn(args);
+      const { success, sessionId } = data as AuthResponse;
+      if (success) {
+        setSessionId(sessionId!);
         console.log("Sign in successful");
       }
     } catch (error) {

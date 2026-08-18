@@ -33,7 +33,12 @@ usersRouter.get("/profile", (req: Request, res: Response) => {
   const user = req.session?.user;
 
   if (user) {
-    res.status(200).json(user);
+    res.status(200).json({
+      success: true,
+      message: "Fetched user data",
+      user,
+      sessionId: req.sessionID,
+    });
   } else {
     res.status(401).send("User access denied. Not logged in");
   }
