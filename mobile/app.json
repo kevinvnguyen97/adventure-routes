@@ -12,7 +12,11 @@
       "config": {
         "googleMapsApiKey": "EXPO_PUBLIC_GOOGLE_MAPS_API_KEY"
       },
-      "bundleIdentifier": "com.adventure-routes.mobile"
+      "bundleIdentifier": "com.adventureroutes.mobile",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This app needs your location to find waypoints in your saved trips.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "This app needs your location to find waypoints in your saved trips."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -22,7 +26,7 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.adventure-routes.mobile"
+      "package": "com.adventureroutes.mobile"
     },
     "web": {
       "output": "static",
