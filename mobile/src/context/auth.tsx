@@ -5,9 +5,8 @@ import {
   type PropsWithChildren,
   useState,
   useEffect,
+  useCallback,
 } from "react";
-import * as SecureStore from "expo-secure-store";
-import { AxiosError } from "axios";
 
 type AuthResponse = {
   sessionId?: string;
@@ -49,8 +48,10 @@ export const useSession = () => {
 
 export const SessionProvider = ({ children }: PropsWithChildren) => {
   const [sessionId, setSessionId] = useState("");
+  const [isUserDataLoading, setIsUserDataLoading] = useState(true);
 
-  const getProfile = async () => {
+  const getProfile = useCallback(async () => {
+    setIsUserDataLoading(true);
     try {
       const { data } = await usersApi.getProfile();
 
@@ -59,10 +60,11 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
       if (success) {
         setSessionId(sessionId!);
       }
+      setIsUserDataLoading(false);
     } catch (error) {
       console.error("Get profile error:", error);
     }
-  };
+  }, [setSessionId, setIsUserDataLoading]);
 
   useEffect(() => {
     getProfile();
@@ -80,13 +82,20 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
         console.log("Sign in successful");
       }
     } catch (error) {
-      const axiosError = error as AxiosError;
-      console.error(
-        "Sign in error:",
-        axiosError.code,
-        axiosError.cause,
-        axiosError.message,
-      );
+      console.error("Sign in error:", error);
+    }
+  };
+
+  const signOut = async () => {
+    try {
+      const { data } = await usersApi.signOut();
+      const { success } = data as AuthResponse;
+      if (success) {
+        setSessionId("");
+        console.log("Sign out successful");
+      }
+    } catch (error) {
+      console.error("Sign out failed:", error);
     }
   };
 
@@ -94,9 +103,9 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
     <AuthContext.Provider
       value={{
         signIn,
-        signOut: () => {},
+        signOut,
         sessionId,
-        isLoading: false,
+        isLoading: isUserDataLoading,
       }}
     >
       {children}

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://192.168.86.41:8088",
+  baseURL: process.env.EXPO_PUBLIC_BACKEND_URL,
   timeout: 5000,
   withCredentials: true,
 });

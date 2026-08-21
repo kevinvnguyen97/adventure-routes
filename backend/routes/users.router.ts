@@ -174,9 +174,11 @@ usersRouter.post("/sign-out", async (req: Request, res: Response) => {
   req.session.destroy((error) => {
     if (error) {
       console.error("Error destroying session:", error);
-      return res.status(500).send("Sign out failed");
+      return res
+        .status(500)
+        .json({ success: false, messsage: "Sign out failed" });
     }
-    res.status(200).send("Sign out successful");
+    res.status(200).json({ success: true, message: "Sign out successful" });
   });
 });
 
