@@ -35,8 +35,9 @@
   "devDependencies": {
     "@types/axios": "^0.9.36",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^26.2.0",
     "@types/react": "~19.2.2",
-    "typescript": "~6.0.3"
+    "typescript": "^7.0.2"
   },
   "scripts": {
     "start": "expo start",
