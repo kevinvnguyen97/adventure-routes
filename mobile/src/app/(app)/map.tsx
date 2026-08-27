@@ -8,7 +8,7 @@ export default function Map() {
 
   return (
     <ThemedView style={{ flex: 1 }}>
-      <MapView
+      {/* <MapView
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         initialRegion={{
@@ -21,7 +21,20 @@ export default function Map() {
         zoomEnabled
         zoomTapEnabled
         userInterfaceStyle={colorScheme as "light" | "dark"}
-      />
+        onMapReady={zoomToAllCoordinates}
+      >
+        <Marker key={0} coordinate={coordinate0} title={ADDRESSES[0]} />
+        <Marker key={1} coordinate={coordinate1} title={ADDRESSES[1]} />
+        <MapViewDirections
+          precision="high"
+          origin={coordinate0}
+          destination={coordinate1}
+          apikey={process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY!}
+          strokeColor="green"
+          strokeWidth={5}
+          mode="DRIVING"
+        />
+      </MapView> */}
     </ThemedView>
   );
 }
