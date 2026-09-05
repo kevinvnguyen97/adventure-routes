@@ -12,6 +12,7 @@ const SECTIONS = [
   "routes",
   "services",
   "utils",
+  "shared",
 ];
 
 // https://vite.dev/config/
@@ -71,6 +72,10 @@ export default defineConfig(({ mode }) => {
           replacement: fileURLToPath(
             new URL("../shared/src/models", import.meta.url),
           ),
+        },
+        {
+          find: "@shared",
+          replacement: fileURLToPath(new URL("../shared/src", import.meta.url)),
         },
       ],
     },

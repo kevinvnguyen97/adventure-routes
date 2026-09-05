@@ -1,4 +1,4 @@
-import type Trip from "@models/trip";
+import type Trip from "@shared/models/trip";
 import { toaster } from "@utils/toaster";
 import { useCallback, useEffect, useState } from "react";
 

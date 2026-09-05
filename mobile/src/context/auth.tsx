@@ -6,17 +6,11 @@ import {
   useState,
   useEffect,
 } from "react";
-import * as SecureStore from "expo-secure-store";
 import { AxiosError } from "axios";
-
-type AuthResponse = {
-  sessionId?: string;
-  message: string;
-  success: boolean;
-};
+import { SignInArgs } from "@shared/types/api";
 
 const AuthContext = createContext<{
-  signIn: (args: { usernameOrEmail: string; password: string }) => void;
+  signIn: (args: SignInArgs) => void;
   signOut: () => void;
   sessionId: string;
   isLoading: boolean;
@@ -35,16 +29,14 @@ export const useSession = () => {
 export const SessionProvider = ({ children }: PropsWithChildren) => {
   const [sessionId, setSessionId] = useState("");
 
-  const signIn = async (args: {
-    usernameOrEmail: string;
-    password: string;
-  }) => {
+  const signIn = async (args: SignInArgs) => {
     try {
-      const signInResponse = await usersApi.signIn(args);
-      const signInData = signInResponse.data as AuthResponse;
-      if (signInData.success) {
-        setSessionId(signInData.sessionId!);
+      const { data } = await usersApi.signIn(args);
+      if (data.success) {
+        setSessionId(data.sessionId!);
         console.log("Sign in successful");
+      } else {
+        console.error("Sign in failed:", data.message);
       }
     } catch (error) {
       const axiosError = error as AxiosError;

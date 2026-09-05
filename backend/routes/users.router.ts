@@ -7,9 +7,14 @@ import {
 import { genSalt, hash, compare } from "bcrypt";
 import type { MongoServerError } from "mongodb";
 
-import type User from "@models/user.d.ts";
+import User, { UserWithoutPassword } from "@shared/models/user";
 import { collections } from "@services/database.service";
-import type { UserWithoutPassword } from "@models/user.d.ts";
+import {
+  ServerResponse,
+  SignInArgs,
+  SignInResponse,
+  SignUpArgs,
+} from "@shared/types/api";
 
 export const usersRouter = Router();
 usersRouter.use(ExpressJson());
@@ -33,9 +38,16 @@ usersRouter.get("/profile", (req: Request, res: Response) => {
   const user = req.session?.user;
 
   if (user) {
-    res.status(200).json(user);
+    res.status(200).json({
+      success: true,
+      user,
+      message: `Retrieved user info for ${user.username}`,
+    });
   } else {
-    res.status(401).send("User access denied. Not logged in");
+    res.status(401).json({
+      success: false,
+      message: "User access denied. Not logged in",
+    } as ServerResponse);
   }
 });
 
@@ -58,7 +70,7 @@ usersRouter.get("/", async (_req: Request, res: Response) => {
 // Post
 usersRouter.post("/sign-up", async (req: Request, res: Response) => {
   const { email, username, phoneNumber, firstName, lastName, password } =
-    req.body as User;
+    req.body as SignUpArgs;
   const hashedPassword = await getHashedPassword(password);
 
   const areAllFieldsFilled = [
@@ -83,7 +95,6 @@ usersRouter.post("/sign-up", async (req: Request, res: Response) => {
     const result = await collections.users?.insertOne(newUser);
 
     if (result) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       res.status(201).json({
         success: true,
         message: `User ${username} created successfully!`,
@@ -100,29 +111,34 @@ usersRouter.post("/sign-up", async (req: Request, res: Response) => {
       // Duplicate user
       case 11000:
         if (userError.keyPattern.email && userError.keyPattern.username) {
-          res
-            .status(400)
-            .send(
-              `User with email ${email} and username ${username} already exists`,
-            );
+          res.status(400).json({
+            success: false,
+            message: `User with email ${email} and username ${username} already exists`,
+          });
         } else if (userError.keyPattern.email) {
-          res.status(400).send(`User with email ${email} already exists`);
+          res.status(400).json({
+            success: false,
+            message: `User with email ${email} already exists`,
+          });
         } else {
-          res.status(400).send(`User with username ${username} already exists`);
+          res.status(400).json({
+            success: false,
+            message: `User with username ${username} already exists`,
+          });
         }
         break;
       default:
-        res.status(400).send(userError.errmsg);
+        res.status(400).json({
+          success: false,
+          message: userError.errmsg,
+        });
         break;
     }
   }
 });
 
 usersRouter.post("/sign-in", async (req: Request, res: Response) => {
-  const { usernameOrEmail, password } = req.body as {
-    usernameOrEmail: string;
-    password: string;
-  };
+  const { usernameOrEmail, password } = req.body as SignInArgs;
 
   try {
     const user = (await collections.users?.findOne({
@@ -161,7 +177,7 @@ usersRouter.post("/sign-in", async (req: Request, res: Response) => {
       success: false,
       sessionId: req.sessionID,
       message: userError.errmsg,
-    });
+    } as SignInResponse);
   }
 });
 
@@ -169,9 +185,11 @@ usersRouter.post("/sign-out", async (req: Request, res: Response) => {
   req.session.destroy((error) => {
     if (error) {
       console.error("Error destroying session:", error);
-      return res.status(500).send("Sign out failed");
+      return res
+        .status(500)
+        .json({ success: false, message: "Sign out failed" } as ServerResponse);
     }
-    res.status(200).send("Sign out successful");
+    res.status(200).json({ success: true, message: "Sign out successful" });
   });
 });
 
@@ -180,7 +198,9 @@ usersRouter.put("/profile", async (req: Request, res: Response) => {
   const user = req.session?.user;
 
   if (!user) {
-    res.status(401).send("User access denied. Not logged in");
+    res
+      .status(401)
+      .json({ success: false, message: "User access denied. Not logged in" });
     return;
   }
 
@@ -197,13 +217,17 @@ usersRouter.put("/profile", async (req: Request, res: Response) => {
     );
 
     if (result?.modifiedCount === 1) {
-      res.status(200).send("User profile updated successfully");
+      res
+        .status(200)
+        .json({ success: true, message: "User profile updated successfully" });
     } else {
-      res.status(400).send("Failed to update user profile");
+      res
+        .status(400)
+        .json({ success: false, message: "Failed to update user profile" });
     }
   } catch (error) {
     const userError = error as MongoServerError;
     console.error("Update user error:", userError);
-    res.status(500).send(userError.errmsg);
+    res.status(500).json({ success: false, message: userError.errmsg });
   }
 });

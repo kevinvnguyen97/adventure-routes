@@ -1,6 +1,6 @@
 import { Collection, Db, MongoClient } from "mongodb";
-import type Trip from "@models/trip";
-import type User from "@models/user";
+import type Trip from "@shared/models/trip";
+import type User from "@shared/models/user";
 
 type tripDBCollections = {
   users?: Collection<User>;

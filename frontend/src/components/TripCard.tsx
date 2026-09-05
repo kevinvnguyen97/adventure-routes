@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { LuMap, LuPencil } from "react-icons/lu";
 import TripFormDialog from "@components/TripFormDialog";
-import type Trip from "@models/trip";
+import type Trip from "@shared/models/trip";
 import { useNavigate } from "react-router-dom";
 import type { TripFormArgs } from "@hooks/trip";
 import { defaultActivities } from "@constants/activities";

@@ -1,6 +1,6 @@
 import { Drawer, CloseButton } from "@chakra-ui/react";
 import TripTabs from "@components/TripTabs";
-import type Trip from "@models/trip";
+import type Trip from "@shared/models/trip";
 
 type TripDetailsProps = {
   trip: Trip;

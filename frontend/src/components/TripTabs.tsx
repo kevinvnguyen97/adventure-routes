@@ -7,7 +7,7 @@ import {
   Separator,
   HStack,
 } from "@chakra-ui/react";
-import type Trip from "@models/trip";
+import type Trip from "@shared/models/trip";
 import { LuInfo, LuMap, LuMessageCircle, LuSettings } from "react-icons/lu";
 import TripDirections from "@components/TripDirections";
 import { defaultActivities } from "@constants/activities";

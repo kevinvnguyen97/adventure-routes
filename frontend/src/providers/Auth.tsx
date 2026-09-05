@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { AuthContext } from "@utils/auth";
-import type { UserWithoutPassword } from "@models/user";
+import type { UserWithoutPassword } from "@shared/models/user";
 import { toaster } from "@utils/toaster";
 import { useNavigate } from "react-router-dom";
 
-type AuthResponse = {
-  success: boolean;
-  sessionId?: string;
-  message: string;
-};
+import type {
+  SignInResponse,
+  ServerResponse,
+  SignInArgs,
+  SignUpArgs,
+} from "@shared/types/api";
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserWithoutPassword | undefined>(undefined);
@@ -35,10 +36,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [setUser, setIsUserDataLoading]);
 
-  const signInUser = async (args: {
-    usernameOrEmail: string;
-    password: string;
-  }) => {
+  const signInUser = async (args: SignInArgs) => {
     const { usernameOrEmail, password } = args;
     try {
       const response = await fetch("/api/users/sign-in", {
@@ -48,7 +46,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         },
         body: JSON.stringify({ usernameOrEmail, password }),
       });
-      const responseJSON = (await response.json()) as AuthResponse;
+      const responseJSON = (await response.json()) as SignInResponse;
 
       toaster.create({
         title: `${responseJSON.success ? "Code" : "Error"} ${response.status} ${response.statusText}`,
@@ -68,21 +66,14 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const signUpUser = async (args: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phoneNumber: string;
-    username: string;
-    password: string;
-  }) => {
+  const signUpUser = async (args: SignUpArgs) => {
     try {
       const response = await fetch("/api/users/sign-up", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(args),
       });
-      const responseJSON = (await response.json()) as AuthResponse;
+      const responseJSON = (await response.json()) as ServerResponse;
 
       toaster.create({
         title: `${responseJSON.success ? "Code" : "Error"} ${response.status} ${response.statusText}`,

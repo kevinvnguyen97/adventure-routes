@@ -6,7 +6,7 @@ import {
 } from "express";
 import { ObjectId } from "mongodb";
 import { collections } from "@services/database.service";
-import type Trip from "@models/trip";
+import type Trip from "@shared/models/trip";
 
 export const tripsRouter = Router();
 tripsRouter.use(ExpressJson());
