@@ -11,6 +11,10 @@ import type Trip from "@shared/models/trip";
 export const tripsRouter = Router();
 tripsRouter.use(ExpressJson());
 
+type TripRequestParams = {
+  id: string;
+};
+
 // Get
 tripsRouter.get("/", async (req: Request, res: Response) => {
   const user = req.session.user;
@@ -32,21 +36,24 @@ tripsRouter.get("/", async (req: Request, res: Response) => {
     res.status(500).send(tripError.message);
   }
 });
-tripsRouter.get("/:id", async (req: Request, res: Response) => {
-  const tripId = req.params.id;
+tripsRouter.get(
+  "/:id",
+  async (req: Request<TripRequestParams>, res: Response) => {
+    const tripId = req.params.id;
 
-  try {
-    const query = { _id: new ObjectId(tripId) };
-    const trip = (await collections.trips?.findOne(query)) as unknown as Trip;
+    try {
+      const query = { _id: new ObjectId(tripId) };
+      const trip = (await collections.trips?.findOne(query)) as unknown as Trip;
 
-    if (trip) {
-      res.status(200).send(trip);
+      if (trip) {
+        res.status(200).send(trip);
+      }
+    } catch (error) {
+      const tripError = error as Error;
+      res.status(404).send(tripError.message);
     }
-  } catch (error) {
-    const tripError = error as Error;
-    res.status(404).send(tripError.message);
-  }
-});
+  },
+);
 
 // Post
 tripsRouter.post("/", async (req: Request, res: Response) => {
@@ -76,58 +83,64 @@ tripsRouter.post("/", async (req: Request, res: Response) => {
 });
 
 // Put
-tripsRouter.put("/:id", async (req: Request, res: Response) => {
-  const user = req.session.user;
+tripsRouter.put(
+  "/:id",
+  async (req: Request<TripRequestParams>, res: Response) => {
+    const user = req.session.user;
 
-  if (!user) {
-    res.status(403).send("Cannot update trip. Must be logged in");
-    return;
-  }
-
-  const tripId = req.params.id;
-
-  try {
-    const updatedTrip = req.body as Trip;
-    const query = { _id: new ObjectId(tripId) };
-
-    const result = await collections.trips?.updateOne(query, {
-      $set: updatedTrip,
-    });
-
-    if (result) {
-      res.status(200).send(`Successfully updated route with id ${tripId}`);
-    } else {
-      res.status(304).send(`Route with id ${tripId} not updated`);
+    if (!user) {
+      res.status(403).send("Cannot update trip. Must be logged in");
+      return;
     }
-  } catch (error) {
-    const tripError = error as Error;
-    res.status(400).send(tripError.message);
-  }
-});
+
+    const tripId = req.params.id;
+
+    try {
+      const updatedTrip = req.body as Trip;
+      const query = { _id: new ObjectId(tripId) };
+
+      const result = await collections.trips?.updateOne(query, {
+        $set: updatedTrip,
+      });
+
+      if (result) {
+        res.status(200).send(`Successfully updated route with id ${tripId}`);
+      } else {
+        res.status(304).send(`Route with id ${tripId} not updated`);
+      }
+    } catch (error) {
+      const tripError = error as Error;
+      res.status(400).send(tripError.message);
+    }
+  },
+);
 
 // Delete
-tripsRouter.delete("/:id", async (req: Request, res: Response) => {
-  const user = req.session.user;
+tripsRouter.delete(
+  "/:id",
+  async (req: Request<TripRequestParams>, res: Response) => {
+    const user = req.session.user;
 
-  if (!user) {
-    res.status(403).send("Cannot delete trip. Must be logged in");
-  }
-
-  const tripId = req.params.id;
-
-  try {
-    const query = { _id: new ObjectId(tripId) };
-    const result = await collections.trips?.deleteOne(query);
-
-    if (result && result.deletedCount) {
-      res.status(200).send(`Successfully deleted route with id ${tripId}`);
-    } else if (!result) {
-      res.status(400).send(`Failed to remove route with id ${tripId}`);
-    } else if (!result.deletedCount) {
-      res.status(404).send(`Route with id ${tripId} does not exist`);
+    if (!user) {
+      res.status(403).send("Cannot delete trip. Must be logged in");
     }
-  } catch (error) {
-    const tripError = error as Error;
-    res.status(400).send(tripError.message);
-  }
-});
+
+    const tripId = req.params.id;
+
+    try {
+      const query = { _id: new ObjectId(tripId) };
+      const result = await collections.trips?.deleteOne(query);
+
+      if (result && result.deletedCount) {
+        res.status(200).send(`Successfully deleted route with id ${tripId}`);
+      } else if (!result) {
+        res.status(400).send(`Failed to remove route with id ${tripId}`);
+      } else if (!result.deletedCount) {
+        res.status(404).send(`Route with id ${tripId} does not exist`);
+      }
+    } catch (error) {
+      const tripError = error as Error;
+      res.status(400).send(tripError.message);
+    }
+  },
+);
