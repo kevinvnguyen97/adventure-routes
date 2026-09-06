@@ -1,3 +1,4 @@
+import Trip from "@shared/models/trip";
 import { UserWithoutPassword } from "../models/user";
 
 export type ServerResponse = {
@@ -11,6 +12,14 @@ export interface SignInResponse extends ServerResponse {
 
 export interface GetProfileResponse extends ServerResponse {
   user?: UserWithoutPassword;
+}
+
+export interface GetTripResponse extends ServerResponse {
+  trip?: Trip;
+}
+
+export interface GetTripsResponse extends ServerResponse {
+  trips?: Trip[];
 }
 
 export type SignInArgs = {
