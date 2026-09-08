@@ -49,10 +49,7 @@ const Dashboard = () => {
             key={trip._id.toString()}
             trip={trip}
             upsertTrip={(tripFields) =>
-              upsertTrip({
-                tripId: trip._id.toString(),
-                tripForm: tripFields,
-              })
+              upsertTrip({ id: trip._id.toString(), ...tripFields })
             }
             deleteTrip={() => deleteTrip(trip._id.toString())}
           />

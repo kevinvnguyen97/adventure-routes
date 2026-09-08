@@ -32,6 +32,7 @@
       "@pages/*": ["./src/pages/*"],
       "@providers/*": ["./src/providers/*"],
       "@utils/*": ["./src/utils/*"],
+      "@services/*": ["./src/services/*"],
       "@shared/*": ["../shared/src/*"]
     }
   },

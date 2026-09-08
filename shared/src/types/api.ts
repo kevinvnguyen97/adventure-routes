@@ -35,3 +35,12 @@ export type SignUpArgs = {
   lastName: string;
   password: string;
 };
+
+export type UpsertTripArgs = {
+  tripId?: string;
+  name: string;
+  description?: string;
+  priceCategory: number;
+  activities: string[];
+  waypoints: string[];
+};

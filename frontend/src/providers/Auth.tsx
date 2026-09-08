@@ -4,27 +4,8 @@ import type { UserWithoutPassword } from "@shared/models/user";
 import { toaster } from "@utils/toaster";
 import { useNavigate } from "react-router-dom";
 
-import type {
-  SignInResponse,
-  ServerResponse,
-  SignInArgs,
-  SignUpArgs,
-} from "@shared/types/api";
-
-type GetProfileResponse = {
-  message: string;
-  success: boolean;
-  user?: {
-    _id: string;
-    firstName: string;
-    lastName: string;
-    username: string;
-    phoneNumber: string;
-    email: string;
-    profilePictureUrl?: string;
-  };
-  sessionId?: string;
-};
+import type { SignInArgs, SignUpArgs } from "@shared/types/api";
+import { usersApi } from "@services/axiosInstance";
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserWithoutPassword | undefined>(undefined);
@@ -36,15 +17,11 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsUserDataLoading(true);
 
     try {
-      const response = await fetch("/api/users/profile", {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-      const responseJSON = (await response.json()) as GetProfileResponse;
+      const { data } = await usersApi.getProfile();
+      const { success, user: responseUser } = data;
 
-      if (responseJSON.success) {
-        const user = responseJSON.user;
-        setUser(user);
+      if (success && responseUser) {
+        setUser(responseUser);
       }
       setIsUserDataLoading(false);
     } catch (error) {
@@ -55,23 +32,21 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signInUser = async (args: SignInArgs) => {
     const { usernameOrEmail, password } = args;
     try {
-      const response = await fetch("/api/users/sign-in", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ usernameOrEmail, password }),
+      const { data, status, statusText } = await usersApi.signIn({
+        usernameOrEmail,
+        password,
       });
-      const responseJSON = (await response.json()) as SignInResponse;
+
+      const { success, message } = data;
 
       toaster.create({
-        title: `${responseJSON.success ? "Code" : "Error"} ${response.status} ${response.statusText}`,
-        description: responseJSON.message,
-        type: responseJSON.success ? "success" : "error",
+        title: `${success ? "Code" : "Error"} ${status} ${statusText}`,
+        description: message,
+        type: success ? "success" : "error",
         closable: true,
       });
 
-      if (responseJSON.success) {
+      if (success) {
         await fetchUser();
       } else {
         console.error("Sign up does not work");
@@ -84,21 +59,18 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signUpUser = async (args: SignUpArgs) => {
     try {
-      const response = await fetch("/api/users/sign-up", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(args),
-      });
-      const responseJSON = (await response.json()) as ServerResponse;
+      const { data, status, statusText } = await usersApi.signUp(args);
+
+      const { success, message } = data;
 
       toaster.create({
-        title: `${responseJSON.success ? "Code" : "Error"} ${response.status} ${response.statusText}`,
-        description: responseJSON.message,
-        type: responseJSON.success ? "success" : "error",
+        title: `${success ? "Code" : "Error"} ${status} ${statusText}`,
+        description: message,
+        type: success ? "success" : "error",
         closable: true,
       });
 
-      if (responseJSON.success) {
+      if (success) {
         navigate("/");
       } else {
         console.error("Sign up does not work");
@@ -111,29 +83,15 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signOutUser = async () => {
     try {
-      const response = await fetch("/api/users/sign-out", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const { data, status, statusText } = await usersApi.signOut();
+      const { success, message } = data;
+
+      toaster.create({
+        title: `${success ? "Code" : "Error"} ${status} ${statusText}`,
+        description: message,
+        type: success ? "success" : "error",
+        closable: true,
       });
-      switch (response.status) {
-        case 200:
-          setUser(undefined);
-          toaster.create({
-            title: `Code ${response.status} (${response.statusText})`,
-            description: await response.text(),
-            type: "success",
-            closable: true,
-          });
-          break;
-        default:
-          toaster.create({
-            title: `Error ${response.status} (${response.statusText})`,
-            description: await response.text(),
-            type: "error",
-            closable: true,
-          });
-          break;
-      }
     } catch (error) {
       const signOutError = error as Error;
       console.error("Sign out failed:", signOutError.message);

@@ -3,7 +3,7 @@ import createUsersApi from "@shared/api/usersApi";
 import createTripsApi from "@shared/api/tripsApi";
 
 const axiosInstance = axios.create({
-  baseURL: "http://192.168.86.41:8088",
+  baseURL: "/api",
   timeout: 5000,
   withCredentials: true,
 });

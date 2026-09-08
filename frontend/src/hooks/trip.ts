@@ -1,36 +1,27 @@
+import { tripsApi } from "@services/axiosInstance";
 import type Trip from "@shared/models/trip";
+import type { UpsertTripArgs } from "@shared/types/api";
 import { toaster } from "@utils/toaster";
 import { useCallback, useEffect, useState } from "react";
-
-export type TripFormArgs = {
-  name: string;
-  description?: string;
-  priceCategory: number;
-  activities: string[];
-  waypoints: string[];
-};
-export type UpsertTripArgs = {
-  tripId?: string;
-  tripForm: TripFormArgs;
-};
 
 export const useTrip = (tripId: string) => {
   const [trip, setTrip] = useState<Trip>();
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchTrip = useCallback(async (tripId: string) => {
-    const response = await fetch(`/api/trips/${tripId}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-    const trip = (await response.json()) as unknown as Trip;
-    setTrip(trip);
+  const getTrip = useCallback(async (tripId: string) => {
+    const { data } = await tripsApi.getTrip(tripId);
+
+    const { trip, success } = data;
+
+    if (success && trip) {
+      setTrip(data.trip);
+    }
     setIsLoading(false);
   }, []);
 
   useEffect(() => {
-    fetchTrip(tripId);
-  }, [tripId, fetchTrip]);
+    getTrip(tripId);
+  }, [tripId, getTrip]);
 
   return { trip, isLoading };
 };
@@ -39,123 +30,48 @@ export const useTrips = () => {
   const [trips, setTrips] = useState<Trip[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const refetchTrips = useCallback(async () => {
-    const response = await fetch("/api/trips", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-    if (response.ok) {
-      const trips = (await response.json()) as unknown as Trip[];
+  const getTrips = useCallback(async () => {
+    const { data } = await tripsApi.getLoggedInUserTrips();
+    const { trips = [], success } = data;
+    if (success) {
       setTrips(trips);
     }
     setIsLoading(false);
   }, [setTrips, setIsLoading]);
 
   const upsertTrip = async (args: UpsertTripArgs) => {
-    const { tripId, tripForm } = args;
-    const { name, description, priceCategory, activities, waypoints } =
-      tripForm;
+    const { data, status, statusText } = await tripsApi.upsertTrip(args);
 
-    if (tripId) {
-      const response = await fetch(`/api/trips/${tripId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          description,
-          priceCategory,
-          activities,
-          waypoints,
-        }),
-      });
-      switch (response.status) {
-        case 200:
-          toaster.create({
-            title: `Code ${response.status} (${response.statusText})`,
-            description: `Trip "${name}" updated successfully`,
-            type: "success",
-            closable: true,
-          });
-          break;
-        default:
-          toaster.create({
-            title: `Error ${response.status} (${response.statusText})`,
-            description: "Trip cannot be updated",
-            type: "error",
-            closable: true,
-          });
-          break;
-      }
-    } else {
-      const response = await fetch("/api/trips", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          description,
-          priceCategory,
-          activities,
-          waypoints,
-        }),
-      });
+    const { success, message } = data;
 
-      switch (response.status) {
-        case 201:
-          toaster.create({
-            title: `Code ${response.status} (${response.statusText})`,
-            description: `Trip "${name}" created successfully`,
-            type: "success",
-            closable: true,
-          });
-          break;
-        default:
-          toaster.create({
-            title: `Error ${response.status} (${response.statusText})`,
-            description: "Trip cannot be updated",
-            type: "error",
-            closable: true,
-          });
-          break;
-      }
-    }
-    refetchTrips();
+    toaster.create({
+      title: `${success ? "Code" : "Error"} ${status} ${statusText}`,
+      description: message,
+      type: success ? "success" : "error",
+      closable: true,
+    });
+
+    getTrips();
   };
 
   const deleteTrip = async (tripId: string) => {
-    const response = await fetch(`/api/trips/${tripId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const { data, status, statusText } = await tripsApi.deleteTrip(tripId);
+
+    const { success, message } = data;
+
+    toaster.create({
+      title: `${success ? "Code" : "Error"} ${status} ${statusText}`,
+      description: message,
+      type: success ? "success" : "error",
+      closable: true,
     });
-    switch (response.status) {
-      case 200:
-        toaster.create({
-          title: `Code ${response.status} (${response.statusText})`,
-          description: `Trip deleted successfully`,
-          type: "success",
-          closable: true,
-        });
-        break;
-      default:
-        toaster.create({
-          title: `Error ${response.status} (${response.statusText})`,
-          description: "Trip cannot be deleted",
-          type: "error",
-          closable: true,
-        });
-        break;
-    }
-    refetchTrips();
+
+    getTrips();
   };
 
   useEffect(() => {
-    refetchTrips();
-  }, [refetchTrips]);
+    getTrips();
+  }, [getTrips]);
 
   return { trips, isLoading, upsertTrip, deleteTrip };
 };

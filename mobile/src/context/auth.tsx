@@ -1,4 +1,4 @@
-import usersApi from "@/services/usersApi";
+import { usersApi } from "@/services/axiosInstance";
 import {
   use,
   createContext,
@@ -8,21 +8,6 @@ import {
 } from "react";
 import { AxiosError } from "axios";
 import { SignInArgs } from "@shared/types/api";
-
-type GetProfileResponse = {
-  message: string;
-  success: boolean;
-  user?: {
-    _id: string;
-    firstName: string;
-    lastName: string;
-    username: string;
-    phoneNumber: string;
-    email: string;
-    profilePictureUrl?: string;
-  };
-  sessionId?: string;
-};
 
 const AuthContext = createContext<{
   signIn: (args: SignInArgs) => void;
