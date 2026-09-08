@@ -6,7 +6,6 @@ const SECTIONS = [
   "components",
   "constants",
   "hooks",
-  "models",
   "pages",
   "providers",
   "routes",
@@ -67,12 +66,6 @@ export default defineConfig(({ mode }) => {
             new URL(`./src/${section}`, import.meta.url),
           ),
         })),
-        {
-          find: "@models",
-          replacement: fileURLToPath(
-            new URL("../shared/src/models", import.meta.url),
-          ),
-        },
         {
           find: "@shared",
           replacement: fileURLToPath(new URL("../shared/src", import.meta.url)),

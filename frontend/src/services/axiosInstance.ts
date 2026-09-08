@@ -1,6 +1,7 @@
 import axios from "axios";
-import createUsersApi from "@shared/api/usersApi";
-import createTripsApi from "@shared/api/tripsApi";
+// Todo: Solve import issue with @shared/api. Currently, it is not working with the bundler module resolution strategy.
+// @ts-expect-error: See above comment
+import { createUsersApi, createTripsApi } from "../../shared/src/api";
 
 const axiosInstance = axios.create({
   baseURL: "/api",

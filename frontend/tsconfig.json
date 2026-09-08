@@ -11,8 +11,14 @@
       "@utils/*": ["./frontend/src/utils/*"],
       "@shared/*": ["../shared/src/*"]
     },
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
+  "include": [
+    "frontend/src/**/*.ts",
+    "frontend/src/**/*.tsx",
+    "../shared/src/**/*.ts"
+  ],
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
