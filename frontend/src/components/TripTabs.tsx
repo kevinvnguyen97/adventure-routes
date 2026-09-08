@@ -82,7 +82,7 @@ const TripTabs = (props: TripTabsProps) => {
             );
           })}
           <Wrap gap={0.5}>
-            {activities.map((activity, i) => {
+            {activities.map((activity) => {
               const activityIcon = defaultActivities.find(
                 (defaultActivity) => defaultActivity.text === activity,
               )?.icon;

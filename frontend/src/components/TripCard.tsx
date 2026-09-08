@@ -56,7 +56,7 @@ const TripCard = (props: TripCardProps) => {
           </Card.Body>
           <Card.Footer>
             <Wrap gap={0.5}>
-              {trip.activities?.map((activity, i) => {
+              {trip.activities?.map((activity) => {
                 const activityIcon = defaultActivities.find(
                   (defaultActivity) => defaultActivity.text === activity,
                 )?.icon;
