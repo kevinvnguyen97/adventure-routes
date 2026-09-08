@@ -4,6 +4,7 @@ import type {
   SignInArgs,
   SignUpArgs,
   GetProfileResponse,
+  GetAllUsersResponse,
 } from "../types/api";
 import type { AxiosInstance } from "axios";
 
@@ -17,7 +18,8 @@ const createUsersApi = (axiosInstance: AxiosInstance) => {
       await axiosInstance.post<ServerResponse>("/users/sign-out"),
     getProfile: async () =>
       await axiosInstance.get<GetProfileResponse>("/users/profile"),
-    getAllUsers: async () => await axiosInstance.get("/users"),
+    getAllUsers: async () =>
+      await axiosInstance.get<GetAllUsersResponse>("/users"),
   };
 };
 
