@@ -25,7 +25,10 @@ import {
   useSensors,
   type DragEndEvent,
 } from "@dnd-kit/core";
-import { restrictToFirstScrollableAncestor, restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import {
+  restrictToFirstScrollableAncestor,
+  restrictToVerticalAxis,
+} from "@dnd-kit/modifiers";
 import {
   arrayMove,
   SortableContext,
@@ -35,7 +38,7 @@ import {
 import PriceCategorySlider from "@components/PriceCategorySlider";
 import ActivityMultiSelect from "@components/ActivityMultiSelect";
 import WaypointTextField from "@components/WaypointTextField";
-import type Route from "@models/trip";
+import type Route from "@shared/models/trip";
 import type { TripFormArgs } from "@hooks/trip";
 
 type TripFormDialogProps = {
@@ -59,7 +62,7 @@ const TripFormDialog = (props: TripFormDialogProps) => {
   const sensors = useSensors(
     useSensor(MouseSensor),
     useSensor(TouchSensor),
-    useSensor(KeyboardSensor)
+    useSensor(KeyboardSensor),
   );
 
   const descriptionTextAreaRef = createRef<HTMLTextAreaElement>();
@@ -87,7 +90,7 @@ const TripFormDialog = (props: TripFormDialogProps) => {
       setPriceCategory(priceCategory);
       setActivities(activities);
       setWaypoints(
-        waypoints.map((waypoint) => ({ id: Math.random(), text: waypoint }))
+        waypoints.map((waypoint) => ({ id: Math.random(), text: waypoint })),
       );
     }
   }, [
@@ -104,10 +107,10 @@ const TripFormDialog = (props: TripFormDialogProps) => {
 
     if (active.id !== over?.id) {
       const activeIndex = waypoints.findIndex(
-        (waypoint) => active.id === waypoint.id
+        (waypoint) => active.id === waypoint.id,
       );
       const overIndex = waypoints.findIndex(
-        (waypoint) => over?.id === waypoint.id
+        (waypoint) => over?.id === waypoint.id,
       );
 
       const newWaypoints = arrayMove(waypoints, activeIndex, overIndex);
@@ -118,7 +121,7 @@ const TripFormDialog = (props: TripFormDialogProps) => {
   const onWaypointChange = (args: { newWaypointValue: string; id: number }) => {
     const { newWaypointValue, id } = args;
     const newWaypoints = waypoints.map((waypoint) =>
-      waypoint.id === id ? { ...waypoint, text: newWaypointValue } : waypoint
+      waypoint.id === id ? { ...waypoint, text: newWaypointValue } : waypoint,
     );
     setWaypoints(newWaypoints);
   };
@@ -162,7 +165,7 @@ const TripFormDialog = (props: TripFormDialogProps) => {
         trip.waypoints.map((waypoint) => ({
           id: Math.random(),
           text: waypoint,
-        }))
+        })),
       );
     } else {
       setName("");
@@ -243,7 +246,10 @@ const TripFormDialog = (props: TripFormDialogProps) => {
                 collisionDetection={closestCorners}
                 onDragEnd={handleDragEnd}
                 sensors={sensors}
-                modifiers={[restrictToVerticalAxis, restrictToFirstScrollableAncestor]}
+                modifiers={[
+                  restrictToVerticalAxis,
+                  restrictToFirstScrollableAncestor,
+                ]}
               >
                 <SortableContext
                   items={waypoints}

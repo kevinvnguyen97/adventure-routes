@@ -32,8 +32,8 @@
       "@pages/*": ["./src/pages/*"],
       "@providers/*": ["./src/providers/*"],
       "@utils/*": ["./src/utils/*"],
-      "@models/*": ["../shared/src/models/*"],
-    },
+      "@shared/*": ["../shared/src/*"]
+    }
   },
   "include": ["src"]
 }

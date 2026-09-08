@@ -69,8 +69,7 @@ export default function Map() {
 
   return (
     <ThemedView style={{ flex: 1 }}>
-      <MapView
-        ref={mapRef}
+      {/* <MapView
         style={styles.map}
         // provider={PROVIDER_GOOGLE}
         // zoomControlEnabled
@@ -85,12 +84,12 @@ export default function Map() {
           precision="high"
           origin={coordinate0}
           destination={coordinate1}
-          apikey={"AIzaSyAEqs54WFsIR5lPPDK9rxccCY5DM3VQ-Gs"}
+          apikey={process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY!}
           strokeColor="green"
           strokeWidth={5}
           mode="DRIVING"
         />
-      </MapView>
+      </MapView> */}
     </ThemedView>
   );
 }

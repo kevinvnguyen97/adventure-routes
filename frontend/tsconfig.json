@@ -9,9 +9,9 @@
       "@routes/*": ["./frontend/src/routes/*"],
       "@services/*": ["./frontend/src/services/*"],
       "@utils/*": ["./frontend/src/utils/*"],
-      "@models/*": ["../shared/src/models/*"],
+      "@shared/*": ["../shared/src/*"]
     },
-    "esModuleInterop": true,
+    "esModuleInterop": true
   },
   "files": [],
   "references": [

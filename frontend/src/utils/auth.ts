@@ -1,18 +1,12 @@
-import type { UserWithoutPassword } from "@models/user";
+import type { UserWithoutPassword } from "@shared/models/user";
 import { useContext, createContext } from "react";
+import type { SignInArgs, SignUpArgs } from "@shared/types/api";
 
 type AuthTokenValues = {
   user?: UserWithoutPassword;
   isUserDataLoading: boolean;
-  signInUser: (args: { usernameOrEmail: string; password: string }) => void;
-  signUpUser: (args: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phoneNumber: string;
-    username: string;
-    password: string;
-  }) => void;
+  signInUser: (args: SignInArgs) => void;
+  signUpUser: (args: SignUpArgs) => void;
   signOutUser: () => void;
 };
 export const AuthContext = createContext<AuthTokenValues>({
