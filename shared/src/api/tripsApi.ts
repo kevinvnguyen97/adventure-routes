@@ -1,10 +1,10 @@
-import {
+import type {
   GetTripResponse,
   GetTripsResponse,
   ServerResponse,
   UpsertTripArgs,
 } from "../types/api";
-import { AxiosInstance } from "axios";
+import type { AxiosInstance } from "axios";
 
 const tripsApi = (axiosInstance: AxiosInstance) => {
   return {

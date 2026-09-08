@@ -1,5 +1,5 @@
-import Trip from "@shared/models/trip";
-import { UserWithoutPassword } from "../models/user";
+import type Trip from "../models/trip";
+import type { UserWithoutPassword } from "../models/user";
 
 export type ServerResponse = {
   success: boolean;
@@ -12,6 +12,10 @@ export interface SignInResponse extends ServerResponse {
 
 export interface GetProfileResponse extends ServerResponse {
   user?: UserWithoutPassword;
+}
+
+export interface GetAllUsersResponse extends ServerResponse {
+  users?: UserWithoutPassword[];
 }
 
 export interface GetTripResponse extends ServerResponse {

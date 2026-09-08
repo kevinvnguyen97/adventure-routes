@@ -15,6 +15,7 @@ import {
   SignInResponse,
   GetProfileResponse,
   SignUpArgs,
+  GetAllUsersResponse,
 } from "@shared/types/api";
 
 export const usersRouter = Router();
@@ -55,19 +56,29 @@ usersRouter.get(
   },
 );
 
-usersRouter.get("/", async (_, res: Response) => {
+usersRouter.get("/", async (_, res: Response<GetAllUsersResponse>) => {
   try {
     const users = (await collections.users
       ?.find({}, { projection: { password: 0 } })
       .toArray()) as unknown as User[];
     if (users) {
-      res.json(users);
+      res.json({
+        success: true,
+        users,
+        message: `Retrieved ${users.length} users`,
+      } as GetAllUsersResponse);
     } else {
-      res.status(404).send("No users found");
+      res.status(404).json({
+        success: false,
+        message: "No users found",
+      } as ServerResponse);
     }
   } catch (error) {
     const userError = error as MongoServerError;
-    res.status(500).send(userError.errmsg);
+    res.status(500).json({
+      success: false,
+      message: userError.errmsg,
+    } as ServerResponse);
   }
 });
 
