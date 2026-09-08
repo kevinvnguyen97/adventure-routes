@@ -39,7 +39,7 @@ import PriceCategorySlider from "@components/PriceCategorySlider";
 import ActivityMultiSelect from "@components/ActivityMultiSelect";
 import WaypointTextField from "@components/WaypointTextField";
 import type Route from "@shared/models/trip";
-import type { TripFormArgs } from "@hooks/trip";
+import type { TripFormArgs } from "@shared/types/api";
 
 type TripFormDialogProps = {
   trip?: Route;

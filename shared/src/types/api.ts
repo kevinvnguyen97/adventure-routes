@@ -40,11 +40,14 @@ export type SignUpArgs = {
   password: string;
 };
 
-export type UpsertTripArgs = {
-  tripId?: string;
+export type TripFormArgs = {
   name: string;
   description?: string;
   priceCategory: number;
   activities: string[];
   waypoints: string[];
 };
+
+export interface UpsertTripArgs extends TripFormArgs {
+  tripId?: string;
+}
