@@ -69,7 +69,7 @@ export default function Map() {
 
   return (
     <ThemedView style={{ flex: 1 }}>
-      {/* <MapView
+      <MapView
         style={styles.map}
         // provider={PROVIDER_GOOGLE}
         // zoomControlEnabled
@@ -89,7 +89,7 @@ export default function Map() {
           strokeWidth={5}
           mode="DRIVING"
         />
-      </MapView> */}
+      </MapView>
     </ThemedView>
   );
 }
