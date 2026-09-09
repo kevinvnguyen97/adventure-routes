@@ -13,7 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { useTheme } from "@/hooks/use-theme";
 
-export default function Register() {
+export default function SignUp() {
   const navigate = useRouter();
   const theme = useTheme();
 
@@ -101,7 +101,7 @@ export default function Register() {
         </Pressable>
         <Pressable
           style={{ alignSelf: "center", padding: 20 }}
-          onPress={() => navigate.navigate("/sign-in")}
+          onPress={() => navigate.navigate("/")}
         >
           <ThemedText
             themeColor="text"

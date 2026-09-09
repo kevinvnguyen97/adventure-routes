@@ -13,6 +13,8 @@ function RootNavigator() {
 
   const { sessionId } = useSession();
 
+  const isAuthenticated = !!sessionId;
+
   return (
     <ThemeProvider value={theme}>
       <StatusBar barStyle="light-content" />
@@ -22,14 +24,11 @@ function RootNavigator() {
           animation: "fade",
         }}
       >
-        <Stack.Protected guard={!!sessionId}>
+        <Stack.Protected guard={isAuthenticated}>
           <Stack.Screen name="(app)" />
         </Stack.Protected>
-        <Stack.Protected guard={!sessionId}>
-          <Stack.Screen name="sign-in" />
-        </Stack.Protected>
-        <Stack.Protected guard={!sessionId}>
-          <Stack.Screen name="register" />
+        <Stack.Protected guard={!isAuthenticated}>
+          <Stack.Screen name="(auth)" />
         </Stack.Protected>
       </Stack>
     </ThemeProvider>

@@ -75,7 +75,7 @@ export default function SignIn() {
         </Pressable>
         <Pressable
           style={{ alignSelf: "center", padding: 20 }}
-          onPress={() => navigate.navigate("/register")}
+          onPress={() => navigate.navigate("/sign-up")}
         >
           <ThemedText
             themeColor="text"
