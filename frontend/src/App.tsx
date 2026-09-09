@@ -14,6 +14,9 @@ import Loading from "@components/Loading";
 const ProtectedRoute = () => {
   const { user, isUserDataLoading } = useAuth();
 
+  if (isUserDataLoading) {
+    return <Loading />;
+  }
   if (!user && !isUserDataLoading) {
     return <Navigate to="/sign-in" replace />;
   }
@@ -23,6 +26,10 @@ const ProtectedRoute = () => {
 
 const NonProtectedRoute = () => {
   const { user, isUserDataLoading } = useAuth();
+
+  if (isUserDataLoading) {
+    return <Loading />;
+  }
 
   if (!!user && !isUserDataLoading) {
     return <Navigate to="/" replace />;

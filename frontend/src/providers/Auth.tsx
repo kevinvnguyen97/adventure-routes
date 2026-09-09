@@ -11,8 +11,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserWithoutPassword | undefined>(undefined);
   const [isUserDataLoading, setIsUserDataLoading] = useState(true);
 
-  const navigate = useNavigate();
-
   const fetchUser = useCallback(async () => {
     setIsUserDataLoading(true);
 
@@ -23,10 +21,10 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (success && responseUser) {
         setUser(responseUser);
       }
-      setIsUserDataLoading(false);
     } catch (error) {
       console.error("Cannot get profile:", error);
     }
+    setIsUserDataLoading(false);
   }, [setUser, setIsUserDataLoading]);
 
   const signInUser = async (args: SignInArgs) => {
@@ -49,6 +47,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (success) {
         await fetchUser();
       } else {
+        setUser(undefined);
         console.error("Sign up does not work");
       }
     } catch (error) {
@@ -69,12 +68,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         type: success ? "success" : "error",
         closable: true,
       });
-
-      if (success) {
-        navigate("/");
-      } else {
-        console.error("Sign up does not work");
-      }
     } catch (error) {
       const signUpError = error as Error;
       console.error("Sign up failed:", signUpError.message);
@@ -92,6 +85,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         type: success ? "success" : "error",
         closable: true,
       });
+
+      await fetchUser();
     } catch (error) {
       const signOutError = error as Error;
       console.error("Sign out failed:", signOutError.message);
