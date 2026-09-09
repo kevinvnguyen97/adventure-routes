@@ -12,10 +12,13 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { useTheme } from "@/hooks/use-theme";
+import { useSession } from "@/context/auth";
 
 export default function SignUp() {
   const navigate = useRouter();
   const theme = useTheme();
+
+  const { signUp } = useSession();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -24,6 +27,11 @@ export default function SignUp() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [reEnterPassword, setReEnterPassword] = useState("");
+
+  const signUpUser = () => {
+    signUp({ firstName, lastName, email, username, phoneNumber, password });
+    navigate.navigate("/");
+  };
 
   const textInputStyle: StyleProp<TextStyle> = [
     styles.textInput,
@@ -102,7 +110,7 @@ export default function SignUp() {
             styles.button,
             pressed ? styles.pressedButton : {},
           ]}
-          onPress={() => console.log("Hello")}
+          onPress={signUpUser}
         >
           <ThemedText>Register</ThemedText>
         </Pressable>
