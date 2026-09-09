@@ -69,7 +69,12 @@ export default function SignUp() {
           keyboardType="email-address"
           inputMode="email"
         />
-        <TextInput placeholder="Username" style={textInputStyle} />
+        <TextInput
+          placeholder="Username"
+          style={textInputStyle}
+          value={username}
+          onChangeText={setUsername}
+        />
         <TextInput
           placeholder="Phone Number"
           style={textInputStyle}
@@ -89,6 +94,8 @@ export default function SignUp() {
           placeholder="Re-Enter Password"
           style={textInputStyle}
           secureTextEntry
+          value={reEnterPassword}
+          onChangeText={setReEnterPassword}
         />
         <Pressable
           style={({ pressed }) => [
