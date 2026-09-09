@@ -6,13 +6,15 @@
       "@shared/*": ["../shared/src/*"],
       "@/*": ["./src/*"],
       "@/assets/*": ["./assets/*"]
-    }
+    },
+    "moduleResolution": "node16",
+    "module": "node16"
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "../shared/src/**/*.ts"
+    "../shared/src/**/*"
   ]
 }
