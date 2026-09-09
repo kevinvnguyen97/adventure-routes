@@ -40,11 +40,13 @@ usersRouter.get(
   "/profile",
   (req: Request, res: Response<GetProfileResponse>) => {
     const user = req.session?.user;
+    const sessionId = req.sessionID;
 
     if (user) {
       res.status(200).json({
         success: true,
         user,
+        sessionId,
         message: `Retrieved user info for ${user.username}`,
       });
     } else {

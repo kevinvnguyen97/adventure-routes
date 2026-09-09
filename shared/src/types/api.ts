@@ -10,7 +10,7 @@ export interface SignInResponse extends ServerResponse {
   sessionId?: string;
 }
 
-export interface GetProfileResponse extends ServerResponse {
+export interface GetProfileResponse extends SignInResponse {
   user?: UserWithoutPassword;
 }
 

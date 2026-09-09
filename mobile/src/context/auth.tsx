@@ -7,10 +7,11 @@ import {
   useEffect,
 } from "react";
 import { AxiosError } from "axios";
-import { SignInArgs } from "@shared/types/api";
+import { SignInArgs, SignUpArgs } from "@shared/types/api";
 
 const AuthContext = createContext<{
   signIn: (args: SignInArgs) => void;
+  signUp: (args: SignUpArgs) => void;
   signOut: () => void;
   sessionId: string;
   isLoading: boolean;
@@ -28,34 +29,88 @@ export const useSession = () => {
 
 export const SessionProvider = ({ children }: PropsWithChildren) => {
   const [sessionId, setSessionId] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
-  const signIn = async (args: SignInArgs) => {
+  const getProfile = async () => {
     try {
-      const { data } = await usersApi.signIn(args);
-      if (data.success) {
-        setSessionId(data.sessionId!);
-        console.log("Sign in successful");
+      const { data } = await usersApi.getProfile();
+      const { success, message, user, sessionId } = data;
+
+      if (success && user) {
+        setSessionId(sessionId!);
       } else {
-        console.error("Sign in failed:", data.message);
+        console.error("Get session failed:", message);
       }
     } catch (error) {
-      const axiosError = error as AxiosError;
-      console.error(
-        "Sign in error:",
-        axiosError.code,
-        axiosError.cause,
-        axiosError.message,
-      );
+      console.error("Get session error:", error);
     }
+  };
+
+  useEffect(() => {
+    getProfile();
+  }, [getProfile]);
+
+  const signIn = async (args: SignInArgs) => {
+    setIsLoading(true);
+    try {
+      const { data } = await usersApi.signIn(args);
+      const { success, message, sessionId } = data;
+
+      if (success) {
+        setSessionId(sessionId!);
+        console.log(message);
+      } else {
+        console.error("Sign in failed:", message);
+      }
+    } catch (error) {
+      console.error("Sign in error:", error);
+    }
+    setIsLoading(false);
+  };
+
+  const signUp = async (args: SignUpArgs) => {
+    setIsLoading(true);
+    try {
+      const { data } = await usersApi.signUp(args);
+      const { success, message } = data;
+
+      if (success) {
+        console.log(message);
+      } else {
+        console.error("Sign up failed:", message);
+      }
+    } catch (error) {
+      console.error("Sign up error:", error);
+    }
+    setIsLoading(false);
+  };
+
+  const signOut = async () => {
+    setIsLoading(true);
+    try {
+      const { data } = await usersApi.signOut();
+      const { success, message } = data;
+
+      if (success) {
+        setSessionId("");
+        console.log(message);
+      } else {
+        console.error("Sign out failed:", message);
+      }
+    } catch (error) {
+      console.error("Sign out error:", error);
+    }
+    setIsLoading(false);
   };
 
   return (
     <AuthContext.Provider
       value={{
         signIn,
-        signOut: () => {},
+        signUp,
+        signOut,
         sessionId,
-        isLoading: false,
+        isLoading,
       }}
     >
       {children}

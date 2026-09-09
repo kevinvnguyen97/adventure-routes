@@ -1,6 +1,5 @@
 import axios from "axios";
-import createUsersApi from "@shared/api/usersApi";
-import createTripsApi from "@shared/api/tripsApi";
+import { createUsersApi, createTripsApi } from "@shared/api";
 
 const axiosInstance = axios.create({
   baseURL: "http://192.168.86.41:8088",
