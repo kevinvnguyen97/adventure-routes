@@ -1,5 +1,4 @@
 import type { SystemStyleObject } from "@chakra-ui/react";
-import type { Libraries } from "@react-google-maps/api";
 
 export const autocompleteCss: Record<string, SystemStyleObject> = {
   // Entire container for the autocomplete dropdown
@@ -48,8 +47,6 @@ export const autocompleteCss: Record<string, SystemStyleObject> = {
     fontSize: "14px !important",
   },
 };
-
-export const googleLibraries: Libraries = ["places"];
 
 const Colors = {
   MUTCD_GREEN: "#006B54",
