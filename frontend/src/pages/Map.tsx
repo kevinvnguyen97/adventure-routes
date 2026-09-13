@@ -11,10 +11,10 @@ import { useLayoutEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Box, IconButton, useMediaQuery } from "@chakra-ui/react";
 import Loading from "@components/Loading";
-// import { RouteColors } from "@constants/google";
 // import { toaster } from "@utils/toaster";
 import TripDetailsCard from "@components/TripDetailsCard";
 import TripDetailsDrawer from "@components/TripDetailsDrawer";
+import TripRouteRenderer from "@components/TripRouteRenderer";
 
 const Map = () => {
   const { tripId = "" } = useParams();
@@ -79,6 +79,7 @@ const Map = () => {
           colorMode === "dark" ? ColorScheme.DARK : ColorScheme.LIGHT
         }
       >
+        <TripRouteRenderer waypoints={trip?.waypoints || []} />
         <MapControl position={ControlPosition.TOP_LEFT}>
           <IconButton
             onClick={() => setIsInfoVisible(!isInfoVisible)}
