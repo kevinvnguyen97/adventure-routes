@@ -11,7 +11,7 @@ services:
     ports:
       - "8088:8088"
     volumes:
-      - ./backend:/app/backend
+      - ./backend:/app
       - /app/node_modules
       - ./shared:/shared
 
@@ -27,7 +27,7 @@ services:
     ports:
       - "5173:5173"
     volumes:
-      - ./frontend:/app/frontend
+      - ./frontend:/app
       - /app/node_modules
       - ./shared:/shared
 
