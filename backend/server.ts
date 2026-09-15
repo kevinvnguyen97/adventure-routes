@@ -7,6 +7,7 @@ import * as cors from "cors";
 import { connectToDatabase } from "@services/database.service";
 import { tripsRouter } from "@routes/trips.router";
 import { usersRouter } from "@routes/users.router";
+import { googleRouter } from "@routes/google.router";
 
 const app = express();
 const port = 8088;
@@ -30,6 +31,7 @@ const startDatabase = async () => {
 
     app.use("/trips", tripsRouter);
     app.use("/users", usersRouter);
+    app.use("/google", googleRouter);
 
     const server = app.listen(port, host, () => {
       console.log(`Server started at http://{host}:${port}`);

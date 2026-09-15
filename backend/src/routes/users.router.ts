@@ -5,7 +5,7 @@ import {
   json as ExpressJson,
 } from "express";
 import { genSalt, hash, compare } from "bcrypt";
-import type { MongoServerError } from "mongodb";
+import { ObjectId, type MongoServerError } from "mongodb";
 
 import User, { UserWithoutPassword } from "@shared/models/user";
 import { collections } from "@services/database.service";
@@ -60,9 +60,9 @@ usersRouter.get(
 
 usersRouter.get("/", async (_, res: Response<GetAllUsersResponse>) => {
   try {
-    const users = (await collections.users
-      ?.find({}, { projection: { password: 0 } })
-      .toArray()) as unknown as User[];
+    const users = await collections.users
+      ?.find<User>({}, { projection: { password: 0 } })
+      .toArray();
     if (users) {
       res.json({
         success: true,
@@ -87,9 +87,9 @@ usersRouter.get("/", async (_, res: Response<GetAllUsersResponse>) => {
 // Post
 usersRouter.post(
   "/sign-up",
-  async (req: Request, res: Response<ServerResponse>) => {
+  async (req: Request<{}, {}, SignUpArgs>, res: Response<ServerResponse>) => {
     const { email, username, phoneNumber, firstName, lastName, password } =
-      req.body as SignUpArgs;
+      req.body;
     const hashedPassword = await getHashedPassword(password);
 
     const areAllFieldsFilled = [
@@ -108,6 +108,7 @@ usersRouter.post(
     }
 
     const newUser: User = {
+      _id: new ObjectId(),
       ...req.body,
       password: hashedPassword,
     };
@@ -161,13 +162,13 @@ usersRouter.post(
 
 usersRouter.post(
   "/sign-in",
-  async (req: Request, res: Response<SignInResponse>) => {
-    const { usernameOrEmail, password } = req.body as SignInArgs;
+  async (req: Request<{}, {}, SignInArgs>, res: Response<SignInResponse>) => {
+    const { usernameOrEmail, password } = req.body;
 
     try {
-      const user = (await collections.users?.findOne({
+      const user = await collections.users?.findOne<User>({
         $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
-      })) as unknown as User;
+      });
 
       if (!user) {
         res.status(404).json({ success: false, message: "User not found" });
@@ -180,7 +181,6 @@ usersRouter.post(
       });
 
       if (!password || !isPasswordValid) {
-        // res.status(401).send("Incorrect password");
         res.status(401).json({ success: false, message: "Incorrect password" });
         return;
       }
@@ -222,7 +222,10 @@ usersRouter.post(
 // Put
 usersRouter.put(
   "/profile",
-  async (req: Request, res: Response<ServerResponse>) => {
+  async (
+    req: Request<{}, {}, Partial<User>>,
+    res: Response<ServerResponse>,
+  ) => {
     const user = req.session?.user;
 
     if (!user) {
@@ -232,7 +235,7 @@ usersRouter.put(
       return;
     }
 
-    const updatedUser = req.body as Partial<User>;
+    const updatedUser = req.body;
 
     if (updatedUser.password) {
       updatedUser.password = await getHashedPassword(updatedUser.password);

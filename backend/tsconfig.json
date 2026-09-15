@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "paths": {
-      "@services/*": ["./services/*"],
-      "@routes/*": ["./routes/*"],
+      "@services/*": ["./src/services/*"],
+      "@routes/*": ["./src/routes/*"],
       "@shared/*": ["../shared/src/*"]
     },
     "esModuleInterop": true

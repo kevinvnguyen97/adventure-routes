@@ -11,6 +11,7 @@ import {
   GetTripResponse,
   GetTripsResponse,
   ServerResponse,
+  TripFormArgs,
 } from "@shared/types/api";
 
 export const tripsRouter = Router();
@@ -35,9 +36,7 @@ tripsRouter.get("/", async (req: Request, res: Response<GetTripsResponse>) => {
   const query = { userId: new ObjectId(user._id) };
 
   try {
-    const trips = (await collections.trips
-      ?.find(query)
-      .toArray()) as unknown as Trip[];
+    const trips = await collections.trips?.find<Trip>(query).toArray();
     res.status(200).json({
       success: true,
       message: "Trips found",
@@ -58,7 +57,7 @@ tripsRouter.get(
 
     try {
       const query = { _id: new ObjectId(tripId) };
-      const trip = (await collections.trips?.findOne(query)) as unknown as Trip;
+      const trip = await collections.trips?.findOne<Trip>(query);
 
       if (trip) {
         res.status(200).json({
@@ -83,46 +82,52 @@ tripsRouter.get(
 );
 
 // Post
-tripsRouter.post("/", async (req: Request, res: Response<ServerResponse>) => {
-  const user = req.session.user;
+tripsRouter.post(
+  "/",
+  async (req: Request<{}, {}, TripFormArgs>, res: Response<ServerResponse>) => {
+    const user = req.session.user;
 
-  if (!user) {
-    res.status(403).json({
-      success: false,
-      message: "Cannot create trip. Must be logged in",
-    });
-    return;
-  }
-
-  const newTrip = { ...req.body, userId: new ObjectId(user._id) } as Trip;
-
-  try {
-    const result = await collections.trips?.insertOne(newTrip);
-
-    if (result && result.acknowledged && result.insertedId) {
-      res.status(201).json({
-        success: true,
-        message: `Successfully created new route with id ${result.insertedId}`,
-      });
-    } else {
-      res.status(500).json({
+    if (!user) {
+      res.status(403).json({
         success: false,
-        message: "Failed to create route",
+        message: "Cannot create trip. Must be logged in",
+      });
+      return;
+    }
+
+    const newTrip = { ...req.body, userId: new ObjectId(user._id) } as Trip;
+
+    try {
+      const result = await collections.trips?.insertOne(newTrip);
+
+      if (result && result.acknowledged && result.insertedId) {
+        res.status(201).json({
+          success: true,
+          message: `Successfully created new route with id ${result.insertedId}`,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Failed to create route",
+        });
+      }
+    } catch (error) {
+      const tripError = error as Error;
+      res.status(400).json({
+        success: false,
+        message: tripError.message,
       });
     }
-  } catch (error) {
-    const tripError = error as Error;
-    res.status(400).json({
-      success: false,
-      message: tripError.message,
-    });
-  }
-});
+  },
+);
 
 // Put
 tripsRouter.put(
   "/:id",
-  async (req: Request<TripRequestParams>, res: Response<ServerResponse>) => {
+  async (
+    req: Request<TripRequestParams, {}, Trip>,
+    res: Response<ServerResponse>,
+  ) => {
     const user = req.session.user;
 
     if (!user) {
@@ -136,7 +141,7 @@ tripsRouter.put(
     const tripId = req.params.id;
 
     try {
-      const updatedTrip = req.body as Trip;
+      const updatedTrip = req.body;
       const query = { _id: new ObjectId(tripId) };
 
       const result = await collections.trips?.updateOne(query, {
