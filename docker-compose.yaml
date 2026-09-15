@@ -11,9 +11,9 @@ services:
     ports:
       - "8088:8088"
     volumes:
-      - ./backend:/app
+      - ./backend:/app/backend
       - /app/node_modules
-      - ./shared:/app/shared
+      - ./shared:/shared
 
   frontend:
     image: kevinvnguyen97/adventure-routes-frontend
@@ -27,9 +27,9 @@ services:
     ports:
       - "5173:5173"
     volumes:
-      - ./frontend:/app
+      - ./frontend:/app/frontend
       - /app/node_modules
-      - ./shared:/app/shared
+      - ./shared:/shared
 
   mongodb:
     image: mongo:latest
@@ -37,7 +37,7 @@ services:
     ports:
       - "27017:27017"
     env_file:
-      - ./backend/.env
+      - .env
     volumes:
       - mongo_data:/data/db
 
