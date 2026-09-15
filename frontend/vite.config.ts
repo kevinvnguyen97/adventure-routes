@@ -11,7 +11,6 @@ const SECTIONS = [
   "routes",
   "services",
   "utils",
-  "shared",
 ];
 
 // https://vite.dev/config/
