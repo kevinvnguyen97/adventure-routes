@@ -16,11 +16,19 @@ import TripDetailsCard from "@components/TripDetailsCard";
 import TripDetailsDrawer from "@components/TripDetailsDrawer";
 import TripRouteRenderer from "@components/TripRouteRenderer";
 
+type GoogleMapCamera = {
+  center: { lat: number; lng: number };
+  zoom: number;
+};
+
 const Map = () => {
   const { tripId = "" } = useParams();
   const { colorMode } = useColorMode();
   const [isLandscape] = useMediaQuery(["(orientation: landscape)"]);
-
+  const [camera, setCamera] = useState<GoogleMapCamera>({
+    center: { lat: 40.7128, lng: -74.006 },
+    zoom: 10,
+  });
   const [areRoutesSelected, setAreRoutesSelected] = useState<boolean[]>([]);
   const [isInfoVisible, setIsInfoVisible] = useState(false);
   const [tab, setTab] = useState("details");
@@ -73,11 +81,12 @@ const Map = () => {
           height: "calc(100vh - 120px)",
           borderRadius: "0.375rem",
         }}
-        defaultZoom={10}
-        defaultCenter={{ lat: 40.7128, lng: -74.006 }}
+        {...camera}
         colorScheme={
           colorMode === "dark" ? ColorScheme.DARK : ColorScheme.LIGHT
         }
+        onCameraChanged={(e) => setCamera(e.detail)}
+        streetViewControl
       >
         <TripRouteRenderer waypoints={trip?.waypoints || []} />
         <MapControl position={ControlPosition.TOP_LEFT}>

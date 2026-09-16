@@ -10,7 +10,8 @@ type FormattedComputeRoutesArgs = {
   origin: { address: string };
   destination: { address: string };
   intermediates?: { address: string }[];
-  travelMode: string;
+  travelMode?: string;
+  computeAlternativeRoutes?: boolean;
 };
 
 export const googleRouter = Router();
@@ -36,14 +37,13 @@ googleRouter.post(
     const destination = waypoints[waypoints.length - 1];
     const intermediateWaypoints = waypoints.slice(1, -1);
 
-    // @ts-expect-error Figuring out travel mode
     const formattedArgs: FormattedComputeRoutesArgs = {
       origin: { address: origin },
       destination: { address: destination },
       intermediates: intermediateWaypoints.map((waypoint) => ({
         address: waypoint,
       })),
-      // travelMode: "",
+      computeAlternativeRoutes: true,
     };
 
     console.log(formattedArgs);
