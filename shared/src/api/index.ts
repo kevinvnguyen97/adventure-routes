@@ -35,10 +35,14 @@ export const createTripsApi = (axiosInstance: AxiosInstance) => {
       await axiosInstance.get<GetTripsResponse>("/trips"),
     upsertTrip: async (args: UpsertTripArgs) => {
       const { tripId, ...tripForm } = args;
-      return await axiosInstance.post<ServerResponse>(
-        `/trips${tripId ? `/${tripId}` : ""}`,
-        tripForm,
-      );
+      if (tripId) {
+        return await axiosInstance.put<ServerResponse>(
+          `/trips/${tripId}`,
+          tripForm,
+        );
+      } else {
+        return await axiosInstance.post<ServerResponse>("/trips", tripForm);
+      }
     },
     deleteTrip: async (tripId: string) =>
       await axiosInstance.delete<ServerResponse>(`/trips/${tripId}`),
