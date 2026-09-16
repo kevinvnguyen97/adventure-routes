@@ -1,12 +1,13 @@
 import { Drawer, CloseButton } from "@chakra-ui/react";
 import TripTabs from "@components/TripTabs";
 import type Trip from "@shared/models/trip";
+import type { GoogleRoute } from "@shared/types/google";
 
 type TripDetailsProps = {
   trip: Trip;
   isInfoVisible: boolean;
   setIsInfoVisible: (isInfoVisible: boolean) => void;
-  routes: google.maps.DirectionsRoute[];
+  routes: GoogleRoute[];
   areRoutesSelected: boolean[];
   setAreRoutesSelected: (areRoutesSelected: boolean[]) => void;
   tab: string;

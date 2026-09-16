@@ -11,12 +11,13 @@ import type Trip from "@shared/models/trip";
 import { LuInfo, LuMap, LuMessageCircle, LuSettings } from "react-icons/lu";
 import TripDirections from "@components/TripDirections";
 import { defaultActivities } from "@constants/activities";
+import type { GoogleRoute } from "@shared/types/google";
 
 type TripTabsProps = {
   trip: Trip;
   tab: string;
   setTab: (tab: string) => void;
-  routes: google.maps.DirectionsRoute[];
+  routes: GoogleRoute[];
   areRoutesSelected: boolean[];
   setAreRoutesSelected: (areRoutesSelected: boolean[]) => void;
 };

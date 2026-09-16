@@ -3,14 +3,14 @@ export const getTotalDistance = (legs: google.maps.DirectionsLeg[]) => {
     legs
       .map(({ distance }) => distance?.value ?? 0)
       .reduce(
-        (accumulatedDistance, legDistance) => accumulatedDistance + legDistance
+        (accumulatedDistance, legDistance) => accumulatedDistance + legDistance,
       ) ?? 0
   );
 };
 
 export const formatMetricDistance = (meters: number) => {
   if (meters < 1000) {
-    return `${meters} m`;
+    return `${Math.round(meters)} m`;
   }
   const kilometers = meters / 1000;
   if (kilometers < 100) {
@@ -23,7 +23,7 @@ export const formatMetricDistance = (meters: number) => {
 export const formatImperialDistance = (meters: number) => {
   const feet = meters * 3.280839895;
   if (feet < 528) {
-    return `${feet} ft`;
+    return `${Math.round(feet)} ft`;
   }
 
   const miles = feet / 5280;
