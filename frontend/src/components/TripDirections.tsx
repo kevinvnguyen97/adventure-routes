@@ -42,6 +42,7 @@ const TripDirections = (props: TripDirectionsProps) => {
 
           return (
             <Accordion.Item
+              key={description}
               value={description}
               width="100%"
               bgColor="transparent"
@@ -85,6 +86,7 @@ const TripDirections = (props: TripDirectionsProps) => {
 
                       return (
                         <Accordion.Item
+                          key={index}
                           value={index.toString()}
                           bgColor="transparent"
                         >
@@ -121,6 +123,7 @@ const TripDirections = (props: TripDirectionsProps) => {
 
                                     return (
                                       <RoadSign
+                                        key={instructions}
                                         bgColor={roadSignColor}
                                         signText={formatDirections(
                                           instructions,

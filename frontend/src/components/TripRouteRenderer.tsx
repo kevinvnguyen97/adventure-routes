@@ -15,6 +15,7 @@ const TripRouteRenderer = (props: TripRouteRendererProps) => {
       {markerCoordinates.map((markerCoordinate, i) => {
         return (
           <AdvancedMarker
+            key={i}
             position={markerCoordinate as unknown as google.maps.LatLngLiteral}
           >
             <Pin glyphText={String.fromCharCode(i + 65)} glyphColor="white" />

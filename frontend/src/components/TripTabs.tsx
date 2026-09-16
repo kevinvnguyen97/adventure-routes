@@ -73,7 +73,7 @@ const TripTabs = (props: TripTabsProps) => {
             const isDestination = i === waypoints.length - 1;
 
             return (
-              <Text>
+              <Text key={waypoint}>
                 <Span fontWeight="bold">
                   {isOrigin ? "Origin" : isDestination ? "Destination" : "Stop"}{" "}
                   {`(${String.fromCharCode(i + 65)}): `}
