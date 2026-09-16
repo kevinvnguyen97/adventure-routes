@@ -1,4 +1,4 @@
-import { Polyline, Marker } from "@vis.gl/react-google-maps";
+import { Polyline, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
 import { RouteColors } from "@constants/google";
 import type { GoogleRoute, LatLng } from "@shared/types/google";
 
@@ -14,10 +14,11 @@ const TripRouteRenderer = (props: TripRouteRendererProps) => {
     <>
       {markerCoordinates.map((markerCoordinate, i) => {
         return (
-          <Marker
+          <AdvancedMarker
             position={markerCoordinate as unknown as google.maps.LatLngLiteral}
-            label={String.fromCharCode(i + 65)}
-          />
+          >
+            <Pin glyphText={String.fromCharCode(i + 65)} glyphColor="white" />
+          </AdvancedMarker>
         );
       })}
       {routes.map(
