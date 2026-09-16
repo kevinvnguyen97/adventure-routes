@@ -9,14 +9,8 @@ export type GoogleRoute = {
   description: string;
   warnings: string[];
   viewport: {
-    low: {
-      latitude: number;
-      longitude: number;
-    };
-    high: {
-      latitude: number;
-      longitude: number;
-    };
+    low: LatLng;
+    high: LatLng;
   };
   travelAdvisory: {};
   localizedValues: {
@@ -41,16 +35,10 @@ export type GoogleStep = {
     encodedPolyline: string;
   };
   startLocation: {
-    latLng: {
-      latitude: number;
-      longitude: number;
-    };
+    latLng: LatLng;
   };
   endLocation: {
-    latLng: {
-      latitude: number;
-      longitude: number;
-    };
+    latLng: LatLng;
   };
   navigationInstruction: {
     maneuver: string;
@@ -64,7 +52,7 @@ export type GoogleStep = {
       text: string;
     };
   };
-  travelMode: string;
+  travelMode: TravelMode;
 };
 
 export type GoogleLeg = {
@@ -75,16 +63,10 @@ export type GoogleLeg = {
     encodedPolyline: string;
   };
   startLocation: {
-    latLng: {
-      latitude: number;
-      longitude: number;
-    };
+    latLng: LatLng;
   };
   endLocation: {
-    latLng: {
-      latitude: number;
-      longitude: number;
-    };
+    latLng: LatLng;
   };
   steps: GoogleStep[];
   localizedValues: {
@@ -112,7 +94,29 @@ export type GoogleGeocodingResults = {
   intermediates: GoogleGeocoderStatus[];
 };
 
+export type LatLng = {
+  latitude: number;
+  longitude: number;
+};
+
+export type TravelMode =
+  | "BICYCLING"
+  | "DRIVING"
+  | "TRANSIT"
+  | "TWO_WHEELER"
+  | "WALKING";
+
+export type ComputeRoutesArgs = {
+  waypoints: string[];
+  travelMode?: TravelMode;
+};
+
 export type ComputeRoutesResponse = {
+  response?: GoogleComputeRoutesResponse;
+  success: boolean;
+  message: string;
+};
+export type GoogleComputeRoutesResponse = {
   routes?: GoogleRoute[];
   geocodingResults?: GoogleGeocodingResults;
   error?: {

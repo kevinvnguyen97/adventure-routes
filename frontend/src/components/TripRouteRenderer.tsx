@@ -1,7 +1,8 @@
-import { googleApi } from "@services/googleMapsAxiosInstance";
+import { googleApi } from "@services/axiosInstance";
 import { useMap, Polyline, Marker } from "@vis.gl/react-google-maps";
 import { useCallback, useEffect, useState } from "react";
 import { RouteColors } from "@constants/google";
+import type { GoogleRoute, LatLng } from "@shared/types/google";
 
 type CustomRouteViewPort = {
   high: { latitude: number; longitude: number };
@@ -14,19 +15,19 @@ type TripRouteRendererProps = {
 const TripRouteRenderer = (props: TripRouteRendererProps) => {
   const { waypoints } = props;
 
-  const [routes, setRoutes] = useState<google.maps.routes.Route[]>([]);
-  const [markerCoordinates, setMarkerCoordinates] = useState<
-    google.maps.LatLngLiteral[]
-  >([]);
+  const [routes, setRoutes] = useState<GoogleRoute[]>([]);
+  const [markerCoordinates, setMarkerCoordinates] = useState<LatLng[]>([]);
   const map = useMap();
 
   const getRoutes = useCallback(async () => {
     const { data } = await googleApi.computeRoutes({
       waypoints,
-      travelMode: google.maps.TravelMode.DRIVING,
+      travelMode: "DRIVING",
     });
 
-    const { routes = [] } = data;
+    const { response } = data;
+
+    const { routes = [] } = response || {};
     setRoutes(routes);
     return routes;
   }, [waypoints]);
@@ -43,11 +44,9 @@ const TripRouteRenderer = (props: TripRouteRendererProps) => {
         // Place all advanced markers
         const markerCoordinates = route.legs!.flatMap((leg) => {
           const { startLocation, endLocation } = leg;
-          // @ts-expect-error: Type not yet updated for new Routes API
           const { latLng: startLatLng } = startLocation;
           const { latitude: startLat, longitude: startLng } = startLatLng;
 
-          // @ts-expect-error: Type not yet updated for new Routes API
           const { latLng: endLatLng } = endLocation;
           const { latitude: endLat, longitude: endLng } = endLatLng;
 
@@ -89,7 +88,7 @@ const TripRouteRenderer = (props: TripRouteRendererProps) => {
       {markerCoordinates.map((markerCoordinate, i) => {
         return (
           <Marker
-            position={markerCoordinate}
+            position={markerCoordinate as unknown as google.maps.LatLngLiteral}
             label={String.fromCharCode(i + 65)}
           />
         );
@@ -97,7 +96,6 @@ const TripRouteRenderer = (props: TripRouteRendererProps) => {
       {routes.map((route, i) => (
         <Polyline
           key={i}
-          // @ts-expect-error types not yet updated for new Routes api
           encodedPath={route.polyline.encodedPolyline}
           strokeColor={RouteColors[i]}
           strokeWeight={6}
