@@ -1,9 +1,5 @@
 import axios from "axios";
-import { createUsersApi, createTripsApi } from "@shared/api";
-import type {
-  ComputeRoutesResponse,
-  ComputeRoutesArgs,
-} from "@shared/types/google";
+import { createUsersApi, createTripsApi, createGoogleApi } from "@shared/api";
 
 const axiosInstance = axios.create({
   baseURL: "/api",
@@ -13,10 +9,4 @@ const axiosInstance = axios.create({
 
 export const usersApi = createUsersApi(axiosInstance);
 export const tripsApi = createTripsApi(axiosInstance);
-export const googleApi = {
-  computeRoutes: async (args: ComputeRoutesArgs) =>
-    await axiosInstance.post<ComputeRoutesResponse>(
-      "/google/compute-routes",
-      args,
-    ),
-};
+export const googleApi = createGoogleApi(axiosInstance);

@@ -11,6 +11,7 @@ import type {
   UpsertTripArgs,
 } from "../types/api";
 import type { AxiosInstance } from "axios";
+import { ComputeRoutesArgs, ComputeRoutesResponse } from "../types/google";
 
 export const createUsersApi = (axiosInstance: AxiosInstance) => {
   return {
@@ -46,5 +47,15 @@ export const createTripsApi = (axiosInstance: AxiosInstance) => {
     },
     deleteTrip: async (tripId: string) =>
       await axiosInstance.delete<ServerResponse>(`/trips/${tripId}`),
+  };
+};
+
+export const createGoogleApi = (axiosInstance: AxiosInstance) => {
+  return {
+    computeRoutes: async (args: ComputeRoutesArgs) =>
+      await axiosInstance.post<ComputeRoutesResponse>(
+        "/google/compute-routes",
+        args,
+      ),
   };
 };
