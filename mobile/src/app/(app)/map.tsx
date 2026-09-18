@@ -1,6 +1,11 @@
 import { StyleSheet, useColorScheme } from "react-native";
 import { ThemedView } from "@/components/themed-view";
-import MapView, { LatLng, Marker, Polyline } from "react-native-maps";
+import MapView, {
+  LatLng,
+  Marker,
+  Polyline,
+  PROVIDER_DEFAULT,
+} from "react-native-maps";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { googleApi } from "@/services/axiosInstance";
 import { decode as decodePolyline } from "@mapbox/polyline";
@@ -70,7 +75,7 @@ export default function Map() {
       <MapView
         ref={mapRef}
         style={styles.map}
-        // provider={PROVIDER_GOOGLE}
+        provider={PROVIDER_DEFAULT}
         zoomControlEnabled
         zoomEnabled
         zoomTapEnabled

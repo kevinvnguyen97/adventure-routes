@@ -10,14 +10,17 @@ type TripRouteRendererProps = {
 const TripRouteRenderer = (props: TripRouteRendererProps) => {
   const { routes, areRoutesSelected, markerCoordinates } = props;
 
+  const formattedMarkerCoordinates: google.maps.LatLngLiteral[] =
+    markerCoordinates.map(({ latitude, longitude }) => ({
+      lat: latitude,
+      lng: longitude,
+    }));
+
   return (
     <>
-      {markerCoordinates.map((markerCoordinate, i) => {
+      {formattedMarkerCoordinates.map((markerCoordinate, i) => {
         return (
-          <AdvancedMarker
-            key={i}
-            position={markerCoordinate as unknown as google.maps.LatLngLiteral}
-          >
+          <AdvancedMarker key={i} position={markerCoordinate}>
             <Pin glyphText={String.fromCharCode(i + 65)} glyphColor="white" />
           </AdvancedMarker>
         );

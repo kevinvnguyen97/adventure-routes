@@ -18,6 +18,7 @@ import TripDetailsDrawer from "@components/TripDetailsDrawer";
 import TripRouteRenderer from "@components/TripRouteRenderer";
 import { googleApi } from "@services/axiosInstance";
 import type { GoogleRoute, LatLng } from "@shared/types/google";
+import { getWaypointCoordinates } from "@shared/utils";
 
 type GoogleMapCamera = {
   center: { lat: number; lng: number };
@@ -70,29 +71,8 @@ const Map = () => {
       const route = routes[0];
       if (route.viewport) {
         // Place all advanced markers
-        const markerCoordinates = route.legs!.flatMap((leg) => {
-          const { startLocation, endLocation } = leg;
-          const { latLng: startLatLng } = startLocation;
-          const { latitude: startLat, longitude: startLng } = startLatLng;
-
-          const { latLng: endLatLng } = endLocation;
-          const { latitude: endLat, longitude: endLng } = endLatLng;
-
-          return [
-            { lat: startLat, lng: startLng },
-            { lat: endLat, lng: endLng },
-          ];
-        });
-
-        const uniqueMarkerCoordinates = Array.from(
-          new Set(
-            markerCoordinates.map((markerCoordinate) =>
-              JSON.stringify(markerCoordinate),
-            ),
-          ),
-        ).map((string) => JSON.parse(string));
-
-        setMarkerCoordinates(uniqueMarkerCoordinates);
+        const markerCoordinates = getWaypointCoordinates(route);
+        setMarkerCoordinates(markerCoordinates);
 
         // Fit to map view
         const { high, low } = route.viewport;
