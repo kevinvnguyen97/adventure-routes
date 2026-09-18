@@ -24,6 +24,9 @@ export default defineConfig(({ mode }) => {
       watch: {
         usePolling: true,
       },
+      fs: {
+        allow: [".."],
+      },
       allowedHosts: ["adventure-routes.com"],
       proxy: {
         "/api": {
