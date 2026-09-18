@@ -1,5 +1,5 @@
 import { Accordion, VStack } from "@chakra-ui/react";
-import { RouteColors } from "@constants/google";
+import { RouteColors } from "@shared/constants/color";
 import type { GoogleRoute } from "@shared/types/google";
 import RouteAccordion from "@components/RouteAccordion";
 

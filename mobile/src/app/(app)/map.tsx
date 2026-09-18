@@ -10,7 +10,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { googleApi } from "@/services/axiosInstance";
 import { decode as decodePolyline } from "@mapbox/polyline";
 import { getWaypointCoordinates } from "@shared/utils";
-import { RouteColors } from "@shared/constants/google";
+import { RouteColors } from "@shared/constants/color";
 
 const waypoints = [
   "3131 Courtney Ln, South Chicago Heights",

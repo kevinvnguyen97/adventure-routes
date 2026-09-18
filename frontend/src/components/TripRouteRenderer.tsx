@@ -1,5 +1,5 @@
 import { Polyline, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
-import { RouteColors } from "@constants/google";
+import { RouteColors } from "@shared/constants/color";
 import type { GoogleRoute, LatLng } from "@shared/types/google";
 
 type TripRouteRendererProps = {
