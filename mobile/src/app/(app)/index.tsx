@@ -2,18 +2,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
-import { tripsApi } from "@/services/axiosInstance";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Pressable,
   StyleProp,
   StyleSheet,
   TextInput,
   TextStyle,
-  View,
-  ViewStyle,
 } from "react-native";
-import Trip from "@shared/models/trip";
 import { useTheme } from "@/hooks/use-theme";
 import { useRouter } from "expo-router";
 import TripCard from "@/components/trip-card";
