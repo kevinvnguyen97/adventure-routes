@@ -1,15 +1,19 @@
-import { tripsApi } from "@services/axiosInstance";
-import type Trip from "@shared/models/trip";
-import type { UpsertTripArgs } from "@shared/types/api";
-import { toaster } from "@utils/toaster";
+import { TripsApiFunctions } from "../api";
+import type Trip from "../models/trip";
+import type { UpsertTripArgs } from "../types/api";
 import { useCallback, useEffect, useState } from "react";
 
-export const useTrip = (tripId: string) => {
+type UseTripArgs = {
+  tripId: string;
+  tripsAxiosApi: TripsApiFunctions;
+};
+export const useTrip = (args: UseTripArgs) => {
+  const { tripId, tripsAxiosApi } = args;
   const [trip, setTrip] = useState<Trip>();
   const [isLoading, setIsLoading] = useState(true);
 
   const getTrip = useCallback(async (tripId: string) => {
-    const { data } = await tripsApi.getTrip(tripId);
+    const { data } = await tripsAxiosApi.getTrip(tripId);
 
     const { trip, success } = data;
 
@@ -26,47 +30,44 @@ export const useTrip = (tripId: string) => {
   return { trip, isLoading };
 };
 
-export const useTrips = () => {
+type UseTripsArgs = {
+  tripsAxiosApi: TripsApiFunctions;
+};
+export const useTrips = (args: UseTripsArgs) => {
+  const { tripsAxiosApi } = args;
   const [trips, setTrips] = useState<Trip[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const getTrips = useCallback(async () => {
-    const { data } = await tripsApi.getLoggedInUserTrips();
-    const { trips = [], success } = data;
+    const { data, status, statusText } =
+      await tripsAxiosApi.getLoggedInUserTrips();
+    const { trips = [], success, message } = data;
     if (success) {
       setTrips(trips);
     }
     setIsLoading(false);
+
+    return { data, trips, success, isLoading, message, status, statusText };
   }, [setTrips, setIsLoading]);
 
   const upsertTrip = async (args: UpsertTripArgs) => {
-    const { data, status, statusText } = await tripsApi.upsertTrip(args);
+    const { data, status, statusText } = await tripsAxiosApi.upsertTrip(args);
 
     const { success, message } = data;
 
-    toaster.create({
-      title: `${success ? "Code" : "Error"} ${status} ${statusText}`,
-      description: message,
-      type: success ? "success" : "error",
-      closable: true,
-    });
-
     getTrips();
+
+    return { data, status, statusText, success, message };
   };
 
   const deleteTrip = async (tripId: string) => {
-    const { data, status, statusText } = await tripsApi.deleteTrip(tripId);
+    const { data, status, statusText } = await tripsAxiosApi.deleteTrip(tripId);
 
     const { success, message } = data;
 
-    toaster.create({
-      title: `${success ? "Code" : "Error"} ${status} ${statusText}`,
-      description: message,
-      type: success ? "success" : "error",
-      closable: true,
-    });
-
     getTrips();
+
+    return { data, status, statusText, success, message };
   };
 
   useEffect(() => {

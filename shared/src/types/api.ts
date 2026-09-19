@@ -7,6 +7,7 @@ export type ServerResponse = {
 };
 
 export interface SignInResponse extends ServerResponse {
+  user?: UserWithoutPassword;
   sessionId?: string;
 }
 

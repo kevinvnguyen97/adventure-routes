@@ -1,11 +1,11 @@
 import { VStack, Table, IconButton } from "@chakra-ui/react";
 import UserAvatar from "@components/UserAvatar";
-import { useAuth } from "@utils/auth";
+import { useSession } from "@shared/context/auth";
 import { useLayoutEffect } from "react";
 import { LuPencil } from "react-icons/lu";
 
 const Settings = () => {
-  const { user } = useAuth();
+  const { user } = useSession();
 
   const { firstName, lastName, username, email, phoneNumber } = user || {};
 

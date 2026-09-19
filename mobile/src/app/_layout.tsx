@@ -3,7 +3,9 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar, useColorScheme } from "react-native";
 
 import { AnimatedSplashOverlay } from "@/components/animated-icon";
-import { SessionProvider, useSession } from "@/context/auth";
+import { SessionProvider, useSession } from "@shared/context/auth";
+
+import { usersApi } from "@/services/axiosInstance";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -37,7 +39,7 @@ function RootNavigator() {
 
 export default function Root() {
   return (
-    <SessionProvider>
+    <SessionProvider usersApi={usersApi}>
       <AnimatedSplashOverlay />
       <RootNavigator />
     </SessionProvider>

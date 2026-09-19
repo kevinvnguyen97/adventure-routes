@@ -1,5 +1,5 @@
 import { useColorMode } from "@components/ui/color-mode";
-import { useTrip } from "@hooks/trip";
+import { useTrip } from "@shared/hooks/trip";
 import {
   ColorScheme,
   ControlPosition,
@@ -19,6 +19,7 @@ import TripRouteRenderer from "@components/TripRouteRenderer";
 import { googleApi } from "@services/axiosInstance";
 import type { GoogleRoute, LatLng } from "@shared/types/google";
 import { getWaypointCoordinates } from "@shared/utils";
+import { tripsApi } from "@services/axiosInstance";
 
 type GoogleMapCamera = {
   center: { lat: number; lng: number };
@@ -43,7 +44,7 @@ const Map = () => {
   const [isInfoVisible, setIsInfoVisible] = useState(false);
   const [tab, setTab] = useState("details");
 
-  const { trip, isLoading } = useTrip(tripId);
+  const { trip, isLoading } = useTrip({ tripId, tripsAxiosApi: tripsApi });
 
   const { waypoints = [] } = trip || {};
 

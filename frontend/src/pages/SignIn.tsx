@@ -1,12 +1,13 @@
 import { Input, Image, Button, VStack, Field } from "@chakra-ui/react";
 import { PasswordInput } from "@components/ui/password-input";
-import { useAuth } from "@utils/auth";
+import { useSession } from "@shared/context/auth";
+import { toaster } from "@utils/toaster";
 import { useLayoutEffect, useState, type SubmitEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const { signInUser } = useAuth();
+  const { signIn } = useSession();
 
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,7 +21,17 @@ const SignIn = () => {
       return;
     }
 
-    signInUser({ usernameOrEmail, password });
+    const { success, status, statusText, message } = await signIn({
+      usernameOrEmail,
+      password,
+    });
+
+    toaster.create({
+      title: `${success ? "Code" : "Error"} ${status} ${statusText}`,
+      description: message,
+      type: success ? "success" : "error",
+      closable: true,
+    });
   };
 
   useLayoutEffect(() => {

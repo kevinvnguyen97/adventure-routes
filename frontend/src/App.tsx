@@ -7,17 +7,17 @@ import SignIn from "@pages/SignIn";
 import Dashboard from "@pages/Dashboard";
 import SignUp from "@pages/SignUp";
 import Map from "@pages/Map";
-import { useAuth } from "@utils/auth";
+import { useSession } from "@shared/context/auth";
 import Settings from "@pages/Settings";
 import Loading from "@components/Loading";
 
 const ProtectedRoute = () => {
-  const { user, isUserDataLoading } = useAuth();
+  const { user, isLoading } = useSession();
 
-  if (isUserDataLoading) {
+  if (isLoading) {
     return <Loading />;
   }
-  if (!user && !isUserDataLoading) {
+  if (!user && !isLoading) {
     return <Navigate to="/sign-in" replace />;
   }
 
@@ -25,13 +25,13 @@ const ProtectedRoute = () => {
 };
 
 const NonProtectedRoute = () => {
-  const { user, isUserDataLoading } = useAuth();
+  const { user, isLoading } = useSession();
 
-  if (isUserDataLoading) {
+  if (isLoading) {
     return <Loading />;
   }
 
-  if (!!user && !isUserDataLoading) {
+  if (!!user && !isLoading) {
     return <Navigate to="/" replace />;
   }
 

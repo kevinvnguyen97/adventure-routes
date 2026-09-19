@@ -11,18 +11,19 @@ import {
   PasswordInput,
   PasswordStrengthMeter,
 } from "@components/ui/password-input";
-import { useAuth } from "@utils/auth";
+import { useSession } from "@shared/context/auth";
 import { checkIsEmailValid } from "@utils/email";
 import {
   checkIsPasswordRequirementsMet,
   getPasswordStrength,
 } from "@utils/password";
+import { toaster } from "@utils/toaster";
 import { useLayoutEffect, useState, type SubmitEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const { signUpUser } = useAuth();
+  const { signUp } = useSession();
 
   // const [profilePictureUrl, setProfilePictureUrl] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -61,13 +62,20 @@ const SignUp = () => {
       return;
     }
 
-    signUpUser({
+    const { success, status, statusText, message } = await signUp({
       firstName,
       lastName,
       email,
       username,
       phoneNumber,
       password,
+    });
+
+    toaster.create({
+      title: `${success ? "Code" : "Error"} ${status} ${statusText}`,
+      description: message,
+      type: success ? "success" : "error",
+      closable: true,
     });
   };
 

@@ -188,6 +188,7 @@ usersRouter.post(
       req.session.user = userWithoutPassword as UserWithoutPassword;
       res.status(200).json({
         success: true,
+        user: userWithoutPassword,
         sessionId: req.sessionID,
         message: `Sign in successful! Welcome back, ${user.username}`,
       });
@@ -196,7 +197,6 @@ usersRouter.post(
       console.error("Sign in error:", userError);
       res.status(400).json({
         success: false,
-        sessionId: req.sessionID,
         message: userError.errmsg,
       } as SignInResponse);
     }

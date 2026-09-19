@@ -12,7 +12,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { useTheme } from "@/hooks/use-theme";
-import { useSession } from "@/context/auth";
+import { useSession } from "@shared/context/auth";
 
 export default function SignUp() {
   const navigate = useRouter();

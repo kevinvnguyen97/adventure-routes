@@ -10,10 +10,29 @@ import type {
   SignUpArgs,
   UpsertTripArgs,
 } from "../types/api";
-import type { AxiosInstance } from "axios";
+import type { AxiosInstance, AxiosResponse } from "axios";
 import { ComputeRoutesArgs, ComputeRoutesResponse } from "../types/google";
 
-export const createUsersApi = (axiosInstance: AxiosInstance) => {
+type SignInAxiosResponse = AxiosResponse<SignInResponse, any, {}, any>;
+type StandardAxiosResponse = AxiosResponse<ServerResponse, any, {}, any>;
+type GetProfileAxiosResponse = AxiosResponse<GetProfileResponse, any, {}, any>;
+type GetAllUsersAxiosResponse = AxiosResponse<
+  GetAllUsersResponse,
+  any,
+  {},
+  any
+>;
+
+export type UsersApiFunctions = {
+  signIn: (args: SignInArgs) => Promise<SignInAxiosResponse>;
+  signUp: (args: SignUpArgs) => Promise<StandardAxiosResponse>;
+  signOut: () => Promise<StandardAxiosResponse>;
+  getProfile: () => Promise<GetProfileAxiosResponse>;
+  getAllUsers: () => Promise<GetAllUsersAxiosResponse>;
+};
+export const createUsersApi = (
+  axiosInstance: AxiosInstance,
+): UsersApiFunctions => {
   return {
     signIn: async (args: SignInArgs) =>
       await axiosInstance.post<SignInResponse>("/users/sign-in", args),
@@ -28,7 +47,18 @@ export const createUsersApi = (axiosInstance: AxiosInstance) => {
   };
 };
 
-export const createTripsApi = (axiosInstance: AxiosInstance) => {
+type GetTripAxiosResponse = AxiosResponse<GetTripResponse, any, {}, any>;
+type GetTripsAxiosResponse = AxiosResponse<GetTripsResponse, any, {}, any>;
+
+export type TripsApiFunctions = {
+  getTrip: (tripId: string) => Promise<GetTripAxiosResponse>;
+  getLoggedInUserTrips: () => Promise<GetTripsAxiosResponse>;
+  upsertTrip: (args: UpsertTripArgs) => Promise<StandardAxiosResponse>;
+  deleteTrip: (tripId: string) => Promise<StandardAxiosResponse>;
+};
+export const createTripsApi = (
+  axiosInstance: AxiosInstance,
+): TripsApiFunctions => {
   return {
     getTrip: async (tripId: string) =>
       await axiosInstance.get<GetTripResponse>(`/trips/${tripId}`),
@@ -50,6 +80,17 @@ export const createTripsApi = (axiosInstance: AxiosInstance) => {
   };
 };
 
+type ComputeRoutesAxiosResponse = AxiosResponse<
+  ComputeRoutesResponse,
+  any,
+  {},
+  any
+>;
+export type GoogleApiFunctions = {
+  computeRoutes: (
+    args: ComputeRoutesArgs,
+  ) => Promise<ComputeRoutesAxiosResponse>;
+};
 export const createGoogleApi = (axiosInstance: AxiosInstance) => {
   return {
     computeRoutes: async (args: ComputeRoutesArgs) =>

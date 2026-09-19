@@ -14,13 +14,14 @@ import {
 import { LuLogOut, LuSettings, LuMenu } from "react-icons/lu";
 import { useState } from "react";
 import { ColorModeButton, useColorModeValue } from "@components/ui/color-mode";
-import { useAuth } from "@utils/auth";
+import { useSession } from "@shared/context/auth";
 import { useNavigate } from "react-router-dom";
 import UserAvatar from "@components/UserAvatar";
 import { Tooltip } from "@components/ui/tooltip";
+import { toaster } from "@utils/toaster";
 
 const UserPopover = () => {
-  const { user, signOutUser } = useAuth();
+  const { user, signOut } = useSession();
   const navigate = useNavigate();
   const [isUserPopoverOpen, setIsUserPopoverOpen] = useState(false);
 
@@ -29,6 +30,17 @@ const UserPopover = () => {
   const onUserPopoverChange = () => {
     setIsUserPopoverOpen(!isUserPopoverOpen);
   };
+
+  const signOutSubmit = async () => {
+    const { success, status, statusText, message } = await signOut();
+    toaster.create({
+      title: `${success ? "Code" : "Error"} ${status} ${statusText}`,
+      description: message,
+      type: success ? "success" : "error",
+      closable: true,
+    });
+  };
+
   return (
     <Popover.Root open={isUserPopoverOpen} onOpenChange={onUserPopoverChange}>
       <Popover.Trigger>
@@ -97,7 +109,7 @@ const UserPopover = () => {
                         }}
                       >
                         <IconButton
-                          onClick={signOutUser}
+                          onClick={signOutSubmit}
                           variant="ghost"
                           color="white"
                           _hover={{ color: "red" }}

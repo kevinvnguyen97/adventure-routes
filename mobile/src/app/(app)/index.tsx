@@ -14,12 +14,15 @@ import { useTheme } from "@/hooks/use-theme";
 import { useRouter } from "expo-router";
 import TripCard from "@/components/trip-card";
 import TripFormModal from "@/components/trip-form-modal";
-import { useTrips } from "@/hooks/trip";
+import { useTrips } from "@shared/hooks/trip";
+import { tripsApi } from "@/services/axiosInstance";
 
 export default function Dashboard() {
   const theme = useTheme();
   const navigate = useRouter();
-  const { trips, deleteTrip, upsertTrip } = useTrips();
+  const { trips, deleteTrip, upsertTrip } = useTrips({
+    tripsAxiosApi: tripsApi,
+  });
 
   const [isTripModalVisible, setIsTripModalVisible] = useState(false);
 
