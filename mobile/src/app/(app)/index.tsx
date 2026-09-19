@@ -16,6 +16,7 @@ import {
 import Trip from "@shared/models/trip";
 import { useTheme } from "@/hooks/use-theme";
 import { useRouter } from "expo-router";
+import TripCard from "@/components/trip-card";
 
 export default function Dashboard() {
   const theme = useTheme();
@@ -67,20 +68,8 @@ export default function Dashboard() {
               <ThemedText style={{ textAlign: "center" }}>+</ThemedText>
             </Pressable>
           </ThemedView>
-          {trips.map(({ _id, name }) => (
-            <Pressable style={tripCardContainerStyle} onPress={() => {}}>
-              <View>
-                <ThemedText
-                  key={_id.toString()}
-                  style={{ fontSize: 20, fontWeight: "bold" }}
-                >
-                  {name}
-                </ThemedText>
-              </View>
-              <View>
-                <ThemedText>X</ThemedText>
-              </View>
-            </Pressable>
+          {trips.map((trip) => (
+            <TripCard key={trip._id.toString()} trip={trip} />
           ))}
         </ThemedView>
       </SafeAreaView>
