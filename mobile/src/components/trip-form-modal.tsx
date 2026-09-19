@@ -10,13 +10,15 @@ import { ThemedView } from "@/components/themed-view";
 import { ThemedText } from "@/components/themed-text";
 import { useTheme } from "@/hooks/use-theme";
 import { useState } from "react";
+import { TripFormArgs } from "@shared/types/api";
 
 type TripFormModalProps = {
   isVisible: boolean;
   onClose: () => void;
+  upsertTrip: (args: TripFormArgs) => void;
 };
 export default function TripFormModal(props: TripFormModalProps) {
-  const { isVisible, onClose } = props;
+  const { isVisible, onClose, upsertTrip } = props;
   const theme = useTheme();
 
   const [name, setName] = useState("");
@@ -30,7 +32,10 @@ export default function TripFormModal(props: TripFormModalProps) {
     { backgroundColor: theme.fieldTextBackground, color: theme.fieldText },
   ];
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    upsertTrip({ name, description, activities, priceCategory, waypoints });
+    onClose();
+  };
 
   return (
     <Modal

@@ -18,24 +18,14 @@ import { useTheme } from "@/hooks/use-theme";
 import { useRouter } from "expo-router";
 import TripCard from "@/components/trip-card";
 import TripFormModal from "@/components/trip-form-modal";
+import { useTrips } from "@/hooks/trip";
 
 export default function Dashboard() {
   const theme = useTheme();
   const navigate = useRouter();
+  const { trips, deleteTrip, upsertTrip } = useTrips();
 
-  const [trips, setTrips] = useState<Trip[]>([]);
   const [isTripModalVisible, setIsTripModalVisible] = useState(false);
-
-  const getTrips = async () => {
-    const getTripsResponse = await tripsApi.getLoggedInUserTrips();
-    const { data } = getTripsResponse;
-    const { trips = [] } = data;
-    setTrips(trips);
-  };
-
-  useEffect(() => {
-    getTrips();
-  }, [getTrips]);
 
   const textInputStyle: StyleProp<TextStyle> = [
     styles.textInput,
@@ -75,6 +65,7 @@ export default function Dashboard() {
       <TripFormModal
         isVisible={isTripModalVisible}
         onClose={() => setIsTripModalVisible(false)}
+        upsertTrip={upsertTrip}
       />
     </ThemedView>
   );
