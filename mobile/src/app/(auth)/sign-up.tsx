@@ -35,7 +35,7 @@ export default function SignUp() {
 
   const textInputStyle: StyleProp<TextStyle> = [
     styles.textInput,
-    { backgroundColor: theme.backgroundElement, color: theme.fieldText },
+    { backgroundColor: theme.fieldTextBackground, color: theme.fieldText },
   ];
 
   return (

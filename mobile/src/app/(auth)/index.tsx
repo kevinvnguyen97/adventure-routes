@@ -8,6 +8,7 @@ import {
   Pressable,
   StyleProp,
   TextStyle,
+  StyleSheet,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
@@ -24,7 +25,7 @@ export default function SignIn() {
 
   const textInputStyle: StyleProp<TextStyle> = [
     styles.textInput,
-    { backgroundColor: theme.backgroundElement, color: theme.fieldText },
+    { backgroundColor: theme.fieldTextBackground, color: theme.fieldText },
   ];
 
   const signInUser = () => {
@@ -89,7 +90,7 @@ export default function SignIn() {
   );
 }
 
-const styles = {
+const styles = StyleSheet.create({
   textInput: {
     padding: 10,
     borderRadius: 5,
@@ -107,4 +108,4 @@ const styles = {
   pressedButton: {
     opacity: 0.5,
   },
-};
+});
