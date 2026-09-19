@@ -34,7 +34,7 @@ const Dashboard = () => {
             Create a Trip
           </Button>
         }
-        upsertTrip={(tripFields) => upsertTrip({ ...tripFields })}
+        upsertTrip={upsertTrip}
       />
       <SimpleGrid
         columns={[1, 1, 2, 3, 4, 5]}
