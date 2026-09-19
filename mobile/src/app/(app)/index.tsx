@@ -17,27 +17,21 @@ import Trip from "@shared/models/trip";
 import { useTheme } from "@/hooks/use-theme";
 import { useRouter } from "expo-router";
 import TripCard from "@/components/trip-card";
+import TripFormModal from "@/components/trip-form-modal";
 
 export default function Dashboard() {
   const theme = useTheme();
   const navigate = useRouter();
 
   const [trips, setTrips] = useState<Trip[]>([]);
+  const [isTripModalVisible, setIsTripModalVisible] = useState(false);
 
   const getTrips = async () => {
     const getTripsResponse = await tripsApi.getLoggedInUserTrips();
-
     const { data } = getTripsResponse;
-
     const { trips = [] } = data;
-
     setTrips(trips);
   };
-
-  const tripCardContainerStyle: StyleProp<ViewStyle> = [
-    styles.tripCardContainer,
-    { backgroundColor: theme.backgroundElement },
-  ];
 
   useEffect(() => {
     getTrips();
@@ -45,7 +39,11 @@ export default function Dashboard() {
 
   const textInputStyle: StyleProp<TextStyle> = [
     styles.textInput,
-    { backgroundColor: "white", color: theme.fieldTextBackground, flex: 1 },
+    {
+      backgroundColor: theme.fieldTextBackground,
+      color: theme.fieldText,
+      flex: 1,
+    },
   ];
 
   return (
@@ -60,6 +58,7 @@ export default function Dashboard() {
           >
             <TextInput placeholder="Search for Trip" style={textInputStyle} />
             <Pressable
+              onPress={() => setIsTripModalVisible(true)}
               style={({ pressed }) => [
                 styles.button,
                 pressed ? styles.pressedButton : {},
@@ -73,6 +72,10 @@ export default function Dashboard() {
           ))}
         </ThemedView>
       </SafeAreaView>
+      <TripFormModal
+        isVisible={isTripModalVisible}
+        onClose={() => setIsTripModalVisible(false)}
+      />
     </ThemedView>
   );
 }
