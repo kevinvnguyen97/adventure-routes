@@ -140,7 +140,7 @@ export const SessionProvider = (props: SesssionProviderProps) => {
       const { success, message } = data;
 
       if (success) {
-        setUser(EMPTY_USER);
+        setUser(undefined);
         setSessionId("");
         console.log(message);
       } else {
