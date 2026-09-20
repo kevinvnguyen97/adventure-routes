@@ -45,7 +45,7 @@ export default function TripFormModal(props: TripFormModalProps) {
       focusable
       allowSwipeDismissal
       presentationStyle="formSheet"
-      backdropColor="orange"
+      backdropColor={theme.background}
       style={{ padding: 20, paddingTop: 30 }}
     >
       <ThemedView style={{ gap: 10 }}>

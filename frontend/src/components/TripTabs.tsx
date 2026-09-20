@@ -37,28 +37,28 @@ const TripTabs = (props: TripTabsProps) => {
       <Tabs.List>
         <Tabs.Trigger
           value="details"
-          color="white"
+          color="text"
           _selected={{ bgColor: { _light: "orange.600", _dark: "gray.800" } }}
         >
           <LuInfo size={25} />
         </Tabs.Trigger>
         <Tabs.Trigger
           value="directions"
-          color="white"
+          color="text"
           _selected={{ bgColor: { _light: "orange.600", _dark: "gray.800" } }}
         >
           <LuMap size={25} />
         </Tabs.Trigger>
         <Tabs.Trigger
           value="comments"
-          color="white"
+          color="text"
           _selected={{ bgColor: { _light: "orange.600", _dark: "gray.800" } }}
         >
           <LuMessageCircle size={25} />
         </Tabs.Trigger>
         <Tabs.Trigger
           value="settings"
-          color="white"
+          color="text"
           _selected={{ bgColor: { _light: "orange.600", _dark: "gray.800" } }}
         >
           <LuSettings size={25} />

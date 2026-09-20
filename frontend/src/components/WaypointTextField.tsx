@@ -76,7 +76,7 @@ const WaypointTextField = (props: WaypointTextFieldProps) => {
       touchAction="none"
       required={isOrigin || isDestination}
     >
-      <Field.Label color="white">
+      <Field.Label color="text">
         {isOrigin
           ? "Origin"
           : isDestination
@@ -105,7 +105,7 @@ const WaypointTextField = (props: WaypointTextFieldProps) => {
           <IconButton
             onClick={removeWaypoint}
             variant="ghost"
-            color="white"
+            color="text"
             size="xs"
             _hover={{ bgColor: { _light: "orange.600" } }}
           >
@@ -116,7 +116,7 @@ const WaypointTextField = (props: WaypointTextFieldProps) => {
           <IconButton
             onClick={addWaypoint}
             variant="ghost"
-            color="white"
+            color="text"
             size="xs"
             _hover={{ bgColor: { _light: "orange.600" } }}
           >
@@ -127,7 +127,7 @@ const WaypointTextField = (props: WaypointTextFieldProps) => {
           {...attributes}
           {...listeners}
           variant="ghost"
-          color="white"
+          color="text"
           size="xs"
           _hover={{ bgColor: { _light: "orange.600" } }}
         >

@@ -57,7 +57,7 @@ const Dashboard = () => {
       />
       <TripFormDialog
         triggerButton={
-          <Button colorPalette="orange" color="white">
+          <Button colorPalette="orange" color="text">
             Create a Trip
           </Button>
         }

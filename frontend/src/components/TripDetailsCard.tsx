@@ -33,7 +33,7 @@ const TripDetailsCard = (props: TripDetailsProps) => {
       variant="subtle"
       size="lg"
       bgColor={{ _light: "orange.500" }}
-      color="white"
+      color="text"
       width={isInfoVisible ? 600 : 0}
       data-state="open"
       transition="width 0.5s ease"
@@ -43,7 +43,7 @@ const TripDetailsCard = (props: TripDetailsProps) => {
       <Card.Header as={HStack} justifyContent="space-between">
         <Card.Title>{name}</Card.Title>
         <CloseButton
-          color="white"
+          color="text"
           colorPalette="red"
           _hover={{ bgColor: { _light: "white" }, color: "red" }}
           onClick={() => setIsInfoVisible(false)}

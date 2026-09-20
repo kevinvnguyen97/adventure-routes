@@ -201,19 +201,19 @@ const TripFormDialog = (props: TripFormDialogProps) => {
           >
             <Dialog.CloseTrigger asChild>
               <CloseButton
-                color="white"
+                color="text"
                 colorPalette="red"
                 _hover={{ bgColor: { _light: "white" }, color: "red" }}
               />
             </Dialog.CloseTrigger>
             <Dialog.Header>
-              <Dialog.Title color="white">
+              <Dialog.Title color="text">
                 {trip ? "Edit" : "Create"} Trip
               </Dialog.Title>
             </Dialog.Header>
             <Dialog.Body display="flex" flexDirection="column" gap={5}>
               <Field.Root orientation="horizontal" required>
-                <Field.Label color="white">
+                <Field.Label color="text">
                   Name <Field.RequiredIndicator />
                 </Field.Label>
                 <Input
@@ -224,7 +224,7 @@ const TripFormDialog = (props: TripFormDialogProps) => {
                 />
               </Field.Root>
               <Field.Root orientation="horizontal">
-                <Field.Label color="white">Description</Field.Label>
+                <Field.Label color="text">Description</Field.Label>
                 <Textarea
                   ref={descriptionTextAreaRef}
                   value={description}
@@ -293,7 +293,7 @@ const TripFormDialog = (props: TripFormDialogProps) => {
                 type="submit"
                 variant="solid"
                 colorPalette="orange"
-                color="white"
+                color="text"
               >
                 {trip ? "Save" : "Create"}
               </Button>

@@ -39,13 +39,13 @@ const TripDetailsDrawer = (props: TripDetailsProps) => {
       <Drawer.Positioner padding={5}>
         <Drawer.Content
           bgColor={{ _light: "orange/60", _dark: "gray.950/60" }}
-          color="white"
+          color="text"
           backdropFilter="blur(5px)"
           borderRadius={5}
         >
           <Drawer.CloseTrigger>
             <CloseButton
-              color="white"
+              color="text"
               colorPalette="red"
               _hover={{ bgColor: { _light: "white" }, color: "red" }}
               onClick={() => setIsInfoVisible(false)}

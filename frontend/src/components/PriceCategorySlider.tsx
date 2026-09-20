@@ -8,7 +8,7 @@ const PriceCategorySlider = (props: PriceCategorySliderProps) => {
   const { priceCategory, setPriceCategory } = props;
   return (
     <Field.Root orientation="horizontal" required>
-      <Field.Label color="white">
+      <Field.Label color="text">
         Price Category <Field.RequiredIndicator />
       </Field.Label>
       <Slider.Root

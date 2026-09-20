@@ -52,7 +52,7 @@ const SignIn = () => {
         gap={3}
       >
         <Field.Root required>
-          <Field.Label color="white">
+          <Field.Label color="text">
             Username or Email <Field.RequiredIndicator />
           </Field.Label>
           <Input
@@ -62,7 +62,7 @@ const SignIn = () => {
           />
         </Field.Root>
         <Field.Root required>
-          <Field.Label color="white">
+          <Field.Label color="text">
             Password <Field.RequiredIndicator />
           </Field.Label>
           <PasswordInput
@@ -76,7 +76,7 @@ const SignIn = () => {
           variant="solid"
           type="submit"
           colorPalette="orange"
-          color="white"
+          color="text"
           disabled={!isFormValid}
         >
           Sign In

@@ -11,7 +11,7 @@ import {
   type ColorModeProviderProps,
 } from "@components/ui/color-mode";
 import { autocompleteCss } from "@constants/google";
-import { Colors, ColorTheme } from "@shared/constants/color";
+import { ColorTheme } from "@shared/constants/color";
 
 const customConfig = defineConfig({
   theme: {
@@ -33,12 +33,23 @@ const customConfig = defineConfig({
             },
           },
         },
+        fieldTextBackground: {
+          DEFAULT: {
+            value: {
+              _light: ColorTheme.light.fieldTextBackground,
+              _dark: ColorTheme.dark.fieldTextBackground,
+            },
+          },
+        },
       },
     },
   },
   globalCss: {
     body: {
-      bgColor: { _light: Colors.ORANGE, _dark: Colors.BLACK },
+      bgColor: {
+        _light: ColorTheme.light.background,
+        _dark: ColorTheme.dark.background,
+      },
       padding: 5,
     },
     ...autocompleteCss,

@@ -56,7 +56,7 @@ const UserPopover = () => {
             bgColor={{ _light: "orange.600/60", _dark: "gray.900/60" }}
             backdropFilter="blur(5px)"
           >
-            <Popover.Body display="flex" flexDirection="column" color="white">
+            <Popover.Body display="flex" flexDirection="column" color="text">
               <HStack justifyContent="space-between">
                 <HStack gap={2} alignItems="center">
                   <UserAvatar fallbackProps={{ name: user?.username }} />
@@ -68,7 +68,7 @@ const UserPopover = () => {
                 <ButtonGroup>
                   <ColorModeButton
                     variant="ghost"
-                    color="white"
+                    color="text"
                     _hover={{ _light: { bgColor: "orange.600" } }}
                   />
                   {user && (
@@ -89,7 +89,7 @@ const UserPopover = () => {
                         <IconButton
                           onClick={() => navigate("settings")}
                           variant="ghost"
-                          color="white"
+                          color="text"
                           _hover={{ _light: { bgColor: "orange.600" } }}
                         >
                           <LuSettings />
@@ -111,7 +111,7 @@ const UserPopover = () => {
                         <IconButton
                           onClick={signOutSubmit}
                           variant="ghost"
-                          color="white"
+                          color="text"
                           _hover={{ color: "red" }}
                         >
                           <LuLogOut />
@@ -142,7 +142,7 @@ const NavigationBar = () => {
       <Flex h={5} alignItems="center" justifyContent="space-between">
         <IconButton
           variant="ghost"
-          color="white"
+          color="text"
           smDown={{ display: "block" }}
           sm={{ display: "none" }}
           size="xl"
@@ -153,7 +153,7 @@ const NavigationBar = () => {
           <Image src="/small_logo.png" width={20} height="auto" />
           <Button
             variant="ghost"
-            color="white"
+            color="text"
             smDown={{ display: "none" }}
             sm={{ display: "block" }}
             size="lg"

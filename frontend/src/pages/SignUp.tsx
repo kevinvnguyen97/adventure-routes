@@ -102,7 +102,7 @@ const SignUp = () => {
             <Avatar.Image />
           </Avatar.Root>
           <Field.Root required>
-            <Field.Label color="white">
+            <Field.Label color="text">
               First Name <Field.RequiredIndicator />
             </Field.Label>
             <Input
@@ -113,7 +113,7 @@ const SignUp = () => {
             />
           </Field.Root>
           <Field.Root required>
-            <Field.Label color="white">
+            <Field.Label color="text">
               Last Name <Field.RequiredIndicator />
             </Field.Label>
             <Input
@@ -124,7 +124,7 @@ const SignUp = () => {
           </Field.Root>
         </HStack>
         <Field.Root required invalid={!!email && !checkIsEmailValid(email)}>
-          <Field.Label color="white">
+          <Field.Label color="text">
             Email <Field.RequiredIndicator />
           </Field.Label>
           <Input
@@ -135,7 +135,7 @@ const SignUp = () => {
           <Field.ErrorText>Email must be valid</Field.ErrorText>
         </Field.Root>
         <Field.Root required>
-          <Field.Label color="white">
+          <Field.Label color="text">
             Username <Field.RequiredIndicator />
           </Field.Label>
           <Input
@@ -145,7 +145,7 @@ const SignUp = () => {
           />
         </Field.Root>
         <Field.Root required>
-          <Field.Label color="white">
+          <Field.Label color="text">
             Phone Number <Field.RequiredIndicator />
           </Field.Label>
           <Input
@@ -159,7 +159,7 @@ const SignUp = () => {
           required
           invalid={!!password && !checkIsPasswordValid(password)}
         >
-          <Field.Label color="white">
+          <Field.Label color="text">
             Password <Field.RequiredIndicator />
           </Field.Label>
           <PasswordInput
@@ -175,7 +175,7 @@ const SignUp = () => {
             <PasswordStrengthMeter
               value={getPasswordStrength(password)}
               width="100%"
-              color="white"
+              color="text"
             />
           )}
         </Field.Root>
@@ -183,7 +183,7 @@ const SignUp = () => {
           required
           invalid={!!reEnterPassword && !checkIsPasswordValid(reEnterPassword)}
         >
-          <Field.Label color="white">
+          <Field.Label color="text">
             Re-Enter Password <Field.RequiredIndicator />
           </Field.Label>
           <PasswordInput
@@ -199,7 +199,7 @@ const SignUp = () => {
             <PasswordStrengthMeter
               value={getPasswordStrength(reEnterPassword)}
               width="100%"
-              color="white"
+              color="text"
             />
           )}
         </Field.Root>
@@ -207,7 +207,7 @@ const SignUp = () => {
           variant="solid"
           type="submit"
           colorPalette="orange"
-          color="white"
+          color="text"
           disabled={!isFormValid}
         >
           Sign Up

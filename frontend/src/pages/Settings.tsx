@@ -27,7 +27,7 @@ const Settings = () => {
         _hover={{ cursor: "pointer" }}
         size="2xl"
       />
-      <Table.Root width={500} variant="line" size="lg" color="white">
+      <Table.Root width={500} variant="line" size="lg" color="text">
         <Table.Row bgColor="transparent">
           <Table.Cell fontWeight="bold">Name</Table.Cell>
           <Table.Cell>{name}</Table.Cell>

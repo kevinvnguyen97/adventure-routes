@@ -30,14 +30,14 @@ const ActivityMultiSelect = (props: ActivityMultiSelectProps) => {
 
   return (
     <Field.Root orientation="horizontal">
-      <Field.Label color="white" marginTop={activities.length > 0 ? 5 : 0}>
+      <Field.Label color="text" marginTop={activities.length > 0 ? 5 : 0}>
         Activities
       </Field.Label>
       <VStack width="100%">
         <Wrap gap={0.5}>
           {activities.map((activity) => {
             const defaultActivity = defaultActivities.find(
-              (defaultActivity) => defaultActivity.text === activity
+              (defaultActivity) => defaultActivity.text === activity,
             );
             return (
               <Badge key={activity}>

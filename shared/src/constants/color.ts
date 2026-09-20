@@ -9,6 +9,7 @@ export const Colors = {
   BLACK: "#000000",
   ALMOST_BLACK: "#212225",
   ALMOST_BLACK_II: "#2E3135",
+  TRANSPARENT: "transparent",
 } as const;
 
 export const ColorTheme = {

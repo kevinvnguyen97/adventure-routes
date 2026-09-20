@@ -29,7 +29,7 @@ const TripCard = (props: TripCardProps) => {
     <Card.Root
       bgColor={{ _light: "orange.500" }}
       width="100%"
-      color="white"
+      color="text"
       variant="subtle"
     >
       <HStack
@@ -40,16 +40,14 @@ const TripCard = (props: TripCardProps) => {
         <Box width="100%">
           <Card.Header>
             <Card.Title>{trip.name}</Card.Title>
-            <Card.Description color="white">
-              {trip.description}
-            </Card.Description>
+            <Card.Description color="text">{trip.description}</Card.Description>
           </Card.Header>
           <Card.Body>
-            <Card.Description color="white">
+            <Card.Description color="text">
               <Span fontWeight="bold">Origin: </Span>
               <Span>{trip.waypoints[0]}</Span>
             </Card.Description>
-            <Card.Description color="white">
+            <Card.Description color="text">
               <Span fontWeight="bold">Destination: </Span>
               <Span>{trip.waypoints[trip.waypoints.length - 1]}</Span>
             </Card.Description>
@@ -80,7 +78,7 @@ const TripCard = (props: TripCardProps) => {
         >
           <CloseButton
             onClick={deleteTrip}
-            color="white"
+            color="text"
             colorPalette="red"
             _hover={{ bgColor: { _light: "white" }, color: "red" }}
           />
@@ -88,7 +86,7 @@ const TripCard = (props: TripCardProps) => {
             trip={trip}
             triggerButton={
               <IconButton
-                color="white"
+                color="text"
                 bgColor={{ _hover: { _light: "orange.600" } }}
               >
                 <LuPencil />
@@ -97,7 +95,7 @@ const TripCard = (props: TripCardProps) => {
             upsertTrip={upsertTrip}
           />
           <IconButton
-            color="white"
+            color="text"
             bgColor={{ _hover: { _light: "orange.600" } }}
             onClick={() => navigate(`map/${trip._id}`)}
           >
