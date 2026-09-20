@@ -1,5 +1,4 @@
 import {
-  Modal,
   Pressable,
   StyleProp,
   StyleSheet,
@@ -17,6 +16,7 @@ import {
   BottomSheetBackgroundProps,
   BottomSheetView,
   BottomSheetBackdrop,
+  BottomSheetTextInput,
 } from "@gorhom/bottom-sheet";
 import { BlurTint, BlurView } from "expo-blur";
 import { Colors, ColorTheme } from "@shared/constants/color";
@@ -29,7 +29,6 @@ const BlurredBackground = (props: BottomSheetBackgroundProps) => {
 
   const backgroundColor: StyleProp<ViewStyle> = {
     backgroundColor: theme.background,
-    opacity: 5,
     shadowOpacity: 0.1,
   };
 
@@ -72,7 +71,7 @@ export default function TripFormBottomSheet(props: TripFormBottomSheetProps) {
     { backgroundColor: theme.fieldTextBackground, color: theme.fieldText },
   ];
 
-  const snapPoints = useMemo(() => ["50%"], []);
+  const snapPoints = useMemo(() => ["50%", "75%"], []);
 
   const handleBottomSheetChanges = useCallback((index: number) => {
     console.log("Handling bottom sheet changes:", index);
@@ -92,18 +91,20 @@ export default function TripFormBottomSheet(props: TripFormBottomSheetProps) {
       onChange={handleBottomSheetChanges}
       enableDismissOnClose
       handleIndicatorStyle={{ backgroundColor: Colors.WHITE }}
+      keyboardBehavior="extend"
+      keyboardBlurBehavior="restore"
     >
       <BottomSheetView
         style={{ gap: 10, padding: 20, paddingBottom: BottomTabInset }}
       >
         <ThemedText style={{ fontSize: 25 }}>Create Trip</ThemedText>
-        <TextInput
+        <BottomSheetTextInput
           value={name}
           onChangeText={setName}
           style={textInputStyle}
           placeholder="Name"
         />
-        <TextInput
+        <BottomSheetTextInput
           value={description}
           onChangeText={setDescription}
           style={textInputStyle}
@@ -112,7 +113,7 @@ export default function TripFormBottomSheet(props: TripFormBottomSheetProps) {
           numberOfLines={3}
         />
         {waypoints.map((waypoint, i) => (
-          <TextInput
+          <BottomSheetTextInput
             key={i}
             placeholder={i === 0 ? "Origin" : "Destination"}
             value={waypoint}
