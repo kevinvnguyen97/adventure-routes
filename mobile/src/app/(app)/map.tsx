@@ -4,7 +4,7 @@ import MapView, {
   LatLng,
   Marker,
   Polyline,
-  PROVIDER_GOOGLE,
+  PROVIDER_DEFAULT,
 } from "react-native-maps";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { googleApi } from "@/services/axiosInstance";
@@ -75,7 +75,7 @@ export default function Map() {
       <MapView
         ref={mapRef}
         style={styles.map}
-        provider={PROVIDER_GOOGLE}
+        provider={PROVIDER_DEFAULT}
         zoomControlEnabled
         zoomEnabled
         zoomTapEnabled
