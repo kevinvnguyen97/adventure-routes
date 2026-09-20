@@ -45,22 +45,13 @@ export const useSession = () => {
   return value;
 };
 
-const EMPTY_USER: UserWithoutPassword = {
-  _id: "",
-  username: "",
-  firstName: "",
-  lastName: "",
-  email: "",
-  phoneNumber: "",
-};
-
 type SesssionProviderProps = {
   usersApi: UsersApiFunctions;
   children: ReactNode;
 };
 export const SessionProvider = (props: SesssionProviderProps) => {
   const { usersApi, children } = props;
-  const [user, setUser] = useState<UserWithoutPassword>(EMPTY_USER);
+  const [user, setUser] = useState<UserWithoutPassword | undefined>();
   const [sessionId, setSessionId] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
