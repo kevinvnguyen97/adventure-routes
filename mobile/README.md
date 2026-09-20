@@ -10,7 +10,18 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npm install
    ```
 
-2. Start the app
+2. Configure environment variables
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Set `EXPO_PUBLIC_BACKEND_URL` and `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY` in
+   `.env`. The Google Cloud key must have the Maps SDK for Android enabled and
+   be restricted to package `com.adventureroutes.mobile` and the SHA-1
+   fingerprint used to sign the build.
+
+3. Start the app
 
    ```bash
    npx expo start
