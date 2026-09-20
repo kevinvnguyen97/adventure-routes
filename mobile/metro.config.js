@@ -10,6 +10,7 @@ const metroConfig = {
       path.resolve(workspaceRoot, "node_modules"),
       path.resolve(projectRoot, "node_modules"),
     ],
+    disableHierarchicalLookup: true,
   },
 };
 
