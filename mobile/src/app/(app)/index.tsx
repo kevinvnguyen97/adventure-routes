@@ -2,7 +2,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Pressable,
   StyleProp,
@@ -13,9 +13,10 @@ import {
 import { useTheme } from "@/hooks/use-theme";
 import { useRouter } from "expo-router";
 import TripCard from "@/components/trip-card";
-import TripFormModal from "@/components/trip-form-modal";
+import TripFormBottomSheet from "@/components/trip-form-bottomsheet";
 import { useTrips } from "@shared/hooks/trip";
 import { tripsApi } from "@/services/axiosInstance";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 export default function Dashboard() {
   const theme = useTheme();
@@ -24,7 +25,7 @@ export default function Dashboard() {
     tripsAxiosApi: tripsApi,
   });
 
-  const [isTripModalVisible, setIsTripModalVisible] = useState(false);
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const textInputStyle: StyleProp<TextStyle> = [
     styles.textInput,
@@ -34,6 +35,10 @@ export default function Dashboard() {
       flex: 1,
     },
   ];
+
+  const openBottomSheet = () => {
+    bottomSheetModalRef.current?.present();
+  };
 
   return (
     <ThemedView style={{ flex: 1, padding: 20 }}>
@@ -47,13 +52,18 @@ export default function Dashboard() {
           >
             <TextInput placeholder="Search for Trip" style={textInputStyle} />
             <Pressable
-              onPress={() => setIsTripModalVisible(true)}
+              onPress={openBottomSheet}
               style={({ pressed }) => [
                 styles.button,
                 pressed ? styles.pressedButton : {},
               ]}
             >
-              <ThemedText style={{ textAlign: "center" }}>+</ThemedText>
+              <ThemedText
+                style={{ textAlign: "center" }}
+                onPress={openBottomSheet}
+              >
+                +
+              </ThemedText>
             </Pressable>
           </ThemedView>
           {trips.map((trip) => (
@@ -61,9 +71,8 @@ export default function Dashboard() {
           ))}
         </ThemedView>
       </SafeAreaView>
-      <TripFormModal
-        isVisible={isTripModalVisible}
-        onClose={() => setIsTripModalVisible(false)}
+      <TripFormBottomSheet
+        bottomSheetRef={bottomSheetModalRef}
         upsertTrip={upsertTrip}
       />
     </ThemedView>

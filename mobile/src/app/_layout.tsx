@@ -6,6 +6,8 @@ import { AnimatedSplashOverlay } from "@/components/animated-icon";
 import { SessionProvider, useSession } from "@shared/context/auth";
 
 import { usersApi } from "@/services/axiosInstance";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -40,8 +42,12 @@ function RootNavigator() {
 export default function Root() {
   return (
     <SessionProvider usersApi={usersApi}>
-      <AnimatedSplashOverlay />
-      <RootNavigator />
+      <GestureHandlerRootView>
+        <BottomSheetModalProvider>
+          <AnimatedSplashOverlay />
+          <RootNavigator />
+        </BottomSheetModalProvider>
+      </GestureHandlerRootView>
     </SessionProvider>
   );
 }
