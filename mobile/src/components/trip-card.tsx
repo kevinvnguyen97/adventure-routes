@@ -11,9 +11,10 @@ import { useTheme } from "@/hooks/use-theme";
 
 type TripCardProps = {
   trip: Trip;
+  goToMap: () => void;
 };
 export default function TripCard(props: TripCardProps) {
-  const { trip } = props;
+  const { trip, goToMap } = props;
   const { _id: tripId, name } = trip;
   const theme = useTheme();
 
@@ -23,7 +24,7 @@ export default function TripCard(props: TripCardProps) {
   ];
 
   return (
-    <Pressable style={tripCardContainerStyle} onPress={() => {}}>
+    <Pressable style={tripCardContainerStyle} onPress={goToMap}>
       <View>
         <ThemedText
           key={tripId.toString()}

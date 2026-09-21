@@ -40,6 +40,10 @@ export default function Dashboard() {
     bottomSheetModalRef.current?.present();
   };
 
+  const goToMap = (tripId: string) => {
+    navigate.navigate({ pathname: "/map", params: { tripId } });
+  };
+
   return (
     <ThemedView style={{ flex: 1, padding: 20 }}>
       <SafeAreaView>
@@ -67,7 +71,11 @@ export default function Dashboard() {
             </Pressable>
           </ThemedView>
           {trips.map((trip) => (
-            <TripCard key={trip._id.toString()} trip={trip} />
+            <TripCard
+              key={trip._id.toString()}
+              trip={trip}
+              goToMap={() => goToMap(trip._id.toString())}
+            />
           ))}
         </ThemedView>
       </SafeAreaView>

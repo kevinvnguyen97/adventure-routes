@@ -7,17 +7,19 @@ import MapView, {
   PROVIDER_DEFAULT,
 } from "react-native-maps";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { googleApi } from "@/services/axiosInstance";
+import { googleApi, tripsApi } from "@/services/axiosInstance";
 import { decode as decodePolyline } from "@mapbox/polyline";
 import { getWaypointCoordinates } from "@shared/utils";
 import { RouteColors } from "@shared/constants/color";
-
-const waypoints = [
-  "3131 Courtney Ln, South Chicago Heights",
-  "3140 Rosiclaire Ct, South Chicago Heights",
-];
+import { useLocalSearchParams } from "expo-router";
+import { useTrip } from "@shared/hooks/trip";
 
 export default function Map() {
+  const { tripId } = useLocalSearchParams<{ tripId: string }>();
+  const { trip } = useTrip({ tripId, tripsAxiosApi: tripsApi });
+
+  const { waypoints = [] } = trip || {};
+
   const colorScheme = useColorScheme();
   const mapRef = useRef<MapView>(null);
 
@@ -32,43 +34,45 @@ export default function Map() {
     }));
   };
 
-  const getRoutesAndMarkers = async () => {
+  const getRoutesAndMarkers = useCallback(async () => {
     try {
-      const { data } = await googleApi.computeRoutes({ waypoints });
-      const { response } = data;
-      const { routes = [] } = response || {};
-      if (routes.length > 0) {
-        // Get all waypoint coordinates
-        const waypointCoordinates = getWaypointCoordinates(routes[0]);
-        setWaypointCoordinates(waypointCoordinates);
+      if (waypoints.length > 1) {
+        const { data } = await googleApi.computeRoutes({ waypoints });
+        const { response } = data;
+        const { routes = [] } = response || {};
+        if (routes.length > 0) {
+          // Get all waypoint coordinates
+          const waypointCoordinates = getWaypointCoordinates(routes[0]);
+          setWaypointCoordinates(waypointCoordinates);
 
-        // Create a route path
-        const encodedPolylines = routes.map(
-          (route) => route.polyline.encodedPolyline,
-        );
-        const decodedPolylines = encodedPolylines.map((encodedPolyline) =>
-          getDecodedPolylineCoordinates(encodedPolyline),
-        );
-        setDecodedPolylines(decodedPolylines);
+          // Create a route path
+          const encodedPolylines = routes.map(
+            (route) => route.polyline.encodedPolyline,
+          );
+          const decodedPolylines = encodedPolylines.map((encodedPolyline) =>
+            getDecodedPolylineCoordinates(encodedPolyline),
+          );
+          setDecodedPolylines(decodedPolylines);
+
+          if (waypointCoordinates.length > 1 && mapRef.current) {
+            mapRef.current.fitToCoordinates(waypointCoordinates, {
+              edgePadding: { top: 50, bottom: 50, left: 50, right: 50 },
+              animated: false,
+            });
+          }
+        }
       }
     } catch (error) {
       console.error("Coordinates error:", error);
     }
-  };
-
-  const onMapReady = useCallback(async () => {
-    await getRoutesAndMarkers();
-    if (waypointCoordinates.length > 1 && mapRef.current) {
-      mapRef.current.fitToCoordinates(waypointCoordinates, {
-        edgePadding: { top: 50, bottom: 50, left: 50, right: 50 },
-        animated: false,
-      });
-    }
-  }, [waypointCoordinates]);
+  }, [waypoints, setWaypointCoordinates, setDecodedPolylines]);
 
   useEffect(() => {
-    onMapReady();
-  }, []);
+    const getRouteData = async () => {
+      return await getRoutesAndMarkers();
+    };
+    getRouteData();
+  }, [getRoutesAndMarkers]);
 
   return (
     <ThemedView style={{ flex: 1 }}>
@@ -80,9 +84,6 @@ export default function Map() {
         zoomEnabled
         zoomTapEnabled
         userInterfaceStyle={colorScheme as "light" | "dark"}
-        onMapReady={async () => {
-          await onMapReady();
-        }}
       >
         {waypointCoordinates.map((waypointCoordinate, i) => (
           <Marker
