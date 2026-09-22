@@ -1,4 +1,4 @@
-import { StyleSheet, useColorScheme } from "react-native";
+import { StyleSheet, Text, useColorScheme } from "react-native";
 import { ThemedView } from "@/components/themed-view";
 import MapView, {
   LatLng,
@@ -34,6 +34,15 @@ export default function Map() {
     }));
   };
 
+  const fitToCoordinates = (waypointCoordinates: LatLng[]) => {
+    if (waypointCoordinates.length > 1 && mapRef.current) {
+      mapRef.current.fitToCoordinates(waypointCoordinates, {
+        edgePadding: { top: 50, bottom: 50, left: 50, right: 50 },
+        animated: false,
+      });
+    }
+  };
+
   const getRoutesAndMarkers = useCallback(async () => {
     try {
       if (waypoints.length > 1) {
@@ -53,19 +62,19 @@ export default function Map() {
             getDecodedPolylineCoordinates(encodedPolyline),
           );
           setDecodedPolylines(decodedPolylines);
-
-          if (waypointCoordinates.length > 1 && mapRef.current) {
-            mapRef.current.fitToCoordinates(waypointCoordinates, {
-              edgePadding: { top: 50, bottom: 50, left: 50, right: 50 },
-              animated: false,
-            });
-          }
         }
+
+        fitToCoordinates(waypointCoordinates);
       }
     } catch (error) {
       console.error("Coordinates error:", error);
     }
-  }, [waypoints, setWaypointCoordinates, setDecodedPolylines]);
+  }, [
+    waypoints,
+    setWaypointCoordinates,
+    setDecodedPolylines,
+    fitToCoordinates,
+  ]);
 
   useEffect(() => {
     const getRouteData = async () => {
@@ -84,12 +93,14 @@ export default function Map() {
         zoomEnabled
         zoomTapEnabled
         userInterfaceStyle={colorScheme as "light" | "dark"}
+        loadingEnabled
       >
         {waypointCoordinates.map((waypointCoordinate, i) => (
           <Marker
             key={i}
             coordinate={waypointCoordinate}
             title={waypoints[i]}
+            tracksViewChanges={false}
           />
         ))}
         {decodedPolylines.map((decodedPolyline, i) => (
