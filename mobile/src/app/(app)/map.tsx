@@ -63,9 +63,8 @@ export default function Map() {
             getDecodedPolylineCoordinates(encodedPolyline),
           );
           setDecodedPolylines(decodedPolylines);
+          fitToCoordinates(waypointCoordinates);
         }
-
-        fitToCoordinates(waypointCoordinates);
       }
     } catch (error) {
       console.error("Coordinates error:", error);
