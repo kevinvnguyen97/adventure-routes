@@ -18,12 +18,18 @@ type TripTabsProps = {
   tab: string;
   setTab: (tab: string) => void;
   routes: GoogleRoute[];
-  areRoutesSelected: boolean[];
-  setAreRoutesSelected: (areRoutesSelected: boolean[]) => void;
+  selectedRouteIndex: number;
+  setSelectedRouteIndex: (routeIndex: number) => void;
 };
 const TripTabs = (props: TripTabsProps) => {
-  const { trip, tab, setTab, routes, areRoutesSelected, setAreRoutesSelected } =
-    props;
+  const {
+    trip,
+    tab,
+    setTab,
+    routes,
+    selectedRouteIndex,
+    setSelectedRouteIndex,
+  } = props;
   const { description, activities = [], waypoints } = trip;
 
   return (
@@ -102,8 +108,8 @@ const TripTabs = (props: TripTabsProps) => {
         <Tabs.Content value="directions">
           <TripDirections
             routes={routes}
-            areRoutesSelected={areRoutesSelected}
-            setAreRoutesSelected={setAreRoutesSelected}
+            selectedRouteIndex={selectedRouteIndex}
+            setSelectedRouteIndex={setSelectedRouteIndex}
           />
         </Tabs.Content>
         <Tabs.Content value="comments">Comments</Tabs.Content>

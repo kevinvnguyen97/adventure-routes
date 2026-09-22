@@ -35,6 +35,7 @@ const Map = () => {
     zoom: 10,
   });
   const [routes, setRoutes] = useState<GoogleRoute[]>([]);
+  const [selectedRouteIndex, setSelectedRouteIndex] = useState(0);
   const [markerCoordinates, setMarkerCoordinates] = useState<LatLng[]>([]);
   const [areRoutesSelected, setAreRoutesSelected] = useState<boolean[]>([
     true,
@@ -115,8 +116,8 @@ const Map = () => {
           isInfoVisible={isInfoVisible}
           setIsInfoVisible={setIsInfoVisible}
           routes={routes}
-          areRoutesSelected={areRoutesSelected}
-          setAreRoutesSelected={setAreRoutesSelected}
+          selectedRouteIndex={selectedRouteIndex}
+          setSelectedRouteIndex={setSelectedRouteIndex}
           tab={tab}
           setTab={setTab}
         />
@@ -148,6 +149,7 @@ const Map = () => {
       >
         <TripRouteRenderer
           routes={routes}
+          selectedRouteIndex={selectedRouteIndex}
           areRoutesSelected={areRoutesSelected}
           markerCoordinates={markerCoordinates}
         />

@@ -1,14 +1,14 @@
 import { Polyline, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
-import { RouteColors } from "@shared/constants/color";
 import type { GoogleRoute, LatLng } from "@shared/types/google";
 
 type TripRouteRendererProps = {
   routes: GoogleRoute[];
   areRoutesSelected: boolean[];
+  selectedRouteIndex: number;
   markerCoordinates: LatLng[];
 };
 const TripRouteRenderer = (props: TripRouteRendererProps) => {
-  const { routes, areRoutesSelected, markerCoordinates } = props;
+  const { routes, selectedRouteIndex, markerCoordinates } = props;
 
   const formattedMarkerCoordinates: google.maps.LatLngLiteral[] =
     markerCoordinates.map(({ latitude, longitude }) => ({
@@ -25,17 +25,16 @@ const TripRouteRenderer = (props: TripRouteRendererProps) => {
           </AdvancedMarker>
         );
       })}
-      {routes.map(
-        (route, i) =>
-          areRoutesSelected[i] && (
-            <Polyline
-              key={i}
-              encodedPath={route.polyline.encodedPolyline}
-              strokeColor={RouteColors[i]}
-              strokeWeight={6}
-            />
-          ),
-      )}
+      {routes.map((route, i) => (
+        <Polyline
+          key={i}
+          encodedPath={route.polyline.encodedPolyline}
+          strokeColor={"blue"}
+          strokeWeight={6}
+          strokeOpacity={selectedRouteIndex === i ? 1 : 0.3}
+          zIndex={selectedRouteIndex === i ? 1 : 0}
+        />
+      ))}
     </>
   );
 };

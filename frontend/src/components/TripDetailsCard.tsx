@@ -8,8 +8,8 @@ type TripDetailsProps = {
   isInfoVisible: boolean;
   setIsInfoVisible: (isInfoVisible: boolean) => void;
   routes: GoogleRoute[];
-  areRoutesSelected: boolean[];
-  setAreRoutesSelected: (areRoutesSelected: boolean[]) => void;
+  selectedRouteIndex: number;
+  setSelectedRouteIndex: (routeIndex: number) => void;
   tab: string;
   setTab: (tab: string) => void;
 };
@@ -20,8 +20,8 @@ const TripDetailsCard = (props: TripDetailsProps) => {
     isInfoVisible,
     setIsInfoVisible,
     routes,
-    areRoutesSelected,
-    setAreRoutesSelected,
+    selectedRouteIndex,
+    setSelectedRouteIndex,
     tab,
     setTab,
   } = props;
@@ -55,8 +55,8 @@ const TripDetailsCard = (props: TripDetailsProps) => {
           tab={tab}
           setTab={setTab}
           routes={routes}
-          areRoutesSelected={areRoutesSelected}
-          setAreRoutesSelected={setAreRoutesSelected}
+          selectedRouteIndex={selectedRouteIndex}
+          setSelectedRouteIndex={setSelectedRouteIndex}
         />
       </Card.Body>
     </Card.Root>

@@ -5,17 +5,14 @@ import RouteAccordion from "@components/RouteAccordion";
 
 type TripDirectionsProps = {
   routes: GoogleRoute[];
-  areRoutesSelected: boolean[];
-  setAreRoutesSelected: (areRoutesSelected: boolean[]) => void;
+  selectedRouteIndex: number;
+  setSelectedRouteIndex: (routeIndex: number) => void;
 };
 const TripDirections = (props: TripDirectionsProps) => {
-  const { routes, areRoutesSelected, setAreRoutesSelected } = props;
+  const { routes, selectedRouteIndex, setSelectedRouteIndex } = props;
 
   const onRouteChecked = (routeIndex: number) => {
-    const newSelectedRoutes = areRoutesSelected.map((routeSelected, i) =>
-      i === routeIndex ? !routeSelected : routeSelected,
-    );
-    setAreRoutesSelected(newSelectedRoutes);
+    setSelectedRouteIndex(routeIndex);
   };
 
   return (
@@ -32,7 +29,7 @@ const TripDirections = (props: TripDirectionsProps) => {
         <RouteAccordion
           key={routeIndex}
           route={route}
-          isRouteSelected={areRoutesSelected[routeIndex]}
+          isRouteSelected={selectedRouteIndex === routeIndex}
           onRouteChecked={() => onRouteChecked(routeIndex)}
           roadSignColor={RouteColors[routeIndex]}
         />
