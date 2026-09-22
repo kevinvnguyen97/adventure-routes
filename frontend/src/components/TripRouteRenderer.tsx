@@ -1,5 +1,6 @@
 import { Polyline, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
 import type { GoogleRoute, LatLng } from "@shared/types/google";
+import { Colors } from "@shared/constants/color";
 
 type TripRouteRendererProps = {
   routes: GoogleRoute[];
@@ -29,7 +30,7 @@ const TripRouteRenderer = (props: TripRouteRendererProps) => {
         <Polyline
           key={i}
           encodedPath={route.polyline.encodedPolyline}
-          strokeColor={"blue"}
+          strokeColor={Colors.BLUE}
           strokeWeight={6}
           strokeOpacity={selectedRouteIndex === i ? 1 : 0.3}
           zIndex={selectedRouteIndex === i ? 1 : 0}

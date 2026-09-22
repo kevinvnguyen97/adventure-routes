@@ -10,7 +10,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { googleApi, tripsApi } from "@/services/axiosInstance";
 import { decode as decodePolyline } from "@mapbox/polyline";
 import { getWaypointCoordinates } from "@shared/utils";
-import { RouteColors } from "@shared/constants/color";
+import { Colors } from "@shared/constants/color";
 import { useLocalSearchParams } from "expo-router";
 import { useTrip } from "@shared/hooks/trip";
 
@@ -23,6 +23,7 @@ export default function Map() {
   const colorScheme = useColorScheme();
   const mapRef = useRef<MapView>(null);
 
+  const [selectedRouteIndex, setSelectedRouteIndex] = useState(0);
   const [waypointCoordinates, setWaypointCoordinates] = useState<LatLng[]>([]);
   const [decodedPolylines, setDecodedPolylines] = useState<Array<LatLng[]>>([]);
 
@@ -69,12 +70,7 @@ export default function Map() {
     } catch (error) {
       console.error("Coordinates error:", error);
     }
-  }, [
-    waypoints,
-    setWaypointCoordinates,
-    setDecodedPolylines,
-    fitToCoordinates,
-  ]);
+  }, [waypoints, setWaypointCoordinates, setDecodedPolylines]);
 
   useEffect(() => {
     const getRouteData = async () => {
@@ -107,8 +103,9 @@ export default function Map() {
           <Polyline
             key={i}
             coordinates={decodedPolyline}
-            strokeColor={RouteColors[i]}
+            strokeColor={selectedRouteIndex === i ? Colors.BLUE : "lightblue"}
             strokeWidth={6}
+            zIndex={selectedRouteIndex === i ? 10 : 0}
           />
         ))}
       </MapView>
