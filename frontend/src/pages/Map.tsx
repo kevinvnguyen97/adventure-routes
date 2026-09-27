@@ -1,10 +1,13 @@
 import { useColorMode } from "@components/ui/color-mode";
 import { useTrip } from "@shared/hooks/trip";
 import {
+  AdvancedMarker,
   ColorScheme,
   ControlPosition,
   Map as GoogleMap,
   MapControl,
+  Pin,
+  Polyline,
   useMap,
 } from "@vis.gl/react-google-maps";
 import { LuInfo } from "react-icons/lu";
@@ -15,11 +18,11 @@ import Loading from "@components/Loading";
 // import { toaster } from "@utils/toaster";
 import TripDetailsCard from "@components/TripDetailsCard";
 import TripDetailsDrawer from "@components/TripDetailsDrawer";
-import TripRouteRenderer from "@components/TripRouteRenderer";
 import { googleApi } from "@services/axiosInstance";
 import type { GoogleRoute, LatLng } from "@shared/types/google";
 import { getWaypointCoordinates } from "@shared/utils";
 import { tripsApi } from "@services/axiosInstance";
+import { Colors } from "@shared/constants/color";
 
 type GoogleMapCamera = {
   center: { lat: number; lng: number };
@@ -63,6 +66,12 @@ const Map = () => {
     setRoutes(routes);
     return routes;
   }, [waypoints]);
+
+  const formattedMarkerCoordinates: google.maps.LatLngLiteral[] =
+    markerCoordinates.map(({ latitude, longitude }) => ({
+      lat: latitude,
+      lng: longitude,
+    }));
 
   useEffect(() => {
     if (!map) return;
@@ -147,12 +156,23 @@ const Map = () => {
         onCameraChanged={(e) => setCamera(e.detail)}
         streetViewControl
       >
-        <TripRouteRenderer
-          routes={routes}
-          selectedRouteIndex={selectedRouteIndex}
-          areRoutesSelected={areRoutesSelected}
-          markerCoordinates={markerCoordinates}
-        />
+        {formattedMarkerCoordinates.map((markerCoordinate, i) => {
+          return (
+            <AdvancedMarker key={i} position={markerCoordinate}>
+              <Pin glyphText={String.fromCharCode(i + 65)} glyphColor="white" />
+            </AdvancedMarker>
+          );
+        })}
+        {routes.map((route, i) => (
+          <Polyline
+            key={i}
+            encodedPath={route.polyline.encodedPolyline}
+            strokeColor={Colors.BLUE}
+            strokeWeight={6}
+            strokeOpacity={selectedRouteIndex === i ? 1 : 0.3}
+            zIndex={selectedRouteIndex === i ? 1 : 0}
+          />
+        ))}
         <MapControl position={ControlPosition.TOP_LEFT}>
           <IconButton
             onClick={() => setIsInfoVisible(!isInfoVisible)}
