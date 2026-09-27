@@ -1,4 +1,5 @@
 import { StyleSheet, Text, useColorScheme } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { ThemedView } from "@/components/themed-view";
 import MapView, {
   LatLng,
@@ -13,12 +14,15 @@ import { getWaypointCoordinates } from "@shared/utils";
 import { Colors } from "@shared/constants/color";
 import { useLocalSearchParams } from "expo-router";
 import { useTrip } from "@shared/hooks/trip";
+import { ThemedText } from "@/components/themed-text";
+import { useTheme } from "@/hooks/use-theme";
 
 export default function Map() {
   const { tripId } = useLocalSearchParams<{ tripId: string }>();
   const { trip } = useTrip({ tripId, tripsAxiosApi: tripsApi });
+  const theme = useTheme();
 
-  const { waypoints = [] } = trip || {};
+  const { name, waypoints = [] } = trip || {};
 
   const colorScheme = useColorScheme();
   const mapRef = useRef<MapView>(null);
@@ -26,6 +30,8 @@ export default function Map() {
   const [selectedRouteIndex, setSelectedRouteIndex] = useState(0);
   const [waypointCoordinates, setWaypointCoordinates] = useState<LatLng[]>([]);
   const [decodedPolylines, setDecodedPolylines] = useState<Array<LatLng[]>>([]);
+
+  // const sortedRoutePolylines = decodedPolylines.toSorted((a, b) => {});
 
   const getDecodedPolylineCoordinates = (encodedPolyline: string): LatLng[] => {
     const decodedPolylines = decodePolyline(encodedPolyline);
@@ -39,7 +45,7 @@ export default function Map() {
     if (waypointCoordinates.length > 1 && mapRef.current) {
       mapRef.current.fitToCoordinates(waypointCoordinates, {
         edgePadding: { top: 50, bottom: 50, left: 50, right: 50 },
-        animated: false,
+        animated: true,
       });
     }
   };
@@ -79,7 +85,7 @@ export default function Map() {
   }, [getRoutesAndMarkers]);
 
   return (
-    <ThemedView style={{ flex: 1 }}>
+    <ThemedView style={{ flex: 1, justifyContent: "space-between" }}>
       <MapView
         ref={mapRef}
         style={styles.map}
@@ -108,6 +114,27 @@ export default function Map() {
           />
         ))}
       </MapView>
+      <SafeAreaView style={{ position: "absolute", alignSelf: "center" }}>
+        <ThemedView
+          style={{
+            width: "100%",
+            backgroundColor: theme.background,
+            borderRadius: 12,
+            padding: 16,
+            // Adds a drop shadow for depth
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5,
+          }}
+        >
+          <ThemedText>{name}</ThemedText>
+          {waypoints.map((waypoint) => (
+            <ThemedText key={waypoint}>{waypoint}</ThemedText>
+          ))}
+        </ThemedView>
+      </SafeAreaView>
     </ThemedView>
   );
 }
