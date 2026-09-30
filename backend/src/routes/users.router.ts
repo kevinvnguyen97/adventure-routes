@@ -133,17 +133,17 @@ usersRouter.post(
         // Duplicate user
         case 11000:
           if (userError.keyPattern.email && userError.keyPattern.username) {
-            res.status(400).json({
+            res.status(409).json({
               success: false,
               message: `User with email ${email} and username ${username} already exists`,
             });
           } else if (userError.keyPattern.email) {
-            res.status(400).json({
+            res.status(409).json({
               success: false,
               message: `User with email ${email} already exists`,
             });
           } else {
-            res.status(400).json({
+            res.status(409).json({
               success: false,
               message: `User with username ${username} already exists`,
             });
