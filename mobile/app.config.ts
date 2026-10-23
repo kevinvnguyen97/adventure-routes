@@ -71,15 +71,6 @@ const config = {
           iosGoogleMapsApiKey: googleMapsApiKey,
         },
       ],
-      // Temporary solution until Expo SDK 58 stable releases
-      [
-        "expo-build-properties",
-        {
-          ios: {
-            enableSceneSupport: true,
-          },
-        },
-      ],
       "expo-image",
       "expo-secure-store",
       "expo-web-browser",

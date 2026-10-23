@@ -76,12 +76,14 @@ export default function SignUp() {
           onChangeText={setEmail}
           keyboardType="email-address"
           inputMode="email"
+          autoCapitalize="none"
         />
         <TextInput
           placeholder="Username"
           style={textInputStyle}
           value={username}
           onChangeText={setUsername}
+          autoCapitalize="none"
         />
         <TextInput
           placeholder="Phone Number"
